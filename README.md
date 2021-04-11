@@ -1,0 +1,5 @@
+- 👋 Ola, eu sou @lourival-mendes
+- 👀 Estou interessado em deixar alguns projetos públicos
+- 🌱 Atualmente estou aprendendo algumas novidades com Java e Spring
+- 💞️ Se mais alguém quiser colaborar pode ficar à vontade
+- 📫 Pode entrar em contato comigo pelo https://www.linkedin/in/lourival-mendes
