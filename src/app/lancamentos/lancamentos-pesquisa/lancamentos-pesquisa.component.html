@@ -1,0 +1,22 @@
+<div class="container">
+    <div class="p-grid">
+        <div class="p-col-12">
+            <h1>Pesquisa de Lançamentos</h1>
+        </div>
+    </div>
+    <div class="p-grid">
+        <div class="p-col-12">
+            <app-lancamento-pesquisa-formulario></app-lancamento-pesquisa-formulario>
+        </div>
+    </div>
+    <div class="p-grid">
+        <div class="p-col-12">
+            <app-lancamentos-grid [lancamentos]="lancamentos"></app-lancamentos-grid>
+        </div>
+    </div>
+    <div class="p-grid">
+        <div class="p-col-12">
+            <p-button routerLink="/lancamentos/novo" class="p-button-raised" label="Novo Lançamento"></p-button>
+        </div>
+    </div>
+</div>

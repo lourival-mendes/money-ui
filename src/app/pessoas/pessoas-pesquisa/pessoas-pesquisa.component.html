@@ -1,0 +1,22 @@
+<div class="container">
+    <div class="p-grid">
+        <div class="p-col-12">
+            <h1>Pesquisa de Pessoas</h1>
+        </div>
+    </div>
+    <div class="p-grid">
+        <div class="p-col-12">
+            <app-pessoa-pesquisa-formulario></app-pessoa-pesquisa-formulario>
+        </div>
+    </div>
+    <div class="p-grid">
+        <div class="p-col-12">
+            <app-pessoas-grid [pessoas]="pessoas"></app-pessoas-grid>
+        </div>
+    </div>
+    <div class="p-grid">
+        <div class="p-col-12">
+            <p-button routerLink="/pessoas/novo" class="p-button-raised" label="Nova Pessoa"></p-button>
+        </div>
+    </div>
+</div>

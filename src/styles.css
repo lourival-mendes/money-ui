@@ -1,0 +1,99 @@
+body {
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    color: #404c51;
+}
+
+label {
+    font-weight: bold;
+}
+
+@media(min-width:1200px) {
+    .container {
+        width: 1200px;
+        margin: 0 auto;
+        padding: 15px;
+    }
+}
+
+@media(max-width:1200px) {
+    .container {
+        margin: 0 auto;
+        padding: 15px;
+    }
+}
+
+.table-margin-top-botton {
+    margin-top: 1em;
+    margin-bottom: 1em;
+}
+
+.p-button-actions {
+    margin: 1px !important;
+}
+
+@media (min-width: 40em) {
+    .col-valor-header {
+        width: 120px;
+    }
+    .col-valor .col-status {
+        text-align: right !important;
+    }
+    .col-data-header {
+        width: 120px;
+    }
+    .col-data .col-status {
+        text-align: center !important;
+    }
+    .col-acoes-header {
+        width: 115px;
+    }
+    .col-acoes {
+        width: 115px;
+        text-align: center !important;
+    }
+    .col-acoes .p-button {
+        margin: 1px;
+    }
+}
+
+.am-link a {
+    color: #404c51;
+    text-decoration: none;
+}
+
+.am-link a:hover {
+    text-decoration: underline;
+}
+
+input.ng-invalid.ng-touched {
+    border-color: tomato !important;
+}
+
+.p-inputnumber-input.ng-invalid.ng-touched {
+    border-color: tomato !important;
+}
+
+textarea.ng-invalid.ng-touched {
+    border-color: tomato !important;
+}
+
+p-selectbutton.ng-invalid.ng-touched .p-component {
+    border-color: tomato !important;
+}
+
+p-dropdown.ng-invalid.ng-touched .p-component {
+    border-color: tomato !important;
+}
+
+p-calendar.ng-invalid.ng-touched .p-component {
+    border-color: tomato !important;
+}
+
+p-password.ng-invalid.ng-touched .p-component {
+    border-color: tomato !important;
+}
+
+small {
+    color: tomato !important;
+}

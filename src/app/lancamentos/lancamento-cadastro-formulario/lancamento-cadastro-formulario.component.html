@@ -1,0 +1,56 @@
+<div class="container">
+    <div class="p-grid">
+        <div class="p-col-12">
+            <h1>Cadastro de Lançamento</h1>
+        </div>
+    </div>
+    <form autocomplete="off" #formularioLancamento="ngForm" (ngSubmit)="salvar()">
+        <div class="p-formgrid p-grid">
+            <div class="p-field p-col-12">
+                <label for="tipo">Tipo</label>
+                <p-selectButton pRipple id="tipo" name="tipo" #tipo="ngModel" [options]="tipos" optionLabel="nome" optionValue="nome" [(ngModel)]="lancamentoFormulario.tipo" aria-describedby="tipo-help" [required]="true"></p-selectButton>
+                <app-message [control]="tipo" mensagem="Obrigatório"></app-message>
+            </div>
+            <div class="p-field p-fluid p-col-12 p-sm-4 p-md-3 p-lg-2 p-xl-2">
+                <label for="vencimento" class="p-d-block">Vencimento</label>
+                <p-calendar [(ngModel)]="lancamentoFormulario.vencimento" #vencimento="ngModel" name="vencimento" id="vencimento" [showIcon]="true" [disabledDays]="[0,6]" dateFormat="dd/mm/yy" aria-describedby="vencimento-help" [required]="true"></p-calendar>
+                <app-message [control]="vencimento" mensagem="Obrigatório"></app-message>
+            </div>
+            <div class="p-field p-fluid p-col-12 p-sm-4 p-md-3 p-lg-2 p-xl-2">
+                <label for="pagamento" class="p-d-block">Pagamento</label>
+                <p-calendar [(ngModel)]="lancamentoFormulario.pagamento" #pagamento="ngModel" name="pagamento" id="pagamento" [showIcon]="true" dateFormat="dd/mm/yy" aria-describedby="pagamento-help" [required]="true"></p-calendar>
+                <app-message [control]="pagamento" mensagem="Obrigatório"></app-message>
+            </div>
+            <div class="p-field p-fluid p-col-12 p-sm-9 p-md-9 p-lg-10 p-xl-10">
+                <label for="descricao" class="p-d-block">Descrição</label>
+                <input [(ngModel)]="lancamentoFormulario.descricao" name="descricao" #descricao="ngModel" id="descricao" pInputText type="text" aria-describedby="descricao-help" required />
+                <app-message [control]="descricao" mensagem="Obrigatório"></app-message>
+            </div>
+            <div class="p-field p-fluid p-col-12 p-sm-3 p-md-3 p-lg-2 p-xl-2">
+                <label for="valor" class="p-d-block">Valor</label>
+                <p-inputNumber mode="currency" currency="BRL" locale="pt-BR" placeholder="0,00" [(ngModel)]="lancamentoFormulario.valor" #valor="ngModel" name="valor" id="valor" aria-describedby="valor-help" [required]="true"></p-inputNumber>
+                <app-message [control]="valor" mensagem="Obrigatório"></app-message>
+            </div>
+            <div class="p-field p-fluid p-col-12 p-sm-6 p-md-6 p-lg-6 p-xl-6">
+                <label for="categoria" class="p-d-block">Categoria</label>
+                <p-dropdown #categoria="ngModel" id="categoria" name="categoria" [options]="categorias" optionLabel="nome" optionValue="id" [(ngModel)]="lancamentoFormulario.categoria" placeholder="Selecione" aria-describedby="categoria-help" [required]="true"></p-dropdown>
+                <app-message [control]="categoria" mensagem="Obrigatório"></app-message>
+            </div>
+            <div class="p-field p-fluid p-col-12 p-sm-6 p-md-6 p-lg-6 p-xl-6">
+                <label for="pessoa" class="p-d-block">Pessoa</label>
+                <p-dropdown #pessoa="ngModel" id="pessoa" name="pessoa" [filter]="true" [options]="pessoas" optionLabel="nome" optionValue="id" [(ngModel)]="lancamentoFormulario.pessoa" placeholder="Selecione" aria-describedby="pessoa-help" [required]="true"></p-dropdown>
+                <app-message [control]="pessoa" mensagem="Obrigatório"></app-message>
+            </div>
+            <div class="p-field p-col-12 p-fluid">
+                <label for="observacao" class="p-d-block">Observação</label>
+                <textarea [(ngModel)]="lancamentoFormulario.observacao" #observacao="ngModel" name="observacao" id="observacao" rows="4" pInputTextarea aria-describedby="observacao-help" required></textarea>
+                <app-message [control]="observacao" mensagem="Obrigatório"></app-message>
+            </div>
+            <div class="p-field p-col-12">
+                <button pButton pRipple [disabled]="formularioLancamento.invalid" type="submit" class="p-button-raised p-button-actions" label="Salvar"></button>
+                <button pButton pRipple (click)="novo(formularioLancamento)" type="button" class="p-button-raised p-button-actions" label="Novo"></button>
+                <a pButton pRipple routerLink="/lancamentos" label="Voltar para pesquisa" class="p-button-link p-button-actions"></a>
+            </div>
+        </div>
+    </form>
+</div>

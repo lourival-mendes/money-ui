@@ -1,0 +1,23 @@
+<p-table [value]="pessoas" [paginator]="true" [rows]="5" [responsive]="true" pageLinkSize="3" styleClass="p-datatable-sm">
+    <ng-template pTemplate="header">
+        <tr>
+            <th>Nome</th>
+            <th>Cidade</th>
+            <th class="col-estado-header">Estado</th>
+            <th class="col-status-header">Status</th>
+            <th class="col-acoes-header"></th>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-pessoa>
+        <tr>
+            <td><span class="p-column-title">Nome:</span>{{pessoa.nome}}</td>
+            <td><span class="p-column-title">Cidade:</span>{{pessoa.cidade}}</td>
+            <td class="col-estado"><span class="p-column-title">Estado:</span>{{pessoa.estado}}</td>
+            <td class="am-link"><span class="p-column-title">Status:</span><a href="javascript:;" pTooltip="{{getNomeAcaoStatusToolTip(pessoa.status)}}" tooltipPosition="top">{{getNomeStatus(pessoa.status)}}</a></td>
+            <td class="col-acoes">
+                <p-button pRipple [routerLink]="['/pessoas',pessoa.id]" icon="pi pi-pencil" class="p-button-actions p-button-sm" pTooltip="Editar" tooltipPosition="top"></p-button>
+                <p-button (click)="confirmarExclusao(pessoa)" pRipple icon="pi pi-trash" class="p-button-actions p-button-sm p-button-danger" pTooltip="Excluir" tooltipPosition="top"></p-button>
+            </td>
+        </tr>
+    </ng-template>
+</p-table>

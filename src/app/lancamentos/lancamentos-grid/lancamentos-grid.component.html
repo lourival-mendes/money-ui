@@ -1,0 +1,25 @@
+<p-table [value]="lancamentos" [paginator]="true" [rows]="5" [responsive]="true" pageLinkSize="3" styleClass="p-datatable-sm">
+    <ng-template pTemplate="header">
+        <tr>
+            <th>Pessoa</th>
+            <th>Descrição</th>
+            <th class="col-data-header">Vecimento</th>
+            <th class="col-data-header">Pagamento</th>
+            <th class="col-valor-header">Valor</th>
+            <th class="col-acoes-header"></th>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-lancamento>
+        <tr>
+            <td><span class="p-column-title">Pessoa:</span>{{lancamento.pessoa}}</td>
+            <td><span class="p-column-title">Descrição:</span>{{lancamento.descricao}}</td>
+            <td class="col-data"><span class="p-column-title">Vencimento:</span>{{lancamento.dataVencimento | date:'dd/MM/y'}}</td>
+            <td class="col-data"><span class="p-column-title">Pagamento:</span>{{lancamento.dataPagamento | date:'dd/MM/y'}}</td>
+            <td [ngStyle]="{ color: lancamento.tipo === 'DESPESA' ? 'red' : 'blue'}"><span class="p-column-title">Valor:</span>{{lancamento.valor | currency:'BRL':'symbol':'1.2-2'}}</td>
+            <td class="col-acoes">
+                <p-button [routerLink]="['/lancamentos',lancamento.id]" pRipple icon="pi pi-pencil" class="p-button-actions p-button-sm" pTooltip="Editar" tooltipPosition="top"></p-button>
+                <p-button pRipple icon="pi pi-trash" class="p-button-actions p-button-sm p-button-danger" pTooltip="Excluir" tooltipPosition="top"></p-button>
+            </td>
+        </tr>
+    </ng-template>
+</p-table>

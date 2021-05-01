@@ -1,0 +1,16 @@
+<nav class="navbar">
+    <div class="container">
+        <div class="p-grid">
+            <div class="p-col-12">
+                <a href="javascript:;" class="navbar-toogle" (click)="exibindoMenu = !exibindoMenu"><i class="pi pi-bars"></i></a>
+            </div>
+        </div>
+    </div>
+    <ul class="navbar-menu" [hidden]=!exibindoMenu>
+        <li class="navbar-usuario">Administrador</li>
+        <li class="navbar-menu-item" routerLinkActive="ativo"><a routerLink="/pessoas">Pessoas</a></li>
+        <li class="navbar-menu-item" routerLinkActive="ativo"><a routerLink="/lancamentos">Lancamentos</a></li>
+        <li class="navbar-menu-item" routerLinkActive="ativo"><a routerLink="/usuarios">Usuarios</a></li>
+        <li class="navbar-menu-item" routerLinkActive="ativo"><a href="javascript:;">Sair</a></li>
+    </ul>
+</nav>

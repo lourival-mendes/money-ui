@@ -1,0 +1,15 @@
+<form #formularioPesquisaPessoa="ngForm" (ngSubmit)="pesquisar()">
+  <div class="p-formgrid p-grid">
+    <div class="p-field p-fluid p-col-12 p-sm-12 p-md-12 p-lg-6 p-xl-4">
+      <label for="nome" class="p-d-block">Nome</label>
+      <span class="p-input-icon-left">
+        <i class="pi pi-search"></i>
+        <input [(ngModel)]="nomePessoa" #nome="ngModel" name="nome" id="nome" pInputText type="text" required/>
+      </span>
+      <app-message [control]="nome" mensagem="Obrigatório"></app-message>
+    </div>
+    <div class="p-col-12">
+      <button pButton pRipple [disabled]="formularioPesquisaPessoa.invalid" type="submit" class="p-button-raised" label="Pesquisar"></button>
+    </div>
+  </div>
+</form>
