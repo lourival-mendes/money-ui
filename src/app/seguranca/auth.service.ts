@@ -3,14 +3,6 @@ import { Injectable } from '@angular/core';
 
 import { JwtHelperService } from '@auth0/angular-jwt';
 
-class JwtToken{
-  public access_token= '';
-  public expires_in=0;
-  public jti='';
-  public scope='';
-  public token_type='';
-}
-
 @Injectable({
   providedIn: 'root'
 })
@@ -18,7 +10,6 @@ export class AuthService {
 
   oauthTokenUrl = 'http://localhost:8080/oauth/token';
   jwtPayload: any;
-  jwtToken = new JwtToken();
 
   constructor(private http: HttpClient, private jwtHelper: JwtHelperService) {
     this.carregarToken();
