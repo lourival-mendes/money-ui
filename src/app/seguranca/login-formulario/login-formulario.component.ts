@@ -3,8 +3,8 @@ import { Component } from '@angular/core';
 import { AuthService } from '../auth.service';
 
 class Formulario{
-  email: string = '';
-  senha: string = '';
+  email: string = 'minhavirtde@gmail.com';
+  senha: string = 'admin';
 }
 
 @Component({
