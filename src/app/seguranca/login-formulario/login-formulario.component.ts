@@ -1,6 +1,8 @@
 import { Router } from '@angular/router';
 import { Component } from '@angular/core';
 
+import { MessageService } from 'primeng/api';
+
 import { AuthService } from '../auth.service';
 
 class Formulario{
@@ -19,16 +21,21 @@ export class LoginFormularioComponent {
 
   constructor(
     private auth: AuthService,
-    private roter: Router
+    private roter: Router,
+    private messageService: MessageService
   ) { }
 
   login() {
     this.auth.login(this.formulario.email, this.formulario.senha)
       .then(() => {
+
         this.roter.navigate(['/lancamentos']);
+
       })
       .catch(erro => {
-        console.log(erro); //TODO: implementar errorHandler e exibição de mensagens de erros.
+
+        this.messageService.add({ severity: 'error', summary: 'Ocorreu um erro!', detail: 'Usuário e/ou senha inválidos' });
+
       });
   }
 

@@ -3,6 +3,9 @@ import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
 
+import { MessageService } from 'primeng/api';
+import { ToastModule } from 'primeng/toast';
+
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { CoreModule } from './core/core.module';
@@ -22,12 +25,14 @@ import { AuthService } from './seguranca/auth.service';
     HttpClientModule,
     BrowserAnimationsModule,
 
+    ToastModule,
+
     CoreModule,
     LancamentosModule,
     PessoasModule,
     SegurancaModule
   ],
-  providers: [LancamentoService, AuthService],
+  providers: [LancamentoService, AuthService, MessageService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
