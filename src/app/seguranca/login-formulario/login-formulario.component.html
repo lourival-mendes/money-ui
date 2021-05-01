@@ -10,12 +10,12 @@
                 <div class="p-fluid">
                     <div class="p-field">
                         <label for="email">E-mail</label>
-                        <input ngModel placeholder="*" [(ngModel)]="formulario.email" #email="ngModel" pInputText name="email" required aria-describedby="email-help" />
+                        <input ngModel placeholder="*" [(ngModel)]="formulario.email" #email='ngModel' pInputText name="email" required aria-describedby="email-help" />
                         <app-message [control]="email" mensagem="Informe e-mail válido!"></app-message>
                     </div>
                     <div class="p-field">
                         <label for="senha">Senha</label>
-                        <p-password [placeholder]="'*'" [(ngModel)]="formulario.senha" #senha="ngModel" name="senha" [toggleMask]="true" [feedback]="false" [required]="true" aria-describedby="senha-help"></p-password>
+                        <p-password [placeholder]="'*'" [(ngModel)]="formulario.senha" #senha='ngModel' name="senha" [toggleMask]="true" [feedback]="false" [required]="true" aria-describedby="senha-help"></p-password>
                         <app-message [control]="senha" mensagem="Obrigatório"></app-message>
                     </div>
                     <button pButton pRipple [disabled]="formularioLogin.invalid" type="submit" class="p-button-raised p-button-actions" label="Entrar"></button>

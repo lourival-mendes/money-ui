@@ -28,7 +28,11 @@ export class AuthService {
 
     return this.http.post<any>(this.oauthTokenUrl, body, httpOptions).toPromise().then(
       response => { this.armazenarToken(response['access_token']); })
-      .catch(response => { console.log(response); });
+      .catch(
+        response => {
+          return (response['status'] === 400 && response['error'] === 'invalid_grant')? Promise.reject('Usuário e/ou senha inválidos.'):Promise.reject(response);
+        }
+      );
   }
 
   private armazenarToken(token: string) {

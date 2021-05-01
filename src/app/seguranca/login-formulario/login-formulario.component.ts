@@ -1,9 +1,10 @@
+import { Router } from '@angular/router';
 import { Component } from '@angular/core';
 
 import { AuthService } from '../auth.service';
 
 class Formulario{
-  email: string = 'minhavirtde@gmail.com';
+  email: string = 'minhavirtude@gmail.com';
   senha: string = 'admin';
 }
 
@@ -16,8 +17,19 @@ export class LoginFormularioComponent {
 
   formulario = new Formulario();
 
-  constructor(private auth: AuthService) { }
+  constructor(
+    private auth: AuthService,
+    private roter: Router
+  ) { }
 
-  login() {this.auth.login(this.formulario.email, this.formulario.senha);}
+  login() {
+    this.auth.login(this.formulario.email, this.formulario.senha)
+      .then(() => {
+        this.roter.navigate(['/lancamentos']);
+      })
+      .catch(erro => {
+        console.log(erro); //TODO: implementar errorHandler e exibição de mensagens de erros.
+      });
+  }
 
 }
