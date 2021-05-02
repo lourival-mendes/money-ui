@@ -1,4 +1,3 @@
-import { LancamentoService } from './../lancamento.service';
 import { Component, OnInit } from '@angular/core';
 
 @Component({
@@ -6,20 +5,12 @@ import { Component, OnInit } from '@angular/core';
   templateUrl: './lancamentos-pesquisa.component.html',
   styleUrls: ['./lancamentos-pesquisa.component.css']
 })
-export class LancamentosPesquisaComponent implements OnInit{
+export class LancamentosPesquisaComponent {
 
   lancamentos = [];
 
-  constructor(private lancamentoService: LancamentoService) { }
-
-  ngOnInit(): void {
-    this.pesquisar();
+  mostrarResultado(lancamentos: []) {
+    this.lancamentos = lancamentos;
   }
-
-  pesquisar() {
-    this.lancamentoService.pesquisar().then(result => this.lancamentos = result);
-  }
-
-
 
 }

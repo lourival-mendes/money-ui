@@ -6,7 +6,7 @@ import { Component, Input } from '@angular/core';
   styleUrls: ['./lancamentos-grid.component.css']
 })
 export class LancamentosGridComponent {
-  @Input() lancamentos: any = [];
+  @Input() lancamentos = [];
 
   confirmarExclusao(lancamento: any) {
     console.log(JSON.stringify(lancamento))

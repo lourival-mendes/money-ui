@@ -1,27 +1,27 @@
 <form autocomplete="off" #formularioPesquisaLancamento="ngForm" (ngSubmit)="pesquisar()">
-  <div class="p-formgrid p-grid">
-    <div class="p-field p-fluid p-col-12 p-sm-12 p-md-12 p-lg-6 p-xl-4">
-      <label for="descricao" class="p-d-block">Descrição</label>
-      <span class="p-input-icon-left">
+    <div class="p-formgrid p-grid">
+        <div class="p-field p-fluid p-col-12 p-sm-12 p-md-12 p-lg-6 p-xl-4">
+            <label for="descricao" class="p-d-block">Descrição</label>
+            <span class="p-input-icon-left">
         <i class="pi pi-search"></i>
-        <input [(ngModel)]="lancamentoFormularioPesquisa.descricao" name="descricao" #descricao="ngModel" id="descricao" pInputText type="text" required />
+        <input [(ngModel)]="lancamentoFormularioPesquisa.descricao" name="descricao" #descricao="ngModel" id="descricao" pInputText type="text" />
       </span>
-      <app-message [control]="descricao" mensagem="Obrigatório"></app-message>
+            <app-message [control]="descricao" mensagem="Obrigatório"></app-message>
+        </div>
     </div>
-  </div>
-  <div class="p-formgrid p-grid">
-    <div class="p-field p-fluid p-col-12 p-sm-4 p-md-3 p-lg-2 p-xl-2">
-      <label for="vencimento">Vencimento de</label>
-      <p-calendar [(ngModel)]="lancamentoFormularioPesquisa.vencimento" #vencimento="ngModel" name="vencimento" id="vencimento" [showIcon]="true" [disabledDays]="[0,6]" dateFormat="dd/mm/yy" aria-describedby="vencimento-help" [required]="true"></p-calendar>
-      <app-message [control]="vencimento" mensagem="Obrigatório"></app-message>
+    <div class="p-formgrid p-grid">
+        <div class="p-field p-fluid p-col-12 p-sm-4 p-md-3 p-lg-2 p-xl-2">
+            <label for="vencimento">Vencimento de</label>
+            <p-calendar [(ngModel)]="lancamentoFormularioPesquisa.vencimento" #vencimento="ngModel" name="vencimento" id="vencimento" [showIcon]="true" [disabledDays]="[0,6]" dateFormat="dd/mm/yy" aria-describedby="vencimento-help"></p-calendar>
+            <app-message [control]="vencimento" mensagem="Obrigatório"></app-message>
+        </div>
+        <div class="p-field p-fluid p-col-12 p-sm-4 p-md-3 p-lg-2 p-xl-2">
+            <label for="vencimentoAte">Vencimento Até</label>
+            <p-calendar [(ngModel)]="lancamentoFormularioPesquisa.vencimentoAte" #vencimentoAte="ngModel" name="vencimentoAte" id="vencimentoAte" [showIcon]="true" [disabledDays]="[0,6]" dateFormat="dd/mm/yy" aria-describedby="vencimentoAte-help"></p-calendar>
+            <app-message [control]="vencimentoAte" mensagem="Obrigatório"></app-message>
+        </div>
+        <div class="p-col-12">
+            <button pButton pRipple [disabled]="formularioPesquisaLancamento.invalid" type="submit" class="p-button-raised" label="Pesquisar"></button>
+        </div>
     </div>
-    <div class="p-field p-fluid p-col-12 p-sm-4 p-md-3 p-lg-2 p-xl-2">
-      <label for="vencimentoAte">Vencimento Até</label>
-      <p-calendar [(ngModel)]="lancamentoFormularioPesquisa.vencimentoAte" #vencimentoAte="ngModel" name="vencimentoAte" id="vencimentoAte" [showIcon]="true" [disabledDays]="[0,6]" dateFormat="dd/mm/yy" aria-describedby="vencimentoAte-help" [required]="true"></p-calendar>
-      <app-message [control]="vencimentoAte" mensagem="Obrigatório"></app-message>
-    </div>
-    <div class="p-col-12">
-      <button pButton pRipple [disabled]="formularioPesquisaLancamento.invalid" type="submit" class="p-button-raised" label="Pesquisar"></button>
-    </div>
-  </div>
 </form>
