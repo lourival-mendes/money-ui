@@ -1,4 +1,7 @@
-import { Component, Input } from '@angular/core';
+import { LancamentoPesquisaInterface } from './../lancamento.service';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
+
+import { LazyLoadEvent } from 'primeng/api';
 
 @Component({
   selector: 'app-lancamentos-grid',
@@ -6,9 +9,25 @@ import { Component, Input } from '@angular/core';
   styleUrls: ['./lancamentos-grid.component.css']
 })
 export class LancamentosGridComponent {
-  @Input() lancamentos = [];
+
+  @Input() lancamentos!: any;
+  @Input() itensPorPagina!: number;
+  @Input() pagina!: number;
+  @Input() totalRegistros!: number;
+  @Input() ultimaPagina!: number;
+  @Input() primeiraPagina!: number;
+
+  @Output() lazyLoadEvent = new EventEmitter();
+/**
+  mudarPagina(evento: LazyLoadEvent) {
+    this.lazyLoadEvent.emit(evento);
+  }
+ */
+  mostrarPaginacao() {
+    return !(this.primeiraPagina && this.ultimaPagina);
+  }
 
   confirmarExclusao(lancamento: any) {
-    console.log(JSON.stringify(lancamento))
+    console.log('LancametosGrid - confirmarExclusao',JSON.stringify(lancamento))
   }
 }

@@ -1,11 +1,17 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { LancamentoPesquisaInterface } from './../lancamento.service';
+import { Component, Output, EventEmitter } from '@angular/core';
 
-import { LancamentoFiltroInterface, LancamentoService } from './../lancamento.service';
+class LancamentoPesquisaFormulario implements LancamentoPesquisaInterface{
 
-class LancamentoFormularioPesquisa implements LancamentoFiltroInterface {
   descricao!: string;
   vencimento!: Date;
   vencimentoAte!: Date;
+  pagina!: number;
+  itensPorPagina!: number;
+  totalRegistros!: number;
+  primeiraPagina!: boolean;
+  ultimaPagina!: boolean;
+
 }
 
 @Component({
@@ -13,24 +19,15 @@ class LancamentoFormularioPesquisa implements LancamentoFiltroInterface {
   templateUrl: './lancamento-pesquisa-formulario.component.html',
   styleUrls: ['./lancamento-pesquisa-formulario.component.css']
 })
-export class LancamentoPesquisaFormularioComponent implements OnInit{
+export class LancamentoPesquisaFormularioComponent {
 
-  lancamentoFormularioPesquisa = new LancamentoFormularioPesquisa();
+  @Output()
+  lancamentoPesquisado = new EventEmitter();
 
-  @Output() lancamentoPesquisado = new EventEmitter();
+  lancamentoPesquisaFormulario = new LancamentoPesquisaFormulario();
 
-constructor(private lancamentoService:LancamentoService){ }
-
-ngOnInit(): void {
-  this.pesquisar();
-}
-
-pesquisar() {
-  this.lancamentoService.pesquisar(this.lancamentoFormularioPesquisa).then(
-    result => {
-      this.lancamentoPesquisado.emit(result);
-    }
-  );
-}
+  pesquisar() {
+    this.lancamentoPesquisado.emit(this.lancamentoPesquisaFormulario);
+  }
 
 }

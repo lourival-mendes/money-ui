@@ -4,7 +4,7 @@
             <label for="descricao" class="p-d-block">Descrição</label>
             <span class="p-input-icon-left">
         <i class="pi pi-search"></i>
-        <input [(ngModel)]="lancamentoFormularioPesquisa.descricao" name="descricao" #descricao="ngModel" id="descricao" pInputText type="text" />
+        <input [(ngModel)]="lancamentoPesquisaFormulario.descricao" name="descricao" #descricao="ngModel" id="descricao" pInputText type="text" />
       </span>
             <app-message [control]="descricao" mensagem="Obrigatório"></app-message>
         </div>
@@ -12,12 +12,12 @@
     <div class="p-formgrid p-grid">
         <div class="p-field p-fluid p-col-12 p-sm-4 p-md-3 p-lg-2 p-xl-2">
             <label for="vencimento">Vencimento de</label>
-            <p-calendar [(ngModel)]="lancamentoFormularioPesquisa.vencimento" #vencimento="ngModel" name="vencimento" id="vencimento" [showIcon]="true" [disabledDays]="[0,6]" dateFormat="dd/mm/yy" aria-describedby="vencimento-help"></p-calendar>
+            <p-calendar [(ngModel)]="lancamentoPesquisaFormulario.vencimento" #vencimento="ngModel" name="vencimento" id="vencimento" [showIcon]="true" [disabledDays]="[0,6]" dateFormat="dd/mm/yy" aria-describedby="vencimento-help"></p-calendar>
             <app-message [control]="vencimento" mensagem="Obrigatório"></app-message>
         </div>
         <div class="p-field p-fluid p-col-12 p-sm-4 p-md-3 p-lg-2 p-xl-2">
             <label for="vencimentoAte">Vencimento Até</label>
-            <p-calendar [(ngModel)]="lancamentoFormularioPesquisa.vencimentoAte" #vencimentoAte="ngModel" name="vencimentoAte" id="vencimentoAte" [showIcon]="true" [disabledDays]="[0,6]" dateFormat="dd/mm/yy" aria-describedby="vencimentoAte-help"></p-calendar>
+            <p-calendar [(ngModel)]="lancamentoPesquisaFormulario.vencimentoAte" #vencimentoAte="ngModel" name="vencimentoAte" id="vencimentoAte" [showIcon]="true" [disabledDays]="[0,6]" dateFormat="dd/mm/yy" aria-describedby="vencimentoAte-help"></p-calendar>
             <app-message [control]="vencimentoAte" mensagem="Obrigatório"></app-message>
         </div>
         <div class="p-col-12">

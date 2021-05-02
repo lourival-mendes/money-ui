@@ -13,6 +13,7 @@ import { InputMaskModule } from 'primeng/inputmask';
 import { SelectButtonModule } from 'primeng/selectbutton';
 import { TableModule } from 'primeng/table';
 import { TooltipModule } from 'primeng/tooltip';
+import { PaginatorModule } from 'primeng/paginator';
 
 import { LancamentosGridComponent } from './lancamentos-grid/lancamentos-grid.component';
 import { LancamentoCadastroFormularioComponent } from './lancamento-cadastro-formulario/lancamento-cadastro-formulario.component';
@@ -33,6 +34,7 @@ import { SharedModule } from '../shared/shared.module';
     FormsModule,
     RouterModule,
 
+    PaginatorModule,
     ButtonModule,
     RippleModule,
     CalendarModule,

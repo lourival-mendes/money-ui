@@ -1,4 +1,11 @@
-<p-table [value]="lancamentos" [paginator]="true" [rows]="5" [responsive]="true" pageLinkSize="3" styleClass="p-datatable-sm">
+<p-table [lazy]="true" [totalRecords]="100" [responsive]="true" styleClass="p-datatable-sm">
+    <ng-template pTemplate="emptymessage">
+        <tr>
+            <td colspan="6">
+                Nenhum lançamento encontrado
+            </td>
+        </tr>
+    </ng-template>
     <ng-template pTemplate="header">
         <tr>
             <th>Pessoa</th>

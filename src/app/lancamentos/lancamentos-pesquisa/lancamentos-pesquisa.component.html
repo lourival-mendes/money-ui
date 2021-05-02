@@ -6,12 +6,69 @@
     </div>
     <div class="p-grid">
         <div class="p-col-12">
-            <app-lancamento-pesquisa-formulario (lancamentoPesquisado)="mostrarResultado($event)"></app-lancamento-pesquisa-formulario>
+            <form autocomplete="off" #formularioPesquisaLancamento="ngForm" (ngSubmit)="pesquisar()">
+                <div class="p-formgrid p-grid">
+                    <div class="p-field p-fluid p-col-12 p-sm-12 p-md-12 p-lg-6 p-xl-4">
+                        <label for="descricao" class="p-d-block">Descrição</label>
+                        <span class="p-input-icon-left">
+                          <i class="pi pi-search"></i>
+                          <input [(ngModel)]="lancamentoPesquisa.descricao" name="descricao" #descricao="ngModel" id="descricao" pInputText type="text" />
+                        </span>
+                        <app-message [control]="descricao" mensagem="Obrigatório"></app-message>
+                    </div>
+                </div>
+                <div class="p-formgrid p-grid">
+                    <div class="p-field p-fluid p-col-12 p-sm-4 p-md-3 p-lg-2 p-xl-2">
+                        <label for="vencimento">Vencimento de</label>
+                        <p-calendar [(ngModel)]="lancamentoPesquisa.vencimento" #vencimento="ngModel" name="vencimento" id="vencimento" [showIcon]="true" [disabledDays]="[0,6]" dateFormat="dd/mm/yy" aria-describedby="vencimento-help"></p-calendar>
+                        <app-message [control]="vencimento" mensagem="Obrigatório"></app-message>
+                    </div>
+                    <div class="p-field p-fluid p-col-12 p-sm-4 p-md-3 p-lg-2 p-xl-2">
+                        <label for="vencimentoAte">Vencimento Até</label>
+                        <p-calendar [(ngModel)]="lancamentoPesquisa.vencimentoAte" #vencimentoAte="ngModel" name="vencimentoAte" id="vencimentoAte" [showIcon]="true" [disabledDays]="[0,6]" dateFormat="dd/mm/yy" aria-describedby="vencimentoAte-help"></p-calendar>
+                        <app-message [control]="vencimentoAte" mensagem="Obrigatório"></app-message>
+                    </div>
+                    <div class="p-col-12">
+                        <button pButton pRipple [disabled]="formularioPesquisaLancamento.invalid" type="submit" class="p-button-raised" label="Pesquisar"></button>
+                    </div>
+                </div>
+            </form>
         </div>
     </div>
     <div class="p-grid">
         <div class="p-col-12">
-            <app-lancamentos-grid [lancamentos]="lancamentos"></app-lancamentos-grid>
+            <p-table [lazy]="true" (onLazyLoad)="mudarPagina($event)" [totalRecords]="lancamentoPesquisa.totalRegistros" [value]="lancamentos" [paginator]="mostrarPaginacao()" [rows]="lancamentoPesquisa.itensPorPagina" [responsive]="true" styleClass="p-datatable-sm">
+                <ng-template pTemplate="emptymessage">
+                    <tr>
+                        <td colspan="6">
+                            Nenhum lançamento encontrado
+                        </td>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th>Pessoa</th>
+                        <th>Descrição</th>
+                        <th class="col-data-header">Vecimento</th>
+                        <th class="col-data-header">Pagamento</th>
+                        <th class="col-valor-header">Valor</th>
+                        <th class="col-acoes-header"></th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-lancamento>
+                    <tr>
+                        <td><span class="p-column-title">Pessoa:</span>{{lancamento.pessoa}}</td>
+                        <td><span class="p-column-title">Descrição:</span>{{lancamento.descricao}}</td>
+                        <td class="col-data"><span class="p-column-title">Vencimento:</span>{{lancamento.dataVencimento | date:'dd/MM/y'}}</td>
+                        <td class="col-data"><span class="p-column-title">Pagamento:</span>{{lancamento.dataPagamento | date:'dd/MM/y'}}</td>
+                        <td [ngStyle]="{ color: lancamento.tipo === 'DESPESA' ? 'red' : 'blue'}"><span class="p-column-title">Valor:</span>{{lancamento.valor | currency:'BRL':'symbol':'1.2-2'}}</td>
+                        <td class="col-acoes">
+                            <p-button [routerLink]="['/lancamentos',lancamento.id]" pRipple icon="pi pi-pencil" class="p-button-actions p-button-sm" pTooltip="Editar" tooltipPosition="top"></p-button>
+                            <p-button pRipple icon="pi pi-trash" class="p-button-actions p-button-sm p-button-danger" pTooltip="Excluir" tooltipPosition="top"></p-button>
+                        </td>
+                    </tr>
+                </ng-template>
+            </p-table>
         </div>
     </div>
     <div class="p-grid">
