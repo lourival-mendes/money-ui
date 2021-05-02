@@ -1,94 +1,25 @@
-import { Component } from '@angular/core';
+import { LancamentoService } from './../lancamento.service';
+import { Component, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-lancamentos-pesquisa',
   templateUrl: './lancamentos-pesquisa.component.html',
   styleUrls: ['./lancamentos-pesquisa.component.css']
 })
-export class LancamentosPesquisaComponent {
+export class LancamentosPesquisaComponent implements OnInit{
 
-  lancamentos = [
-    {
-      tipo:'DESPESA',
-      descricao:'Compra de pão',
-      dataVencimento: new Date(2021,6,30),
-      dataPagamento: new Date(2021,6,31),
-      valor:10.15,
-      pessoa:'Lourival'
-    },
-    {
-      tipo:'DESPESA',
-      descricao:'Compra de pão',
-      dataVencimento: new Date(2021,6,30),
-      dataPagamento: new Date(2021,6,31),
-      valor:10.15,
-      pessoa:'Lourival'
-    },
-    {
-      tipo:'DESPESA',
-      descricao:'Compra de pão',
-      dataVencimento: new Date(2021,6,30),
-      dataPagamento: new Date(2021,6,31),
-      valor:10.15,
-      pessoa:'Lourival'
-    },
-    {
-      tipo:'DESPESA',
-      descricao:'Compra de pão',
-      dataVencimento: new Date(2021,6,30),
-      dataPagamento: new Date(2021,6,31),
-      valor:10.15,
-      pessoa:'Lourival'
-    },
-    {
-      tipo:'DESPESA',
-      descricao:'Compra de pão',
-      dataVencimento: new Date(2021,6,30),
-      dataPagamento: new Date(2021,6,31),
-      valor:10.15,
-      pessoa:'Lourival'
-    },
-    {
-      tipo:'DESPESA',
-      descricao:'Compra de pão',
-      dataVencimento: new Date(2021,6,30),
-      dataPagamento: new Date(2021,6,31),
-      valor:10.15,
-      pessoa:'Lourival'
-    },
-    {
-      tipo:'DESPESA',
-      descricao:'Compra de pão',
-      dataVencimento: new Date(2021,6,30),
-      dataPagamento: new Date(2021,6,31),
-      valor:10.15,
-      pessoa:'Lourival'
-    },
-    {
-      tipo:'DESPESA',
-      descricao:'Compra de pão',
-      dataVencimento: new Date(2021,6,30),
-      dataPagamento: new Date(2021,6,31),
-      valor:10.15,
-      pessoa:'Lourival'
-    },
-    {
-      tipo:'DESPESA',
-      descricao:'Compra de pão',
-      dataVencimento: new Date(2021,6,30),
-      dataPagamento: new Date(2021,6,31),
-      valor:10.15,
-      pessoa:'Lourival'
-    },
-    {
-      tipo:'RECEITA',
-      descricao:'13º Salário',
-      dataVencimento: new Date(2021,6,30),
-      dataPagamento: new Date(2021,6,31),
-      valor:1200.00,
-      pessoa:'Vânia'
-    },
+  lancamentos = [];
 
-  ];
+  constructor(private lancamentoService: LancamentoService) { }
+
+  ngOnInit(): void {
+    this.pesquisar();
+  }
+
+  pesquisar() {
+    this.lancamentoService.pesquisar().then(result => this.lancamentos = result);
+  }
+
+
 
 }

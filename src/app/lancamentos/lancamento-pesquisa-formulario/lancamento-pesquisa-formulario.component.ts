@@ -24,7 +24,7 @@ constructor(private lancamentoService:LancamentoService){ }
   }
 
   pesquisar() {
-    console.log(this.lancamentoFormularioPesquisa);
+    this.lancamentoFormularioPesquisa;
   }
 
 }

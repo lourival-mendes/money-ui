@@ -2,6 +2,7 @@ import { FormsModule } from '@angular/forms';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
+import { HttpClientModule } from '@angular/common/http';
 
 import { JwtModule, JwtHelperService } from '@auth0/angular-jwt';
 
@@ -22,6 +23,7 @@ import { SharedModule } from '../shared/shared.module';
     CommonModule,
     FormsModule,
     RouterModule,
+    HttpClientModule,
 
     JwtModule.forRoot({
       config: {
