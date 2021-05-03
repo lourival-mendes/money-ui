@@ -37,11 +37,16 @@
     </div>
     <div class="p-grid">
         <div class="p-col-12">
-            <p-table [lazy]="true" (onLazyLoad)="mudarPagina($event)" [totalRecords]="lancamentoPesquisa.totalElements" [value]="lancamentoPesquisa.content" [paginator]="mostrarPaginacao()" [rows]="lancamentoPesquisa.size" [responsive]="true" styleClass="p-datatable-sm">
+            <p-table #tabela [loading]="loading" [lazy]="true" (onLazyLoad)="mudarPagina($event)" [totalRecords]="lancamentoPesquisa.totalElements" [value]="lancamentoPesquisa.content" [paginator]="mostrarPaginacao()" [rows]="lancamentoPesquisa.size" [responsive]="true"
+                styleClass="p-datatable-sm">
                 <ng-template pTemplate="emptymessage">
                     <tr>
                         <td colspan="6">
-                            Nenhum lançamento encontrado
+                            <div class="p-grid">
+                                <div class="p-col-12 p-text-center">
+                                    <h3>Nenhum lançamento encontrado</h3>
+                                </div>
+                            </div>
                         </td>
                     </tr>
                 </ng-template>
@@ -63,8 +68,8 @@
                         <td class="col-data"><span class="p-column-title">Pagamento:</span>{{lancamento.dataPagamento | date:'dd/MM/y'}}</td>
                         <td [ngStyle]="{ color: lancamento.tipo === 'DESPESA' ? 'red' : 'blue'}"><span class="p-column-title">Valor:</span>{{lancamento.valor | currency:'BRL':'symbol':'1.2-2'}}</td>
                         <td class="col-acoes">
-                            <p-button [routerLink]="['/lancamentos',lancamento.id]" pRipple icon="pi pi-pencil" class="p-button-actions p-button-sm" pTooltip="Editar" tooltipPosition="top"></p-button>
-                            <p-button pRipple icon="pi pi-trash" class="p-button-actions p-button-sm p-button-danger" pTooltip="Excluir" tooltipPosition="top"></p-button>
+                            <button pButton [routerLink]="['/lancamentos',lancamento.id]" pRipple icon="pi pi-pencil" class="p-button-actions p-button-sm" pTooltip="Editar" tooltipPosition="top"></button>
+                            <button (click)="confirmarExclusao(lancamento, $event)" pButton pRipple icon="pi pi-trash" class="p-button-actions p-button-sm p-button-danger" pTooltip="Excluir" tooltipPosition="top"></button>
                         </td>
                     </tr>
                 </ng-template>

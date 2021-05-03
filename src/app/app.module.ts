@@ -5,6 +5,8 @@ import { NgModule } from '@angular/core';
 
 import { MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
+import { ConfirmPopupModule } from 'primeng/confirmpopup';
+import { ConfirmationService } from 'primeng/api';
 
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
@@ -25,6 +27,7 @@ import { AuthService } from './seguranca/auth.service';
     HttpClientModule,
     BrowserAnimationsModule,
 
+    ConfirmPopupModule,
     ToastModule,
 
     CoreModule,
@@ -32,7 +35,7 @@ import { AuthService } from './seguranca/auth.service';
     PessoasModule,
     SegurancaModule
   ],
-  providers: [LancamentoService, AuthService, MessageService],
+  providers: [LancamentoService, AuthService, MessageService,ConfirmationService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

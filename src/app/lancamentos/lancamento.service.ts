@@ -6,15 +6,16 @@ import * as moment from 'moment';
 
 export interface LancamentoPesquisaInterface{
 
+  id: number;
   descricao: string;
   vencimento: Date;
   vencimentoAte: Date;
-  number:number; //pagina
-  size:number; //itensPorPagina
-  totalElements:number; //totalRegistros
-  first:boolean; //primeiraPagina
-  last:boolean; //ultimaPagina
-  content: any; //content
+  number:number;
+  size:number;
+  totalElements:number;
+  first:boolean;
+  last:boolean;
+  content: any;
 
 }
 
@@ -55,5 +56,18 @@ export class LancamentoService {
       .catch(response => {
            console.log(response);
         });
+  }
+
+  excluir(id:number): Promise<any> {
+
+    const headers = new HttpHeaders({ Authorization: `Bearer ${localStorage.getItem('token')}` });
+
+    return this.httpClient.delete(`${this.lancamentosUrl}/${id}`, { headers })
+    .toPromise()
+    .then(() => null)
+    .catch(response => {
+          console.log('Erro ao excluir lançamento.',response);
+      });
+
   }
 }

@@ -3,6 +3,7 @@ import { Component, Output, EventEmitter } from '@angular/core';
 
 class LancamentoPesquisaFormulario implements LancamentoPesquisaInterface{
 
+  id!: number;
   descricao!: string;
   vencimento!: Date;
   vencimentoAte!: Date;

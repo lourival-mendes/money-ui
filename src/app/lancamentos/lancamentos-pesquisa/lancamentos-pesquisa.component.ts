@@ -1,20 +1,21 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 
-import { LazyLoadEvent } from 'primeng/api';
+import { LazyLoadEvent, MessageService, ConfirmationService } from 'primeng/api';
 
 import { LancamentoService, LancamentoPesquisaInterface } from './../lancamento.service';
 //TODO: Refatorar o código para componentizar o grid, se achar necessário.
 class LancamentoPesquisa implements LancamentoPesquisaInterface {
 
+  id!: number;
   descricao!: string;
   vencimento!: Date;
   vencimentoAte!: Date;
-  number=0; //pagina
-  size=3; //itensPorPagina
-  totalElements=0; //totalRegistros
-  first=true; //primeiraPagina
-  last=false; //ultimaPagina
-  content: any; //content
+  number=0;
+  size=3;
+  totalElements!:number;
+  first!:boolean;
+  last!:boolean;
+  content: any;
 
 }
 
@@ -27,7 +28,15 @@ export class LancamentosPesquisaComponent {
 
   lancamentoPesquisa = new LancamentoPesquisa;
 
-  constructor(private lancamentoService: LancamentoService) { }
+  loading=true;
+
+  @ViewChild('tabela') grid:any;
+
+  constructor(
+    private lancamentoService: LancamentoService,
+    private messageService: MessageService,
+    private confirmationService: ConfirmationService
+  ) { }
 
   pesquisar(pagina = 0) {
 
@@ -41,7 +50,7 @@ export class LancamentosPesquisaComponent {
         this.mostrarPaginacao();
 
       });
-
+      this.loading = false;
   }
 
   mudarPagina(event: LazyLoadEvent) {
@@ -58,8 +67,55 @@ export class LancamentosPesquisaComponent {
     return !(this.lancamentoPesquisa.first && this.lancamentoPesquisa.last);
   }
 
-  mostrarResultado(lancamentos: any) {
-    this.lancamentoPesquisa = lancamentos;
+  mostrarResultado(lancamentoPesquisa: LancamentoPesquisaInterface) {
+    this.lancamentoPesquisa = lancamentoPesquisa;
+  }
+
+  confirmarExclusao(lancamento:any, event: Event) {
+
+      this.confirmationService.confirm({
+
+        target: event.target!,
+
+        message: 'Tem certeza que deseja EXCLUIR?',
+        icon: 'pi pi-exclamation-triangle p-text-warning',
+
+        acceptLabel: 'Confirmar',
+        acceptButtonStyleClass: 'p-button-icon p-button-warning',
+        acceptIcon:'pi pi-check',
+
+        rejectLabel: 'Cancelar',
+        rejectButtonStyleClass:'p-button-icon',
+        rejectIcon:'pi pi-times',
+
+        accept: () => this.excluir(lancamento),
+        reject: () => this.messageService.add({
+          severity: 'info',
+          summary: 'Exclusão cancelada.',
+          detail: `O lançamento ${lancamento.descricao}, no valor de R$ ${lancamento.valor} foi mantido.`
+        })
+
+      });
+
+  }
+
+  excluir(lancamento: any) {
+    console.log('Excluir Lançamento - ', lancamento);
+    this.lancamentoService.excluir(lancamento.id).then(() => {
+
+      if (this.grid.first === 0)
+        this.pesquisar();
+      else
+        this.grid.reset();
+
+      this.messageService.add({ severity: 'success', summary: 'Operação realizda com sucesso.', detail: `O lançamento ${lancamento.descricao}, no valor de R$ ${lancamento.valor} foi excluído.` });
+
+    }).catch(() => {
+      this.messageService.add({ severity: 'error', summary: 'Operação não realizda!', detail: `O lançamento ${lancamento.descricao}, no valor de R$ ${lancamento.valor} não pode ser excluído!` });
+    });
+
+    this.loading = false;
+
   }
 
 }
