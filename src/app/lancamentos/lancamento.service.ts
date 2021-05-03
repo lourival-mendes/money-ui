@@ -9,11 +9,12 @@ export interface LancamentoPesquisaInterface{
   descricao: string;
   vencimento: Date;
   vencimentoAte: Date;
-  pagina: number;
-  itensPorPagina: number;
-  totalRegistros:number;
-  primeiraPagina:boolean;
-  ultimaPagina:boolean;
+  number:number; //pagina
+  size:number; //itensPorPagina
+  totalElements:number; //totalRegistros
+  first:boolean; //primeiraPagina
+  last:boolean; //ultimaPagina
+  content: any; //content
 
 }
 
@@ -27,7 +28,7 @@ export class LancamentoService {
 
   pesquisar(lancamentoPesquisa: LancamentoPesquisaInterface): Promise<any> {
 
-    let stringParams = `page=${lancamentoPesquisa.pagina}&size=${lancamentoPesquisa.itensPorPagina}`;
+    let stringParams = `page=${lancamentoPesquisa.number}&size=${lancamentoPesquisa.size}`;
 
     if (lancamentoPesquisa.descricao)
       stringParams += `&descricao=${lancamentoPesquisa.descricao.trim()}`;

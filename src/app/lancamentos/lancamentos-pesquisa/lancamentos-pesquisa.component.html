@@ -37,7 +37,7 @@
     </div>
     <div class="p-grid">
         <div class="p-col-12">
-            <p-table [lazy]="true" (onLazyLoad)="mudarPagina($event)" [totalRecords]="lancamentoPesquisa.totalRegistros" [value]="lancamentos" [paginator]="mostrarPaginacao()" [rows]="lancamentoPesquisa.itensPorPagina" [responsive]="true" styleClass="p-datatable-sm">
+            <p-table [lazy]="true" (onLazyLoad)="mudarPagina($event)" [totalRecords]="lancamentoPesquisa.totalElements" [value]="lancamentoPesquisa.content" [paginator]="mostrarPaginacao()" [rows]="lancamentoPesquisa.size" [responsive]="true" styleClass="p-datatable-sm">
                 <ng-template pTemplate="emptymessage">
                     <tr>
                         <td colspan="6">

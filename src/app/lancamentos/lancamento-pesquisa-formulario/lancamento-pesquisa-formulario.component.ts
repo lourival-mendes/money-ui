@@ -6,11 +6,12 @@ class LancamentoPesquisaFormulario implements LancamentoPesquisaInterface{
   descricao!: string;
   vencimento!: Date;
   vencimentoAte!: Date;
-  pagina!: number;
-  itensPorPagina!: number;
-  totalRegistros!: number;
-  primeiraPagina!: boolean;
-  ultimaPagina!: boolean;
+  number!: number;
+  size!: number;
+  totalElements!: number;
+  first!: boolean;
+  last!: boolean;
+  content: any;
 
 }
 
