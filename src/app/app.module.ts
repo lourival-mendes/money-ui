@@ -1,7 +1,9 @@
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { NgModule } from '@angular/core';
+import { NgModule, LOCALE_ID } from '@angular/core';
+import { registerLocaleData } from '@angular/common';
+import localePt from '@angular/common/locales/pt';
 
 import { MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
@@ -16,6 +18,8 @@ import { PessoasModule } from './pessoas/pessoas.module';
 import { SegurancaModule } from './seguranca/seguranca.module';
 import { LancamentoService } from './lancamentos/lancamento.service';
 import { AuthService } from './seguranca/auth.service';
+
+registerLocaleData(localePt);
 
 @NgModule({
   declarations: [
@@ -35,7 +39,13 @@ import { AuthService } from './seguranca/auth.service';
     PessoasModule,
     SegurancaModule
   ],
-  providers: [LancamentoService, AuthService, MessageService,ConfirmationService],
+  providers: [
+    LancamentoService,
+    AuthService,
+    MessageService,
+    ConfirmationService,
+    { provide: LOCALE_ID, useValue: 'pt' }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

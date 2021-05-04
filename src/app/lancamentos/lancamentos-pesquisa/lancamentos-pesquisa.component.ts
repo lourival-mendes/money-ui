@@ -33,12 +33,16 @@ export class LancamentosPesquisaComponent {
   @ViewChild('tabela') grid:any;
 
   constructor(
+
     private lancamentoService: LancamentoService,
     private messageService: MessageService,
     private confirmationService: ConfirmationService
+
   ) { }
 
   pesquisar(pagina = 0) {
+
+    this.loading = true;
 
     this.lancamentoPesquisa.number = pagina;
 
@@ -49,26 +53,34 @@ export class LancamentosPesquisaComponent {
 
         this.mostrarPaginacao();
 
+        this.loading = false;
+
       });
-      this.loading = false;
+
   }
 
   mudarPagina(event: LazyLoadEvent) {
+
+    this.loading = true;
 
     const first = event.first ? event.first : 0;
     const rows = event.rows?event.rows:1;
     const pagina = (first / rows);
 
-    this.pesquisar(pagina);
+    this.pesquisar();
 
   }
 
   mostrarPaginacao():boolean {
+
     return !(this.lancamentoPesquisa.first && this.lancamentoPesquisa.last);
+
   }
 
   mostrarResultado(lancamentoPesquisa: LancamentoPesquisaInterface) {
+
     this.lancamentoPesquisa = lancamentoPesquisa;
+
   }
 
   confirmarExclusao(lancamento:any, event: Event) {
@@ -90,9 +102,11 @@ export class LancamentosPesquisaComponent {
 
         accept: () => this.excluir(lancamento),
         reject: () => this.messageService.add({
+
           severity: 'info',
           summary: 'Exclusão cancelada.',
           detail: `O lançamento ${lancamento.descricao}, no valor de R$ ${lancamento.valor} foi mantido.`
+
         })
 
       });
@@ -100,7 +114,7 @@ export class LancamentosPesquisaComponent {
   }
 
   excluir(lancamento: any) {
-    console.log('Excluir Lançamento - ', lancamento);
+
     this.lancamentoService.excluir(lancamento.id).then(() => {
 
       if (this.grid.first === 0)
@@ -108,13 +122,24 @@ export class LancamentosPesquisaComponent {
       else
         this.grid.reset();
 
-      this.messageService.add({ severity: 'success', summary: 'Operação realizda com sucesso.', detail: `O lançamento ${lancamento.descricao}, no valor de R$ ${lancamento.valor} foi excluído.` });
+      this.messageService.add({
+
+        severity: 'success',
+        summary: 'Operação realizda com sucesso.',
+        detail: `O lançamento ${lancamento.descricao}, no valor de R$ ${lancamento.valor} foi excluído.`
+
+      });
 
     }).catch(() => {
-      this.messageService.add({ severity: 'error', summary: 'Operação não realizda!', detail: `O lançamento ${lancamento.descricao}, no valor de R$ ${lancamento.valor} não pode ser excluído!` });
-    });
+      this.messageService.add({
 
-    this.loading = false;
+        severity: 'error',
+        summary: 'Operação não realizda!',
+        detail: `O lançamento ${lancamento.descricao}, no valor de R$ ${lancamento.valor} não pode ser excluído!`
+
+      });
+
+    });
 
   }
 
