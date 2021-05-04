@@ -1,3 +1,4 @@
+import { ErrorHandlerService } from './../core/error-handler.service';
 import { HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { AuthService } from '../seguranca/auth.service';
@@ -25,7 +26,12 @@ export interface LancamentoPesquisaInterface{
 export class LancamentoService {
 
   lancamentosUrl = 'http://localhost:8080/lancamentos';
-  constructor(private httpClient: HttpClient, private authService: AuthService) { }
+  constructor(
+
+    private httpClient: HttpClient,
+    private errorHandlerService: ErrorHandlerService
+
+  ) { }
 
   pesquisar(lancamentoPesquisa: LancamentoPesquisaInterface): Promise<any> {
 
@@ -52,10 +58,17 @@ export class LancamentoService {
     return this.httpClient.get<any>(
       `${this.lancamentosUrl}?resumo` , options)
       .toPromise()
-      .then(response => response)
+      .then(response => {
+        return response;
+      })
       .catch(response => {
-           console.log(response);
-        });
+
+        console.log(`Ocorreu um erro ao tentar acessar servidor remoto [Serviço de Lançamentos: linha 66.]!`, response);
+        this.errorHandlerService.handler(`Ocorreu um erro ao tentar acessar servidor remoto [Serviço de Lançamentos - pesquisar]!`);
+
+        return response;
+
+      });
   }
 
   excluir(id:number): Promise<any> {
@@ -63,11 +76,9 @@ export class LancamentoService {
     const headers = new HttpHeaders({ Authorization: `Bearer ${localStorage.getItem('token')}` });
 
     return this.httpClient.delete(`${this.lancamentosUrl}/${id}`, { headers })
-    .toPromise()
-    .then(() => null)
-    .catch(response => {
-          console.log('Erro ao excluir lançamento.',response);
-      });
+      .toPromise()
+      .then(() => null)
+      .catch(response => response);
 
   }
 }

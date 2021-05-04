@@ -51,7 +51,7 @@
                     </tr>
                 </ng-template>
                 <ng-template pTemplate="header">
-                    <tr>
+                    <tr *ngIf="tabela.totalRecords>0">
                         <th>Pessoa</th>
                         <th>Descrição</th>
                         <th class="col-data-header">Vecimento</th>
@@ -66,7 +66,7 @@
                         <td><span class="p-column-title">Descrição:</span>{{lancamento.descricao}}</td>
                         <td class="col-data"><span class="p-column-title">Vencimento:</span>{{lancamento.dataVencimento | date:'dd/MM/y'}}</td>
                         <td class="col-data"><span class="p-column-title">Pagamento:</span>{{lancamento.dataPagamento | date:'dd/MM/y'}}</td>
-                        <td [ngStyle]="{ color: lancamento.tipo === 'DESPESA' ? 'red' : 'blue'}"><span class="p-column-title">Valor:</span>{{lancamento.valor | currency:'BRL':'symbol':'1.2-2'}}</td>
+                        <td [ngStyle]="{ color: lancamento.tipo === 'DESPESA' ? 'red' : 'blue'}"><span class="p-column-title">Valor:</span>{{lancamento.valor | currency}}</td>
                         <td class="col-acoes">
                             <button pButton [routerLink]="['/lancamentos',lancamento.id]" pRipple icon="pi pi-pencil" class="p-button-actions p-button-sm" pTooltip="Editar" tooltipPosition="top"></button>
                             <button (click)="confirmarExclusao(lancamento, $event)" pButton pRipple icon="pi pi-trash" class="p-button-actions p-button-sm p-button-danger" pTooltip="Excluir" tooltipPosition="top"></button>

@@ -3,6 +3,9 @@ import { Component, ViewChild } from '@angular/core';
 import { LazyLoadEvent, MessageService, ConfirmationService } from 'primeng/api';
 
 import { LancamentoService, LancamentoPesquisaInterface } from './../lancamento.service';
+import { ErrorHandlerService } from './../../core/error-handler.service';
+import { Utils } from 'src/app/core/Utils';
+
 //TODO: Refatorar o código para componentizar o grid, se achar necessário.
 class LancamentoPesquisa implements LancamentoPesquisaInterface {
 
@@ -12,9 +15,9 @@ class LancamentoPesquisa implements LancamentoPesquisaInterface {
   vencimentoAte!: Date;
   number=0;
   size=3;
-  totalElements!:number;
-  first!:boolean;
-  last!:boolean;
+  totalElements=0;
+  first=true;
+  last=true;
   content: any;
 
 }
@@ -36,7 +39,8 @@ export class LancamentosPesquisaComponent {
 
     private lancamentoService: LancamentoService,
     private messageService: MessageService,
-    private confirmationService: ConfirmationService
+    private confirmationService: ConfirmationService,
+    private errorHandlerService: ErrorHandlerService
 
   ) { }
 
@@ -55,7 +59,17 @@ export class LancamentosPesquisaComponent {
 
         this.loading = false;
 
-      });
+      })
+      .catch(
+        error => {
+
+          if (typeof error === 'string')
+            this.errorHandlerService.handler(error);
+          else
+            this.errorHandlerService.handler(`Ocorreu um erro ao acessar servidor remoto [lancamentos-pesquisa-componente: linha 68.]!`);
+
+        }
+      );
 
   }
 
@@ -67,7 +81,7 @@ export class LancamentosPesquisaComponent {
     const rows = event.rows?event.rows:1;
     const pagina = (first / rows);
 
-    this.pesquisar();
+    this.pesquisar(pagina);
 
   }
 
@@ -105,7 +119,7 @@ export class LancamentosPesquisaComponent {
 
           severity: 'info',
           summary: 'Exclusão cancelada.',
-          detail: `O lançamento ${lancamento.descricao}, no valor de R$ ${lancamento.valor} foi mantido.`
+          detail: `O lançamento, ${lancamento.descricao}, no valor de ${Utils.formatCurrency(lancamento.valor)} foi mantido.`
 
         })
 
@@ -115,32 +129,49 @@ export class LancamentosPesquisaComponent {
 
   excluir(lancamento: any) {
 
-    this.lancamentoService.excluir(lancamento.id).then(() => {
+    this.lancamentoService.excluir(lancamento.id).then(response => {
 
-      if (this.grid.first === 0)
-        this.pesquisar();
-      else
+      if ( response!=null && !(undefined === response['status']) && (response['status'] > 300)) {
+
+        if (typeof response === 'string')
+          this.errorHandlerService.handler(response);
+        else {
+
+          response['error'].forEach((mensagem: any) => {
+
+            this.errorHandlerService.handler(`O lançamento ${lancamento.descricao}, no valor de R$ ${Utils.formatCurrency(lancamento.valor)} não pode ser excluído! [${mensagem['mensagemUsuario']}]`);
+            console.log(mensagem['mensagemDesenvolvedor']);
+
+          });
+
+        }
+
+      } else {
+
+        if (this.grid.first === 0)
+          this.pesquisar();
+        else
         this.grid.reset();
 
-      this.messageService.add({
+        this.messageService.add({
 
-        severity: 'success',
-        summary: 'Operação realizda com sucesso.',
-        detail: `O lançamento ${lancamento.descricao}, no valor de R$ ${lancamento.valor} foi excluído.`
+          severity: 'success',
+          summary: 'Operação realizada com sucesso.',
+          detail: `O lançamento ${lancamento.descricao}, no valor de R$ ${Utils.formatCurrency(lancamento.valor)} foi excluído.`
+
+        });
+
+      }
+
+    })
+      .catch(error => {
+
+        if (typeof error === 'string')
+          this.errorHandlerService.handler(error);
+        else
+          this.errorHandlerService.handler(`O lançamento ${lancamento.descricao}, no valor de R$ ${Utils.formatCurrency(lancamento.valor)} não pode ser excluído!`);
 
       });
-
-    }).catch(() => {
-      this.messageService.add({
-
-        severity: 'error',
-        summary: 'Operação não realizda!',
-        detail: `O lançamento ${lancamento.descricao}, no valor de R$ ${lancamento.valor} não pode ser excluído!`
-
-      });
-
-    });
-
   }
 
 }
