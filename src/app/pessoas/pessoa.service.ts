@@ -1,9 +1,31 @@
+import { Pessoa } from './../lancamentos/lancamento-cadastro-formulario/lancamento-cadastro-formulario.component';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
 import { ErrorHandlerService } from './../core/error-handler.service';
 
-export interface PessoaPesquisaInterface{
+export interface PessoaInterface {
+
+  id: number;
+  nome: string;
+  ativo: boolean;
+  endereco: EnderecoInterface;
+
+}
+
+export interface EnderecoInterface {
+
+  logradouro: string;
+	numero: string;
+	complemento: string;
+	bairro: string;
+	cep: string;
+	cidade: string;
+	estado: string;
+
+}
+
+export interface PessoaPesquisaInterface {
 
   id: number;
   nome: string;
@@ -40,7 +62,7 @@ export class PessoaService {
       })
     };
 
-    return this.httpClient.put<any>(
+    return this.httpClient.put(
       `${this.pessoasUrl}/${pessoa.id}/ativo`, !pessoa.ativo , options)
       .toPromise()
       .then(() => null)
@@ -52,6 +74,23 @@ export class PessoaService {
       });
 
   }
+
+  listarTodas() : Promise<PessoaInterface[]> {
+
+      const options = { headers: new HttpHeaders({ Authorization: `Bearer ${localStorage.getItem('token')}` }) };
+
+      return this.httpClient.get<PessoaPesquisaInterface>(
+        `${this.pessoasUrl}` , options)
+        .toPromise<PessoaPesquisaInterface>()
+        .then(response => response.content)
+        .catch(response => {
+
+          console.log(`[Serviço de Pessoas -> pesquisar]`, response);
+          this.errorHandlerService.handler(`Ocorreu um erro ao tentar acessar servidor remoto!`);
+          return [];
+
+        });
+    }
 
   pesquisar(pessoaPesquisa: PessoaPesquisaInterface): Promise<any> {
 

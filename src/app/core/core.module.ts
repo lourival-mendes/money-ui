@@ -12,6 +12,8 @@ import { ConfirmationService } from 'primeng/api';
 import { NavbarComponent } from './navbar/navbar.component';
 import { ErrorHandlerService } from './error-handler.service';
 import { LancamentoService } from '../lancamentos/lancamento.service';
+import { PessoaService } from '../pessoas/pessoa.service';
+import { CategoriaService } from '../categorias/categoria.service';
 import { AuthService } from '../seguranca/auth.service';
 
 registerLocaleData(localePt);
@@ -38,6 +40,8 @@ registerLocaleData(localePt);
     { provide: DEFAULT_CURRENCY_CODE, useValue: 'BRL' },
 
     LancamentoService,
+    PessoaService,
+    CategoriaService,
     AuthService,
     ErrorHandlerService
   ]

@@ -1,18 +1,27 @@
 import { Component } from '@angular/core';
 import { NgForm } from '@angular/forms';
 
+import { PessoaService, PessoaInterface, EnderecoInterface } from './../../pessoas/pessoa.service';
+import { CategoriaInterface, CategoriaService } from './../../categorias/categoria.service';
+
 interface Tipo {
   nome: string
 }
 
-interface Categoria {
-  id: number;
-  nome: string
+export class Categoria implements CategoriaInterface {
+
+  id!: number;
+  nome!: string
+
 }
 
-interface Pessoa {
-  id: number;
-  nome: string
+export class Pessoa implements PessoaInterface  {
+
+  id!: number;
+  nome!: string
+  ativo!: boolean;
+  endereco!: EnderecoInterface;
+
 }
 
 class LancamentoCadastro {
@@ -41,42 +50,19 @@ export class LancamentoCadastroFormularioComponent{
 
   lancamentoFormulario = new LancamentoCadastro();
 
-  constructor() {
+  constructor(
+    private categoriaService: CategoriaService,
+    private pessoaService: PessoaService
+  ) {
+
+    this.categoriaService.listarTodas().then(response => this.categorias = response);
 
     this.tipos = [
         {nome: 'RECEITA'},
         {nome: 'DESPESA'}
       ];
 
-      this.categorias = [
-        {
-          id: 1,
-          nome: 'Aluguel'
-        },
-        {
-          id: 2,
-          nome: 'Água'
-        },
-        {
-          id: 3,
-          nome: 'Luz'
-        },
-        {
-          id: 4,
-          nome: 'Gás'
-        }
-      ];
-
-      this.pessoas = [
-        {
-          id: 1,
-          nome: 'Lourival Mendes'
-        },
-        {
-          id: 2,
-          nome: 'Vânia Carvalho'
-        }
-      ];
+    this.pessoaService.listarTodas().then(response => this.pessoas = response);
 
   }
 
