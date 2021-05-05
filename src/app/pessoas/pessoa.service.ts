@@ -7,6 +7,7 @@ export interface PessoaPesquisaInterface{
 
   id: number;
   nome: string;
+  ativo: boolean;
   number:number;
   size:number;
   totalElements:number;
@@ -30,6 +31,28 @@ export class PessoaService {
 
   ) { }
 
+  alterarAtivacao(pessoa: any) {
+
+    const options = {
+      headers: new HttpHeaders({
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
+        'Content-Type': 'application/json'
+      })
+    };
+
+    return this.httpClient.put<any>(
+      `${this.pessoasUrl}/${pessoa.id}/ativo`, !pessoa.ativo , options)
+      .toPromise()
+      .then(() => null)
+      .catch(response => {
+
+        console.log(`[Serviço de Pessoas -> alterarAtivo]`, response);
+        this.errorHandlerService.handler(`Ocorreu um erro ao tentar acessar servidor remoto!`);
+
+      });
+
+  }
+
   pesquisar(pessoaPesquisa: PessoaPesquisaInterface): Promise<any> {
 
     let fromString = `?page=${pessoaPesquisa.number}&size=${pessoaPesquisa.size}`;
@@ -48,8 +71,8 @@ export class PessoaService {
       .then(response => response)
       .catch(response => {
 
-        console.log(`Ocorreu um erro ao tentar acessar servidor remoto [Serviço de Pessoas: linha 51.]!`, response);
-        this.errorHandlerService.handler(`Ocorreu um erro ao tentar acessar servidor remoto [Serviço de Pessoas -> pesquisar]!`);
+        console.log(`[Serviço de Pessoas -> pesquisar]`, response);
+        this.errorHandlerService.handler(`Ocorreu um erro ao tentar acessar servidor remoto!`);
 
       });
   }
@@ -61,7 +84,12 @@ export class PessoaService {
     return this.httpClient.delete(`${this.pessoasUrl}/${id}`, { headers })
       .toPromise()
       .then(() => null)
-      .catch(response => response);
+      .catch(response =>  {
+
+        console.log(`[Serviço de Pessoas -> excluir]`, response);
+        this.errorHandlerService.handler(`Ocorreu um erro ao tentar acessar servidor remoto!`);
+
+      });
 
   }
 

@@ -1,4 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
+
 import { LazyLoadEvent, MessageService, ConfirmationService } from 'primeng/api';
 
 import { PessoaService, PessoaPesquisaInterface } from './../pessoa.service';
@@ -9,6 +10,7 @@ class PessoaPesquisa implements PessoaPesquisaInterface {
 
   id!: number;
   nome!: string;
+  ativo = true;
   number=0;
   size=3;
   totalElements=0;
@@ -39,7 +41,7 @@ export class PessoasPesquisaComponent {
   ) { }
 
   getNomeAcaoStatusToolTip(status: boolean): String {
-    return status ? 'Desativar' : 'Ativar';
+    return status ? 'Clique para desativar' : 'Clique para ativar';
   }
 
   getNomeStatus(status: boolean):String {
@@ -52,13 +54,8 @@ export class PessoasPesquisaComponent {
 
     this.pessoaPesquisa.number = pagina;
 
-    this.pessoaService.pesquisar(this.pessoaPesquisa).then( response => {
-
-      console.log(response);
-
-        this.pessoaPesquisa = response;
-
-      })
+    this.pessoaService.pesquisar(this.pessoaPesquisa)
+      .then(response => this.pessoaPesquisa = response)
       .catch(
         error => {
 
@@ -69,6 +66,30 @@ export class PessoasPesquisaComponent {
 
         })
         .finally(()=>this.loading = false);
+
+  }
+
+  alterarAtivacao(pessoa:any) {
+
+    this.loading = true;
+
+    this.pessoaService.alterarAtivacao(pessoa)
+      .then(() => {
+
+        this.pesquisar(this.pessoaPesquisa.number);
+
+        const severity = pessoa.ativo ? 'warn' : 'success';
+        const ativo = pessoa.ativo ? 'Desativada' : 'Ativada';
+
+        this.messageService.add({
+
+          severity: `${severity}`,
+          summary: 'Operação realizada com sucesso.',
+          detail: `A pessoa ${pessoa.nome} foi ${ativo}.`
+
+        });
+      })
+      .finally(() => this.loading = false);
 
   }
 
