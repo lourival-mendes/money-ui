@@ -1,7 +1,6 @@
 import { ErrorHandlerService } from './../core/error-handler.service';
 import { HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { AuthService } from '../seguranca/auth.service';
 
 import * as moment from 'moment';
 

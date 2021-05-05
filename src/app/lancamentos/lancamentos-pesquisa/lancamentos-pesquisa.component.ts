@@ -4,7 +4,7 @@ import { LazyLoadEvent, MessageService, ConfirmationService } from 'primeng/api'
 
 import { LancamentoService, LancamentoPesquisaInterface } from './../lancamento.service';
 import { ErrorHandlerService } from './../../core/error-handler.service';
-import { Utils } from 'src/app/core/Utils';
+import { Utils } from './../../core/Utils';
 
 //TODO: Refatorar o código para componentizar o grid, se achar necessário.
 class LancamentoPesquisa implements LancamentoPesquisaInterface {
@@ -57,8 +57,6 @@ export class LancamentosPesquisaComponent {
 
         this.mostrarPaginacao();
 
-        this.loading = false;
-
       })
       .catch(
         error => {
@@ -68,8 +66,8 @@ export class LancamentosPesquisaComponent {
           else
             this.errorHandlerService.handler(`Ocorreu um erro ao acessar servidor remoto [lancamentos-pesquisa-componente: linha 68.]!`);
 
-        }
-      );
+        })
+        .finally(()=>this.loading = false);
 
   }
 
@@ -87,7 +85,7 @@ export class LancamentosPesquisaComponent {
 
   mostrarPaginacao():boolean {
 
-    return !(this.lancamentoPesquisa.first && this.lancamentoPesquisa.last);
+    return (this.lancamentoPesquisa.totalElements > this.lancamentoPesquisa.size) && !(this.lancamentoPesquisa.first && this.lancamentoPesquisa.last);
 
   }
 

@@ -1,8 +1,13 @@
-import { FormsModule } from '@angular/forms';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 
+import { DropdownModule } from 'primeng/dropdown';
+import { InputTextareaModule } from 'primeng/inputtextarea';
+import { InputNumberModule } from 'primeng/inputnumber';
+import { SelectButtonModule } from 'primeng/selectbutton';
+import { PaginatorModule } from 'primeng/paginator';
 import { TooltipModule } from 'primeng/tooltip';
 import { TableModule } from 'primeng/table';
 import { InputMaskModule } from 'primeng/inputmask';
@@ -27,6 +32,12 @@ import { SharedModule } from '../shared/shared.module';
     CommonModule,
     FormsModule,
     RouterModule,
+
+    DropdownModule,
+    InputTextareaModule,
+    InputNumberModule,
+    SelectButtonModule,
+    PaginatorModule,
 
     ButtonModule,
     RippleModule,

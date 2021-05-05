@@ -6,12 +6,59 @@
     </div>
     <div class="p-grid">
         <div class="p-col-12">
-            <app-pessoa-pesquisa-formulario></app-pessoa-pesquisa-formulario>
+            <form autocomplete="off" #formularioPesquisaPessoa="ngForm" (ngSubmit)="pesquisar()">
+                <div class="p-formgrid p-grid">
+                    <div class="p-field p-fluid p-col-12 p-sm-12 p-md-12 p-lg-6 p-xl-4">
+                        <label for="nome" class="p-d-block">Nome</label>
+                        <span class="p-input-icon-left">
+                          <i class="pi pi-search"></i>
+                          <input [(ngModel)]="pessoaPesquisa.nome" #nome="ngModel" name="nome" id="nome" pInputText type="text" required/>
+                        </span>
+                        <app-message [control]="nome" mensagem="Obrigatório"></app-message>
+                    </div>
+                    <div class="p-col-12">
+                        <button pButton pRipple [disabled]="formularioPesquisaPessoa.invalid" type="submit" class="p-button-raised" label="Pesquisar"></button>
+                    </div>
+                </div>
+            </form>
         </div>
     </div>
     <div class="p-grid">
         <div class="p-col-12">
-            <app-pessoas-grid [pessoas]="pessoas"></app-pessoas-grid>
+            <p-table #tabela [loading]="loading" [lazy]="true" (onLazyLoad)="mudarPagina($event)" [totalRecords]="pessoaPesquisa.totalElements" [value]="pessoaPesquisa.content" [paginator]="mostrarPaginacao()" [rows]="pessoaPesquisa.size" [responsive]="true" styleClass="p-datatable-sm">
+                <ng-template pTemplate="emptymessage">
+                    <tr>
+                        <td colspan="5">
+                            <div class="p-grid">
+                                <div class="p-col-12 p-text-center">
+                                    <h3>Nenhuma pessoa encontrada</h3>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="header" *ngIf="tabela.totalRecords > 0">
+                    <tr>
+                        <th>Nome</th>
+                        <th>Cidade</th>
+                        <th class="col-estado-header">Estado</th>
+                        <th class="col-status-header">Status</th>
+                        <th class="col-acoes-header"></th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-pessoa>
+                    <tr>
+                        <td><span class="p-column-title">Nome:</span>{{pessoa.nome}}</td>
+                        <td><span class="p-column-title">Cidade:</span>{{pessoa.cidade}}</td>
+                        <td class="col-estado"><span class="p-column-title">Estado:</span>{{pessoa.estado}}</td>
+                        <td class="am-link"><span class="p-column-title">Status:</span><a href="javascript:;" pTooltip="{{getNomeAcaoStatusToolTip(pessoa.status)}}" tooltipPosition="top">{{getNomeStatus(pessoa.status)}}</a></td>
+                        <td class="col-acoes">
+                            <p-button pRipple [routerLink]="['/pessoas',pessoa.id]" icon="pi pi-pencil" class="p-button-actions p-button-sm" pTooltip="Editar" tooltipPosition="top"></p-button>
+                            <p-button (click)="confirmarExclusao(pessoa, $event)" pRipple icon="pi pi-trash" class="p-button-actions p-button-sm p-button-danger" pTooltip="Excluir" tooltipPosition="top"></p-button>
+                        </td>
+                    </tr>
+                </ng-template>
+            </p-table>
         </div>
     </div>
     <div class="p-grid">
