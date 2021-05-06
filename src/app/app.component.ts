@@ -1,6 +1,6 @@
 import { Component} from '@angular/core';
 
-import { PrimeNGConfig, ConfirmationService } from 'primeng/api';
+import { PrimeNGConfig } from 'primeng/api';
 
 @Component({
   selector: 'app-root',

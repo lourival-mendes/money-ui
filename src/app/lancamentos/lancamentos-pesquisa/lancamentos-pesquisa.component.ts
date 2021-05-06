@@ -2,26 +2,14 @@ import { Component, ViewChild } from '@angular/core';
 
 import { LazyLoadEvent, MessageService, ConfirmationService } from 'primeng/api';
 
-import { LancamentoService, LancamentoPesquisaInterface } from './../lancamento.service';
+import { LancamentoService } from './../lancamento.service';
+import { LancamentoPesquisa } from './../../core/models/LancamentoPesquisa';
+import { LancamentoPesquisaInterface } from './../../core/Interfaces/LancamentoPesquisa';
+import { LancamentoInterface } from './../../core/Interfaces/Lancamento';
 import { ErrorHandlerService } from './../../core/error-handler.service';
 import { Utils } from './../../core/Utils';
 
 //TODO: Refatorar o código para componentizar o grid, se achar necessário.
-class LancamentoPesquisa implements LancamentoPesquisaInterface {
-
-  id!: number;
-  descricao!: string;
-  vencimento!: Date;
-  vencimentoAte!: Date;
-  number=0;
-  size=3;
-  totalElements=0;
-  first=true;
-  last=true;
-  content: any;
-
-}
-
 @Component({
   selector: 'app-lancamentos-pesquisa',
   templateUrl: './lancamentos-pesquisa.component.html',
@@ -95,7 +83,7 @@ export class LancamentosPesquisaComponent {
 
   }
 
-  confirmarExclusao(lancamento:any, event: Event) {
+  confirmarExclusao(lancamento: LancamentoInterface, event: Event) {
 
       this.confirmationService.confirm({
 
@@ -125,7 +113,7 @@ export class LancamentosPesquisaComponent {
 
   }
 
-  excluir(lancamento: any) {
+  excluir(lancamento: LancamentoInterface) {
 
     this.lancamentoService.excluir(lancamento.id).then(response => {
 

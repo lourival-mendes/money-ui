@@ -1,23 +1,10 @@
-import { ErrorHandlerService } from './../core/error-handler.service';
+import { LancamentoPesquisaInterface } from './../core/Interfaces/LancamentoPesquisa';
 import { HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
 import * as moment from 'moment';
 
-export interface LancamentoPesquisaInterface{
-
-  id: number;
-  descricao: string;
-  vencimento: Date;
-  vencimentoAte: Date;
-  number:number;
-  size:number;
-  totalElements:number;
-  first:boolean;
-  last:boolean;
-  content: any;
-
-}
+import { ErrorHandlerService } from './../core/error-handler.service';
 
 @Injectable({
   providedIn: 'root'

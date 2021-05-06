@@ -2,23 +2,14 @@ import { Component, ViewChild } from '@angular/core';
 
 import { LazyLoadEvent, MessageService, ConfirmationService } from 'primeng/api';
 
-import { PessoaService, PessoaPesquisaInterface } from './../pessoa.service';
 import { ErrorHandlerService } from './../../core/error-handler.service';
+import { PessoaService } from './../pessoa.service';
+import { PessoaInterface } from 'src/app/core/Interfaces/Pessoa';
+import { PessoaPesquisaInterface } from './../../core/Interfaces/PessoaPesquisa';
+import { PessoaPesquisa } from './../../core/models/PessoaPesquisa';
 
 //TODO: Refatorar o código para componentizar o grid, se achar necessário.
-class PessoaPesquisa implements PessoaPesquisaInterface {
 
-  id!: number;
-  nome!: string;
-  ativo = true;
-  number=0;
-  size=3;
-  totalElements=0;
-  first=true;
-  last=true;
-  content: any;
-
-}
 @Component({
   selector: 'app-pessoas-pesquisa',
   templateUrl: './pessoas-pesquisa.component.html',
@@ -69,7 +60,7 @@ export class PessoasPesquisaComponent {
 
   }
 
-  alterarAtivacao(pessoa:any) {
+  alterarAtivacao(pessoa:PessoaInterface) {
 
     this.loading = true;
 
@@ -117,7 +108,7 @@ export class PessoasPesquisaComponent {
 
   }
 
-  confirmarExclusao(pessoa:any, event: Event) {
+  confirmarExclusao(pessoa: PessoaInterface, event: Event) {
 
       this.confirmationService.confirm({
 
@@ -151,7 +142,7 @@ export class PessoasPesquisaComponent {
     return response != null && !(undefined === response['status']) && (response['status'] > 300);
   }
 
-  lancarErros(pessoa: any, response: any) {
+  lancarErros(pessoa: PessoaInterface, response: any) {
     response['error'].forEach((mensagem: any) => {
 
       this.errorHandlerService.handler(`A pessoa de nome ${pessoa.nome} não pode ser excluída! [${mensagem['mensagemUsuario']}]`);
@@ -160,7 +151,7 @@ export class PessoasPesquisaComponent {
     });
   }
 
-  excluir(pessoa: any) {
+  excluir(pessoa: PessoaInterface) {
 
     this.pessoaService.excluir(pessoa.id).then( response => {
 

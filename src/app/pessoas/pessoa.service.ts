@@ -1,43 +1,9 @@
-import { Pessoa } from './../lancamentos/lancamento-cadastro-formulario/lancamento-cadastro-formulario.component';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
 import { ErrorHandlerService } from './../core/error-handler.service';
-
-export interface PessoaInterface {
-
-  id: number;
-  nome: string;
-  ativo: boolean;
-  endereco: EnderecoInterface;
-
-}
-
-export interface EnderecoInterface {
-
-  logradouro: string;
-	numero: string;
-	complemento: string;
-	bairro: string;
-	cep: string;
-	cidade: string;
-	estado: string;
-
-}
-
-export interface PessoaPesquisaInterface {
-
-  id: number;
-  nome: string;
-  ativo: boolean;
-  number:number;
-  size:number;
-  totalElements:number;
-  first:boolean;
-  last:boolean;
-  content: any;
-
-}
+import { PessoaInterface } from '../core/Interfaces/Pessoa';
+import { PessoaPesquisaInterface } from './../core/Interfaces/PessoaPesquisa';
 
 @Injectable({
   providedIn: 'root'
@@ -53,7 +19,7 @@ export class PessoaService {
 
   ) { }
 
-  alterarAtivacao(pessoa: any) {
+  alterarAtivacao(pessoa: PessoaInterface) {
 
     const options = {
       headers: new HttpHeaders({
@@ -116,7 +82,7 @@ export class PessoaService {
       });
   }
 
-  excluir(id:number): Promise<any> {
+  excluir(id: number): Promise<any> {
 
     const headers = new HttpHeaders({ Authorization: `Bearer ${localStorage.getItem('token')}` });
 

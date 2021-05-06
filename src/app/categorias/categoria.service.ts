@@ -1,15 +1,8 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { analyzeAndValidateNgModules } from '@angular/compiler';
 import { Injectable } from '@angular/core';
 
 import { ErrorHandlerService } from './../core/error-handler.service';
-
-export interface CategoriaInterface{
-
-  id: number;
-  nome: string;
-
-}
+import { CategoriaInterface } from './../core/Interfaces/Categoria';
 
 @Injectable({
   providedIn: 'root'

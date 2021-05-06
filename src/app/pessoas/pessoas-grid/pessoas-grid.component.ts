@@ -1,5 +1,7 @@
 import { Component, Input } from '@angular/core';
 
+import { PessoaInterface } from './../../core/Interfaces/Pessoa';
+
 @Component({
   selector: 'app-pessoas-grid',
   templateUrl: './pessoas-grid.component.html',
@@ -7,7 +9,7 @@ import { Component, Input } from '@angular/core';
 })
 export class PessoasGridComponent {
 
-  @Input() pessoas: any = [];
+  @Input() pessoas: PessoaInterface[] = [];
 
   getNomeAcaoStatusToolTip(status: boolean): String {
     return status ? 'Desativar' : 'Ativar';

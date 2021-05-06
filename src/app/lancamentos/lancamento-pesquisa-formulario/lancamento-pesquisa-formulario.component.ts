@@ -1,4 +1,4 @@
-import { LancamentoPesquisaInterface } from './../lancamento.service';
+import { LancamentoPesquisaInterface } from './../../core/Interfaces/LancamentoPesquisa';
 import { Component, Output, EventEmitter } from '@angular/core';
 
 class LancamentoPesquisaFormulario implements LancamentoPesquisaInterface{
