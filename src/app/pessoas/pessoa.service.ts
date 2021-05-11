@@ -46,10 +46,10 @@ export class PessoaService {
 
       const options = { headers: new HttpHeaders({ Authorization: `Bearer ${localStorage.getItem('token')}` }) };
 
-      return this.httpClient.get<PessoaPesquisaInterface>(
-        `${this.pessoasUrl}` , options)
-        .toPromise<PessoaPesquisaInterface>()
-        .then(response => response.content)
+      return this.httpClient.get<any>(
+        `${this.pessoasUrl}/listar` , options)
+        .toPromise()
+        .then(response => response)
         .catch(response => {
 
           console.log(`[Serviço de Pessoas -> pesquisar]`, response);

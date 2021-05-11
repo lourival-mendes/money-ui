@@ -80,7 +80,7 @@ export class LancamentoCadastroFormularioComponent implements OnInit{
 
     console.log(`Ocorreu um erro ao tentar acessar servidor remoto! [Serviço de Lançamentos.]`, erro);
 
-    if (erro?.error[0]?.mensagemUsuario != "Mensagem inválida")
+    if (erro?.error)
       this.errorHandlerService.handler(`${erro.error[0].mensagemUsuario}!`);
     else if(erro.status >= 400 && erro.status < 500 )
       this.errorHandlerService.handler(`Ocorreu um erro ao tentar acessar servidor remoto!`);
