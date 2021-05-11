@@ -1,18 +1,11 @@
 import { NgForm } from '@angular/forms';
 import { Component } from '@angular/core';
 
-class pessoaFormulario{
+import { MessageService } from 'primeng/api';
 
-  nome!: string;
-  logradouro!: string;
-  numero!: string;
-  complemento!: string;
-  bairro!: string;
-  cep!: string;
-  cidade!: string;
-  estado!: string;
-
-}
+import { ErrorHandlerService } from './../../core/error-handler.service';
+import { PessoaService } from './../pessoa.service';
+import { Pessoa } from './../../core/models/Pessoa';
 
 @Component({
   selector: 'app-pessoa-cadastro-formulario',
@@ -21,10 +14,42 @@ class pessoaFormulario{
 })
 export class PessoaCadastroFormularioComponent {
 
-  pessoaFormulario = new pessoaFormulario();
+  constructor(
+    private pessoaService: PessoaService,
+    private messageService: MessageService,
+    private errorHandlerService: ErrorHandlerService
+  ) { }
 
-  salvar() {
-    console.log(this.pessoaFormulario);
+  pessoa = new Pessoa();
+
+  salvar(ngForm: NgForm) {
+
+    this.pessoaService.adicionar(this.pessoa)
+      .then(response => {
+
+        this.messageService.add({
+
+          severity: `success`,
+          summary: 'Operação realizada com sucesso.',
+          detail: `A pessoa de nome ${response.nome}, foi adicionada.`
+
+        });
+
+        ngForm.reset();
+
+      })
+      .catch(erro => this.mostrarMensagemErro(erro));
+  }
+
+  mostrarMensagemErro(erro: any) {
+
+    if (erro?.error[0]?.mensagemUsuario != "Mensagem inválida")
+      this.errorHandlerService.handler(`${erro.error[0].mensagemUsuario}!`);
+    else if(erro.status >= 400 && erro.status < 500 )
+      this.errorHandlerService.handler(`Ocorreu um erro ao tentar acessar servidor remoto!`);
+    else
+      this.errorHandlerService.handler(`Ocorreu um erro inesperado no servidor!`);
+
   }
 
   novo(formularioPessoa: NgForm) {

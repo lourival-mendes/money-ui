@@ -4,7 +4,7 @@
             <h1>Cadastro de Lançamento</h1>
         </div>
     </div>
-    <form autocomplete="off" #formularioLancamento="ngForm" (ngSubmit)="salvar()">
+    <form autocomplete="off" #formularioLancamento="ngForm" (ngSubmit)="salvar(formularioLancamento)">
         <div class="p-formgrid p-grid">
             <div class="p-field p-col-12">
                 <label for="tipo">Tipo</label>
@@ -33,12 +33,12 @@
             </div>
             <div class="p-field p-fluid p-col-12 p-sm-6 p-md-6 p-lg-6 p-xl-6">
                 <label for="categoria" class="p-d-block">Categoria</label>
-                <p-dropdown #categoria="ngModel" id="categoria" name="categoria" [options]="categorias" optionLabel="nome" optionValue="id" [(ngModel)]="lancamento.categoria" placeholder="Selecione" aria-describedby="categoria-help" [required]="true"></p-dropdown>
+                <p-dropdown #categoria="ngModel" id="categoria" name="categoria" [options]="categorias" optionLabel="nome" optionValue="id" [(ngModel)]="lancamento.categoria.id" placeholder="Selecione" aria-describedby="categoria-help" [required]="true"></p-dropdown>
                 <app-message [control]="categoria" mensagem="Obrigatório"></app-message>
             </div>
             <div class="p-field p-fluid p-col-12 p-sm-6 p-md-6 p-lg-6 p-xl-6">
                 <label for="pessoa" class="p-d-block">Pessoa</label>
-                <p-dropdown #pessoa="ngModel" id="pessoa" name="pessoa" [filter]="true" [options]="pessoas" optionLabel="nome" optionValue="id" [(ngModel)]="lancamento.pessoa" placeholder="Selecione" aria-describedby="pessoa-help" [required]="true"></p-dropdown>
+                <p-dropdown #pessoa="ngModel" id="pessoa" name="pessoa" [filter]="true" [options]="pessoas" optionLabel="nome" optionValue="id" [(ngModel)]="lancamento.pessoa.id" placeholder="Selecione" aria-describedby="pessoa-help" [required]="true"></p-dropdown>
                 <app-message [control]="pessoa" mensagem="Obrigatório"></app-message>
             </div>
             <div class="p-field p-col-12 p-fluid">

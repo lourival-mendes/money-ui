@@ -1,3 +1,4 @@
+import { Pessoa } from './../core/models/Pessoa';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
@@ -96,6 +97,16 @@ export class PessoaService {
 
       });
 
+  }
+
+  adicionar(pessoa: Pessoa): Promise<Pessoa> {
+
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${localStorage.getItem('token')}`,
+      'Content-Type': 'application/json'
+    });
+
+    return this.httpClient.post<Pessoa>(this.pessoasUrl, pessoa, { headers }).toPromise();
   }
 
 }

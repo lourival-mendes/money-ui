@@ -1,10 +1,10 @@
-import { LancamentoPesquisaInterface } from './../core/Interfaces/LancamentoPesquisa';
-import { HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
 import * as moment from 'moment';
 
-import { ErrorHandlerService } from './../core/error-handler.service';
+import { Lancamento } from './../core/models/Lancamento';
+import { LancamentoPesquisaInterface } from './../core/Interfaces/LancamentoPesquisa';
 
 @Injectable({
   providedIn: 'root'
@@ -14,8 +14,7 @@ export class LancamentoService {
   lancamentosUrl = 'http://localhost:8080/lancamentos';
   constructor(
 
-    private httpClient: HttpClient,
-    private errorHandlerService: ErrorHandlerService
+    private httpClient: HttpClient
 
   ) { }
 
@@ -41,30 +40,25 @@ export class LancamentoService {
       })
     };
 
-    return this.httpClient.get<any>(
-      `${this.lancamentosUrl}?resumo` , options)
-      .toPromise()
-      .then(response => {
-        return response;
-      })
-      .catch(response => {
-
-        console.log(`Ocorreu um erro ao tentar acessar servidor remoto [Serviço de Lançamentos: linha 66.]!`, response);
-        this.errorHandlerService.handler(`Ocorreu um erro ao tentar acessar servidor remoto [Serviço de Lançamentos - pesquisar]!`);
-
-        return response;
-
-      });
+    return this.httpClient.get<any>(`${this.lancamentosUrl}?resumo`, options).toPromise();
   }
 
-  excluir(id:number): Promise<any> {
+  excluir(id: number): Promise<any> {
 
     const headers = new HttpHeaders({ Authorization: `Bearer ${localStorage.getItem('token')}` });
 
-    return this.httpClient.delete(`${this.lancamentosUrl}/${id}`, { headers })
-      .toPromise()
-      .then(() => null)
-      .catch(response => response);
+    return this.httpClient.delete(`${this.lancamentosUrl}/${id}`, { headers }).toPromise();
 
   }
+
+  adicionar(lancamento: Lancamento): Promise<Lancamento> {
+
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${localStorage.getItem('token')}`,
+      'Content-Type': 'application/json'
+    });
+
+    return this.httpClient.post<any>(this.lancamentosUrl, lancamento, { headers }).toPromise();
+  }
+
 }
