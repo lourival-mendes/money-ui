@@ -10,8 +10,8 @@ export class Lancamento implements LancamentoInterface{
   id!: number;
   tipo!: Tipo;
   descricao!: string;
-  dataVencimento!: string;
-  dataPagamento!: string;
+  dataVencimento!: Date;
+  dataPagamento!: Date;
   valor!: number;
   observacao!: string;
   pessoa!: PessoaInterface;

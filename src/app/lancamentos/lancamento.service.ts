@@ -3,8 +3,8 @@ import { Injectable } from '@angular/core';
 
 import * as moment from 'moment';
 
-import { Lancamento } from './../core/models/Lancamento';
 import { LancamentoPesquisaInterface } from './../core/Interfaces/LancamentoPesquisa';
+import { LancamentoInterface } from '../core/Interfaces/Lancamento';
 
 @Injectable({
   providedIn: 'root'
@@ -51,14 +51,66 @@ export class LancamentoService {
 
   }
 
-  adicionar(lancamento: Lancamento): Promise<Lancamento> {
+  adicionar(lancamento: LancamentoInterface): Promise<LancamentoInterface> {
 
     const headers = new HttpHeaders({
       'Authorization': `Bearer ${localStorage.getItem('token')}`,
       'Content-Type': 'application/json'
     });
 
-    return this.httpClient.post<any>(this.lancamentosUrl, lancamento, { headers }).toPromise();
+    return this.httpClient.post<LancamentoInterface>(this.lancamentosUrl, lancamento, { headers }).toPromise();
   }
+
+  buscarPorId(id: number): Promise<LancamentoInterface> {
+
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${localStorage.getItem('token')}`
+    });
+
+    return this.httpClient.get<LancamentoInterface>(`${this.lancamentosUrl}/${id}`, { headers })
+      .toPromise()
+      .then(response => this.formatarDataResponse(response));
+  }
+
+  atualizar(lancamento: LancamentoInterface): Promise<LancamentoInterface> {
+
+    lancamento = this.formatarDataSend(lancamento);
+    console.log(lancamento);
+
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${localStorage.getItem('token')}`,
+      'Content-Type': 'application/json'
+    });
+
+    return this.httpClient.put<LancamentoInterface>(`${this.lancamentosUrl}/${lancamento.id}`, lancamento, { headers })
+      .toPromise()
+      .then(response => this.formatarDataResponse(response));
+  }
+
+  private formatarDataSend(lancamento: any): any {
+
+    if (lancamento.dataPagamento)
+      lancamento.dataPagamento = moment(lancamento.dataPagamento).format('YYYY-MM-DD');
+
+    if (lancamento.dataVencimento)
+      lancamento.dataVencimento = moment(lancamento.dataVencimento).format('YYYY-MM-DD');
+
+    return lancamento;
+
+  }
+
+  private formatarDataResponse(lancamento: LancamentoInterface): LancamentoInterface {
+
+    if (lancamento.dataPagamento)
+      lancamento.dataPagamento = moment(lancamento.dataPagamento).toDate();
+
+    if (lancamento.dataVencimento)
+      lancamento.dataVencimento = moment(lancamento.dataVencimento).toDate();
+
+    return lancamento;
+
+  }
+
+
 
 }

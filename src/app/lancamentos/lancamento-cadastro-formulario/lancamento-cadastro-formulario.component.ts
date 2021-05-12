@@ -1,25 +1,25 @@
 import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { formatDate } from '@angular/common';
-
+import { ActivatedRoute } from '@angular/router';
 import { MessageService } from 'primeng/api';
-
-import { ErrorHandlerService } from './../../core/error-handler.service';
-import { LancamentoService } from './../lancamento.service';
-import { PessoaService, } from './../../pessoas/pessoa.service';
 import { CategoriaService } from './../../categorias/categoria.service';
+import { ErrorHandlerService } from './../../core/error-handler.service';
 import { CategoriaInterface } from './../../core/Interfaces/Categoria';
 import { PessoaInterface } from './../../core/Interfaces/Pessoa';
 import { Lancamento } from './../../core/models/Lancamento';
+import { PessoaService } from './../../pessoas/pessoa.service';
+import { LancamentoService } from './../lancamento.service';
+
+
 
 @Component({
   selector: 'app-lancamento-cadastro-formulario',
   templateUrl: './lancamento-cadastro-formulario.component.html',
   styleUrls: ['./lancamento-cadastro-formulario.component.css']
 })
-export class LancamentoCadastroFormularioComponent implements OnInit{
+export class LancamentoCadastroFormularioComponent implements OnInit {
 
-  tipos= [
+  tipos = [
     { label: 'Receita', value: 'RECEITA' },
     { label: 'Despesa', value: 'DESPESA' },
   ];
@@ -34,11 +34,17 @@ export class LancamentoCadastroFormularioComponent implements OnInit{
     private pessoaService: PessoaService,
     private lancamentoService: LancamentoService,
     private messageService: MessageService,
-    private errorHandlerService: ErrorHandlerService
+    private errorHandlerService: ErrorHandlerService,
+    private route: ActivatedRoute
 
   ) { }
 
   ngOnInit(): void {
+
+    const idLancanemto = this.route.snapshot.params['id'];
+
+    if (idLancanemto)
+      this.carregarLancamento(idLancanemto);
 
     this.categoriaService.listarTodas()
       .then(response => this.categorias = response)
@@ -50,13 +56,46 @@ export class LancamentoCadastroFormularioComponent implements OnInit{
 
   }
 
-  salvar(ngForm: NgForm) {
+  carregarLancamento(idLancanemto: number) {
 
-    this.lancamento.dataPagamento = formatDate(this.lancamento.dataPagamento,'yyyy-MM-dd','en-US');
-    this.lancamento.dataVencimento = formatDate(this.lancamento.dataVencimento,'yyyy-MM-dd','en-US');
+    this.lancamentoService.buscarPorId(idLancanemto)
+      .then(response => this.lancamento = response)
+      .catch(erro => this.mostrarMensagemErro(erro));
+
+  }
+
+  salvar(form: NgForm) {
+
+    if (this.lancamento.id)
+      this.atualizar();
+    else
+      this.adicionar(form);
+
+  }
+
+  atualizar() {
+
+    this.lancamentoService.atualizar(this.lancamento)
+      .then(response => {
+
+        this.lancamento = response;
+
+        this.messageService.add({
+
+          severity: `success`,
+          summary: 'Operação realizada com sucesso.',
+          detail: `O lançamento, ${response.descricao}, foi atualizado.`
+
+        })
+      })
+      .catch(erro => this.mostrarMensagemErro(erro));
+
+  }
+
+  adicionar(ngForm: NgForm) {
 
     this.lancamentoService.adicionar(this.lancamento)
-      .then( response => {
+      .then(response => {
 
         this.messageService.add({
 
@@ -82,7 +121,7 @@ export class LancamentoCadastroFormularioComponent implements OnInit{
 
     if (erro?.error)
       this.errorHandlerService.handler(`${erro.error[0].mensagemUsuario}!`);
-    else if(erro.status >= 400 && erro.status < 500 )
+    else if (erro.status >= 400 && erro.status < 500)
       this.errorHandlerService.handler(`Ocorreu um erro ao tentar acessar servidor remoto!`);
     else
       this.errorHandlerService.handler(`Ocorreu um erro inesperado no servidor!`);
