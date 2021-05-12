@@ -12,7 +12,7 @@ export class NavbarComponent implements OnInit {
   exibindoMenu = false;
   usuario: any;
 
-  constructor( private auth: AuthService ) { }
+  constructor( public auth: AuthService ) { }
 
   ngOnInit(): void {
     this.usuario = this.auth.jwtPayload;
