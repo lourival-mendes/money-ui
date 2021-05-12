@@ -53,6 +53,8 @@ export class LancamentoService {
 
   adicionar(lancamento: LancamentoInterface): Promise<LancamentoInterface> {
 
+    lancamento = this.formatarDataSend(lancamento);
+
     const headers = new HttpHeaders({
       'Authorization': `Bearer ${localStorage.getItem('token')}`,
       'Content-Type': 'application/json'
@@ -75,7 +77,6 @@ export class LancamentoService {
   atualizar(lancamento: LancamentoInterface): Promise<LancamentoInterface> {
 
     lancamento = this.formatarDataSend(lancamento);
-    console.log(lancamento);
 
     const headers = new HttpHeaders({
       'Authorization': `Bearer ${localStorage.getItem('token')}`,

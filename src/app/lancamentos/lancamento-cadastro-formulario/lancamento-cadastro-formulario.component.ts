@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+
 import { MessageService } from 'primeng/api';
+
 import { CategoriaService } from './../../categorias/categoria.service';
 import { ErrorHandlerService } from './../../core/error-handler.service';
 import { CategoriaInterface } from './../../core/Interfaces/Categoria';
@@ -35,7 +37,8 @@ export class LancamentoCadastroFormularioComponent implements OnInit {
     private lancamentoService: LancamentoService,
     private messageService: MessageService,
     private errorHandlerService: ErrorHandlerService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private router: Router
 
   ) { }
 
@@ -64,12 +67,12 @@ export class LancamentoCadastroFormularioComponent implements OnInit {
 
   }
 
-  salvar(form: NgForm) {
+  salvar() {
 
     if (this.lancamento.id)
       this.atualizar();
     else
-      this.adicionar(form);
+      this.adicionar();
 
   }
 
@@ -87,12 +90,13 @@ export class LancamentoCadastroFormularioComponent implements OnInit {
           detail: `O lançamento, ${response.descricao}, foi atualizado.`
 
         })
+
       })
-      .catch(erro => this.mostrarMensagemErro(erro));
+      .catch(erro => this.mostrarMensagemErro(erro))
 
   }
 
-  adicionar(ngForm: NgForm) {
+  adicionar() {
 
     this.lancamentoService.adicionar(this.lancamento)
       .then(response => {
@@ -105,7 +109,7 @@ export class LancamentoCadastroFormularioComponent implements OnInit {
 
         });
 
-        ngForm.reset();
+        this.router.navigate(['/lancamentos',response.id])
 
       })
       .catch(erro => this.mostrarMensagemErro(erro));
@@ -113,6 +117,8 @@ export class LancamentoCadastroFormularioComponent implements OnInit {
 
   novo(ngForm: NgForm) {
     ngForm.reset();
+    this.lancamento = new Lancamento();
+    this.router.navigate(['/lancamentos/novo'])
   }
 
   mostrarMensagemErro(erro: any) {
@@ -125,7 +131,6 @@ export class LancamentoCadastroFormularioComponent implements OnInit {
       this.errorHandlerService.handler(`Ocorreu um erro ao tentar acessar servidor remoto!`);
     else
       this.errorHandlerService.handler(`Ocorreu um erro inesperado no servidor!`);
-
 
   }
 
