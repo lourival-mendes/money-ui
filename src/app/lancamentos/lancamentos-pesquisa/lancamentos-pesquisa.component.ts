@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, ViewChild, OnInit } from '@angular/core';
 
 import { LazyLoadEvent, MessageService, ConfirmationService } from 'primeng/api';
 
@@ -8,6 +8,7 @@ import { LancamentoPesquisaInterface } from './../../core/Interfaces/LancamentoP
 import { LancamentoInterface } from './../../core/Interfaces/Lancamento';
 import { ErrorHandlerService } from './../../core/error-handler.service';
 import { Utils } from './../../core/Utils';
+import { Title } from '@angular/platform-browser';
 
 //TODO: Refatorar o código para componentizar o grid, se achar necessário.
 @Component({
@@ -15,7 +16,7 @@ import { Utils } from './../../core/Utils';
   templateUrl: './lancamentos-pesquisa.component.html',
   styleUrls: ['./lancamentos-pesquisa.component.css']
 })
-export class LancamentosPesquisaComponent {
+export class LancamentosPesquisaComponent implements OnInit {
 
   lancamentoPesquisa = new LancamentoPesquisa;
 
@@ -28,9 +29,14 @@ export class LancamentosPesquisaComponent {
     private lancamentoService: LancamentoService,
     private messageService: MessageService,
     private confirmationService: ConfirmationService,
-    private errorHandlerService: ErrorHandlerService
+    private errorHandlerService: ErrorHandlerService,
+    private title: Title
 
   ) { }
+
+  ngOnInit(): void {
+    this.title.setTitle('Pesquisa de Lançamentos');
+  }
 
   pesquisar(pagina = 0) {
 

@@ -1,24 +1,32 @@
 import { NgForm } from '@angular/forms';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
 import { MessageService } from 'primeng/api';
 
 import { ErrorHandlerService } from './../../core/error-handler.service';
 import { PessoaService } from './../pessoa.service';
 import { Pessoa } from './../../core/models/Pessoa';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-pessoa-cadastro-formulario',
   templateUrl: './pessoa-cadastro-formulario.component.html',
   styleUrls: ['./pessoa-cadastro-formulario.component.css']
 })
-export class PessoaCadastroFormularioComponent {
+export class PessoaCadastroFormularioComponent implements OnInit {
 
   constructor(
+
     private pessoaService: PessoaService,
     private messageService: MessageService,
-    private errorHandlerService: ErrorHandlerService
+    private errorHandlerService: ErrorHandlerService,
+    private title: Title
+
   ) { }
+
+  ngOnInit(): void {
+    this.title.setTitle('Cadastro de Pessoa');
+  }
 
   pessoa = new Pessoa();
 

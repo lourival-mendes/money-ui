@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
+import { Title } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { MessageService } from 'primeng/api';
@@ -38,11 +39,14 @@ export class LancamentoCadastroFormularioComponent implements OnInit {
     private messageService: MessageService,
     private errorHandlerService: ErrorHandlerService,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private title: Title
 
   ) { }
 
   ngOnInit(): void {
+
+    this.title.setTitle('Cadastro de Lançamento');
 
     const idLancanemto = this.route.snapshot.params['id'];
 

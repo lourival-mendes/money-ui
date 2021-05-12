@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, ViewChild, OnInit } from '@angular/core';
 
 import { LazyLoadEvent, MessageService, ConfirmationService } from 'primeng/api';
 
@@ -7,6 +7,7 @@ import { PessoaService } from './../pessoa.service';
 import { PessoaInterface } from 'src/app/core/Interfaces/Pessoa';
 import { PessoaPesquisaInterface } from './../../core/Interfaces/PessoaPesquisa';
 import { PessoaPesquisa } from './../../core/models/PessoaPesquisa';
+import { Title } from '@angular/platform-browser';
 
 //TODO: Refatorar o código para componentizar o grid, se achar necessário.
 
@@ -15,7 +16,7 @@ import { PessoaPesquisa } from './../../core/models/PessoaPesquisa';
   templateUrl: './pessoas-pesquisa.component.html',
   styleUrls: ['./pessoas-pesquisa.component.css']
 })
-export class PessoasPesquisaComponent {
+export class PessoasPesquisaComponent implements OnInit {
 
   pessoaPesquisa = new PessoaPesquisa();
   loading=true;
@@ -27,9 +28,14 @@ export class PessoasPesquisaComponent {
     private pessoaService: PessoaService,
     private messageService: MessageService,
     private confirmationService: ConfirmationService,
-    private errorHandlerService: ErrorHandlerService
+    private errorHandlerService: ErrorHandlerService,
+    private title: Title
 
   ) { }
+
+  ngOnInit(): void {
+    this.title.setTitle('Pesquisa de Pessoas');
+  }
 
   getNomeAcaoStatusToolTip(status: boolean): String {
     return status ? 'Clique para desativar' : 'Clique para ativar';
