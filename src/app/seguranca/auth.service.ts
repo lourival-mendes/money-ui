@@ -17,16 +17,13 @@ export class AuthService {
 
   login(usuario: string, senha: string): Promise<void>{
 
-    const httpOptions = {
-      headers: new HttpHeaders({
-        'Content-Type':  'application/x-www-form-urlencoded',
-        Authorization: 'Basic YW5ndWxhcjphbGdhd29ya3M='
-      })
-    };
+    const headers = new HttpHeaders()
+    .append('Content-Type', 'application/x-www-form-urlencoded')
+    .append('Authorization', 'Basic YW5ndWxhcjphbGdhd29ya3M=')
 
     const body = `username=${usuario}&password=${senha}&grant_type=password`;
 
-    return this.http.post<any>(this.oauthTokenUrl, body, httpOptions).toPromise().then(
+    return this.http.post<any>(this.oauthTokenUrl, body, { headers, withCredentials: true }).toPromise().then(
       response => { this.armazenarToken(response['access_token']); })
       .catch(
         response => {
@@ -35,8 +32,31 @@ export class AuthService {
       );
   }
 
+  isAccessTokenInvalido() {
+    const token = localStorage.getItem('token');
+
+    return !token || this.jwtHelper.isTokenExpired(token);
+  }
+
   verificarPermissao(permissao: string) {
     return this.jwtPayload && this.jwtPayload.authorities.includes(permissao);
+  }
+
+  obterNovoAccessToken(): Promise<any>{
+
+    const headers = new HttpHeaders()
+    .append('Content-Type', 'application/x-www-form-urlencoded')
+    .append('Authorization', 'Basic YW5ndWxhcjphbGdhd29ya3M=')
+
+    const body = `grant_type=refresh_token`;
+
+    return this.http.post(this.oauthTokenUrl, body, { headers, withCredentials: true })
+      .toPromise<any>()
+      .then(response => {
+        this.armazenarToken(response['access_token']); return Promise.resolve(null);
+      })
+      .catch(()=> Promise.resolve(null));
+
   }
 
   private armazenarToken(token: string) {
