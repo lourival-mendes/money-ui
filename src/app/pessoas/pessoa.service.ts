@@ -1,4 +1,3 @@
-import { Pessoa } from './../core/models/Pessoa';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
@@ -20,7 +19,7 @@ export class PessoaService {
 
   ) { }
 
-  alterarAtivacao(pessoa: PessoaInterface) {
+  alterarAtivacao(pessoa: PessoaInterface): Promise<PessoaInterface> {
 
     const options = {
       headers: new HttpHeaders({
@@ -31,12 +30,12 @@ export class PessoaService {
 
     return this.httpClient.put(
       `${this.pessoasUrl}/${pessoa.id}/ativo`, !pessoa.ativo , options)
-      .toPromise()
-      .then(() => null)
-      .catch(response => {
+      .toPromise<any>()
+      .then(response => response)
+      .catch(error => {
 
-        console.log(`[Serviço de Pessoas -> alterarAtivo]`, response);
-        this.errorHandlerService.handler(`Ocorreu um erro ao tentar acessar servidor remoto!`);
+        console.log(`[Serviço de Pessoas -> alterarAtivo]`, error);
+        this.errorHandlerService.handler(error);
 
       });
 
@@ -50,11 +49,10 @@ export class PessoaService {
         `${this.pessoasUrl}/listar` , options)
         .toPromise()
         .then(response => response)
-        .catch(response => {
+        .catch(error => {
 
-          console.log(`[Serviço de Pessoas -> pesquisar]`, response);
-          this.errorHandlerService.handler(`Ocorreu um erro ao tentar acessar servidor remoto!`);
-          return [];
+          console.log(`[Serviço de Pessoas -> listarTodas]`, error);
+          this.errorHandlerService.handler(error);
 
         });
     }
@@ -75,10 +73,10 @@ export class PessoaService {
       `${this.pessoasUrl}` , options)
       .toPromise()
       .then(response => response)
-      .catch(response => {
+      .catch(error => {
 
-        console.log(`[Serviço de Pessoas -> pesquisar]`, response);
-        this.errorHandlerService.handler(`Ocorreu um erro ao tentar acessar servidor remoto!`);
+        console.log(`[Serviço de Pessoas -> pesquisar]`, error);
+        this.errorHandlerService.handler(error);
 
       });
   }
@@ -90,23 +88,31 @@ export class PessoaService {
     return this.httpClient.delete(`${this.pessoasUrl}/${id}`, { headers })
       .toPromise()
       .then(() => null)
-      .catch(response =>  {
+      .catch(error =>  {
 
-        console.log(`[Serviço de Pessoas -> excluir]`, response);
-        this.errorHandlerService.handler(`Ocorreu um erro ao tentar acessar servidor remoto!`);
+        console.log(`[Serviço de Pessoas -> excluir]`, error);
+        this.errorHandlerService.handler(error);
 
       });
 
   }
 
-  adicionar(pessoa: Pessoa): Promise<Pessoa> {
+  adicionar(pessoa: PessoaInterface): Promise<PessoaInterface> {
 
     const headers = new HttpHeaders({
       'Authorization': `Bearer ${localStorage.getItem('token')}`,
       'Content-Type': 'application/json'
     });
 
-    return this.httpClient.post<Pessoa>(this.pessoasUrl, pessoa, { headers }).toPromise();
+    return this.httpClient.post<PessoaInterface>(this.pessoasUrl, pessoa, { headers })
+      .toPromise<any>()
+      .then(response => response)
+      .catch(error =>  {
+
+        console.log(`[Serviço de Pessoas -> excluir]`, error);
+        this.errorHandlerService.handler(error);
+
+      });
   }
 
 }

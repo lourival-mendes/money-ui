@@ -1,5 +1,6 @@
 import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from "@angular/common/http";
 import { Injectable } from "@angular/core";
+import { Router } from "@angular/router";
 
 import { from, Observable } from "rxjs";
 import { mergeMap } from "rxjs/operators";
@@ -9,7 +10,12 @@ import { AuthService } from './auth.service';
 @Injectable()
 export class MoneyHttpInterceptor implements HttpInterceptor {
 
-  constructor(private auth: AuthService) { }
+  constructor(
+
+    private auth: AuthService,
+    private router: Router
+
+  ) { }
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
 

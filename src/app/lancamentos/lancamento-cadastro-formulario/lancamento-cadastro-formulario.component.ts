@@ -6,7 +6,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
 
 import { CategoriaService } from './../../categorias/categoria.service';
-import { ErrorHandlerService } from './../../core/error-handler.service';
 import { CategoriaInterface } from './../../core/Interfaces/Categoria';
 import { PessoaInterface } from './../../core/Interfaces/Pessoa';
 import { Lancamento } from './../../core/models/Lancamento';
@@ -37,7 +36,6 @@ export class LancamentoCadastroFormularioComponent implements OnInit {
     private pessoaService: PessoaService,
     private lancamentoService: LancamentoService,
     private messageService: MessageService,
-    private errorHandlerService: ErrorHandlerService,
     private route: ActivatedRoute,
     private router: Router,
     private title: Title
@@ -54,20 +52,17 @@ export class LancamentoCadastroFormularioComponent implements OnInit {
       this.carregarLancamento(idLancanemto);
 
     this.categoriaService.listarTodas()
-      .then(response => this.categorias = response)
-      .catch(erro => this.mostrarMensagemErro(erro));
+      .then(response => this.categorias = response);
 
     this.pessoaService.listarTodas()
-      .then(response => this.pessoas = response)
-      .catch(erro => this.mostrarMensagemErro(erro));
+      .then(response => this.pessoas = response);
 
   }
 
   carregarLancamento(idLancanemto: number) {
 
     this.lancamentoService.buscarPorId(idLancanemto)
-      .then(response => this.lancamento = response)
-      .catch(erro => this.mostrarMensagemErro(erro));
+      .then(response => this.lancamento = response);
 
   }
 
@@ -95,8 +90,7 @@ export class LancamentoCadastroFormularioComponent implements OnInit {
 
         })
 
-      })
-      .catch(erro => this.mostrarMensagemErro(erro))
+      });
 
   }
 
@@ -113,29 +107,15 @@ export class LancamentoCadastroFormularioComponent implements OnInit {
 
         });
 
-        this.router.navigate(['/lancamentos',response.id])
+        this.router.navigate(['/lancamentos', response.id])
 
-      })
-      .catch(erro => this.mostrarMensagemErro(erro));
+      });
   }
 
   novo(ngForm: NgForm) {
     ngForm.reset();
     this.lancamento = new Lancamento();
     this.router.navigate(['/lancamentos/novo'])
-  }
-
-  mostrarMensagemErro(erro: any) {
-
-    console.log(`Ocorreu um erro ao tentar acessar servidor remoto! [Serviço de Lançamentos.]`, erro);
-
-    if (erro?.error)
-      this.errorHandlerService.handler(`${erro.error[0].mensagemUsuario}!`);
-    else if (erro.status >= 400 && erro.status < 500)
-      this.errorHandlerService.handler(`Ocorreu um erro ao tentar acessar servidor remoto!`);
-    else
-      this.errorHandlerService.handler(`Ocorreu um erro inesperado no servidor!`);
-
   }
 
 }

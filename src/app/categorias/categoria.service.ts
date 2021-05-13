@@ -27,9 +27,8 @@ export class CategoriaService {
       .get<CategoriaInterface[]>(this.categoriaUrl, options)
       .toPromise<CategoriaInterface[]>()
       .then(response => this.categorias = response)
-      .catch(response => {
-        this.errorHandlerService.handler('Ocorreu um erro no servidor remoto.');
-        console.log(response);
+      .catch(error => {
+        this.errorHandlerService.handler(error);
         return [];
       })
 

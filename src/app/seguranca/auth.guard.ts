@@ -17,13 +17,18 @@ export class AuthGuard implements CanActivate {
 
   canActivate(
 
-    next: ActivatedRouteSnapshot,
+    route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
 
-    if (next.data.roles && !this.auth.verificarQualquerPermissao(next.data.roles)) {
+    if (route.data.roles && !this.auth.verificarQualquerPermissao(route.data.roles)) {
 
-      this.router.navigate(['/nao-autorizado']);
-      return false;
+      if (this.auth.jwtPayload == null) {
+        this.router.navigate(['/login']);
+        return false;
+      } else {
+        this.router.navigate(['/nao-autorizado']);
+
+      return false;}
 
     }
 

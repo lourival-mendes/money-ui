@@ -21,16 +21,15 @@ export class LancamentosPesquisaComponent implements OnInit {
 
   lancamentoPesquisa = new LancamentoPesquisa;
 
-  loading=true;
+  loading = true;
 
-  @ViewChild('tabela') grid:any;
+  @ViewChild('tabela') grid: any;
 
   constructor(
 
     private lancamentoService: LancamentoService,
     private messageService: MessageService,
     private confirmationService: ConfirmationService,
-    private errorHandlerService: ErrorHandlerService,
     private title: Title,
     public auth: AuthService
 
@@ -54,16 +53,7 @@ export class LancamentosPesquisaComponent implements OnInit {
         this.mostrarPaginacao();
 
       })
-      .catch(
-        error => {
-
-          if (typeof error === 'string')
-            this.errorHandlerService.handler(error);
-          else
-            this.errorHandlerService.handler(`Ocorreu um erro ao acessar servidor remoto [lancamentos-pesquisa-componente: linha 68.]!`);
-
-        })
-        .finally(()=>this.loading = false);
+      .finally(() => this.loading = false);
 
   }
 
@@ -72,14 +62,14 @@ export class LancamentosPesquisaComponent implements OnInit {
     this.loading = true;
 
     const first = event.first ? event.first : 0;
-    const rows = event.rows?event.rows:1;
+    const rows = event.rows ? event.rows : 1;
     const pagina = (first / rows);
 
     this.pesquisar(pagina);
 
   }
 
-  mostrarPaginacao():boolean {
+  mostrarPaginacao(): boolean {
 
     return (this.lancamentoPesquisa.totalElements > this.lancamentoPesquisa.size) && !(this.lancamentoPesquisa.first && this.lancamentoPesquisa.last);
 
@@ -93,77 +83,51 @@ export class LancamentosPesquisaComponent implements OnInit {
 
   confirmarExclusao(lancamento: LancamentoInterface, event: Event) {
 
-      this.confirmationService.confirm({
+    this.confirmationService.confirm({
 
-        target: event.target!,
+      target: event.target!,
 
-        message: 'Tem certeza que deseja EXCLUIR?',
-        icon: 'pi pi-exclamation-triangle p-text-warning',
+      message: 'Tem certeza que deseja EXCLUIR?',
+      icon: 'pi pi-exclamation-triangle p-text-warning',
 
-        acceptLabel: 'Confirmar',
-        acceptButtonStyleClass: 'p-button-icon p-button-warning',
-        acceptIcon:'pi pi-check',
+      acceptLabel: 'Confirmar',
+      acceptButtonStyleClass: 'p-button-icon p-button-warning',
+      acceptIcon: 'pi pi-check',
 
-        rejectLabel: 'Cancelar',
-        rejectButtonStyleClass:'p-button-icon',
-        rejectIcon:'pi pi-times',
+      rejectLabel: 'Cancelar',
+      rejectButtonStyleClass: 'p-button-icon',
+      rejectIcon: 'pi pi-times',
 
-        accept: () => this.excluir(lancamento),
-        reject: () => this.messageService.add({
+      accept: () => this.excluir(lancamento),
+      reject: () => this.messageService.add({
 
-          severity: 'info',
-          summary: 'Exclusão cancelada.',
-          detail: `O lançamento, ${lancamento.descricao}, no valor de ${Utils.formatCurrency(lancamento.valor)} foi mantido.`
+        severity: 'info',
+        summary: 'Exclusão cancelada.',
+        detail: `O lançamento, ${lancamento.descricao}, no valor de ${Utils.formatCurrency(lancamento.valor)} foi mantido.`
 
-        })
+      })
 
-      });
+    });
 
   }
 
   excluir(lancamento: LancamentoInterface) {
 
-    this.lancamentoService.excluir(lancamento.id).then(response => {
+    this.lancamentoService.excluir(lancamento.id)
+      .then(() => {
 
-      if ( response!=null && !(undefined === response['status']) && (response['status'] > 300)) {
+          if (this.grid.first === 0)
+            this.pesquisar();
+          else
+            this.grid.reset();
 
-        if (typeof response === 'string')
-          this.errorHandlerService.handler(response);
-        else {
+          this.messageService.add({
 
-          response['error'].forEach((mensagem: any) => {
-
-            this.errorHandlerService.handler(`O lançamento ${lancamento.descricao}, no valor de R$ ${Utils.formatCurrency(lancamento.valor)} não pode ser excluído! [${mensagem['mensagemUsuario']}]`);
-            console.log(mensagem['mensagemDesenvolvedor']);
+            severity: 'success',
+            summary: 'Operação realizada com sucesso.',
+            detail: `O lançamento ${lancamento.descricao}, no valor de R$ ${Utils.formatCurrency(lancamento.valor)} foi excluído.`
 
           });
-
-        }
-
-      } else {
-
-        if (this.grid.first === 0)
-          this.pesquisar();
-        else
-        this.grid.reset();
-
-        this.messageService.add({
-
-          severity: 'success',
-          summary: 'Operação realizada com sucesso.',
-          detail: `O lançamento ${lancamento.descricao}, no valor de R$ ${Utils.formatCurrency(lancamento.valor)} foi excluído.`
-
-        });
-
-      }
-
-    })
-      .catch(error => {
-
-        if (typeof error === 'string')
-          this.errorHandlerService.handler(error);
-        else
-          this.errorHandlerService.handler(`O lançamento ${lancamento.descricao}, no valor de R$ ${Utils.formatCurrency(lancamento.valor)} não pode ser excluído!`);
 
       });
   }

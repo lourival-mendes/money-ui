@@ -1,3 +1,4 @@
+import { ErrorHandlerService } from './../core/error-handler.service';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
@@ -14,7 +15,8 @@ export class LancamentoService {
   lancamentosUrl = 'http://localhost:8080/lancamentos';
   constructor(
 
-    private httpClient: HttpClient
+    private httpClient: HttpClient,
+    private errorHandlerService: ErrorHandlerService
 
   ) { }
 
@@ -40,14 +42,30 @@ export class LancamentoService {
       })
     };
 
-    return this.httpClient.get<any>(`${this.lancamentosUrl}?resumo`, options).toPromise();
+    return this.httpClient.get<any>(`${this.lancamentosUrl}?resumo`, options)
+      .toPromise()
+      .then(response => response)
+      .catch(error => {
+
+          console.log('[Serviço Lançamento -> pesquisar]', error);
+          this.errorHandlerService.handler(error);
+
+        });
   }
 
   excluir(id: number): Promise<any> {
 
     const headers = new HttpHeaders({ Authorization: `Bearer ${localStorage.getItem('token')}` });
 
-    return this.httpClient.delete(`${this.lancamentosUrl}/${id}`, { headers }).toPromise();
+    return this.httpClient.delete(`${this.lancamentosUrl}/${id}`, { headers })
+      .toPromise()
+      .catch(error => {
+
+          console.log('[Serviço Lançamento -> excluir]', error);
+          this.errorHandlerService.handler(error);
+
+        });
+
 
   }
 
@@ -60,21 +78,35 @@ export class LancamentoService {
       'Content-Type': 'application/json'
     });
 
-    return this.httpClient.post<LancamentoInterface>(this.lancamentosUrl, lancamento, { headers }).toPromise();
+    return this.httpClient.post<LancamentoInterface>(this.lancamentosUrl, lancamento, { headers })
+      .toPromise<any>()
+      .then(response => response)
+      .catch(error => {
+
+          console.log('[Serviço Lançamento -> adicionar]', error);
+          this.errorHandlerService.handler(error);
+
+        });
   }
 
-  buscarPorId(id: number): Promise<LancamentoInterface> {
+  buscarPorId(id: number): Promise<any> {
 
     const headers = new HttpHeaders({
       'Authorization': `Bearer ${localStorage.getItem('token')}`
     });
 
-    return this.httpClient.get<LancamentoInterface>(`${this.lancamentosUrl}/${id}`, { headers })
-      .toPromise()
-      .then(response => this.formatarDataResponse(response));
+    return this.httpClient.get<any>(`${this.lancamentosUrl}/${id}`, { headers })
+      .toPromise<any>()
+      .then(response => this.formatarDataResponse(response))
+      .catch(error => {
+
+          console.log('[Serviço Lançamento -> buscarPorId]', error);
+          this.errorHandlerService.handler(error);
+
+        });
   }
 
-  atualizar(lancamento: LancamentoInterface): Promise<LancamentoInterface> {
+  atualizar(lancamento: LancamentoInterface): Promise<any> {
 
     lancamento = this.formatarDataSend(lancamento);
 
@@ -83,10 +115,16 @@ export class LancamentoService {
       'Content-Type': 'application/json'
     });
 
-    return this.httpClient.put<LancamentoInterface>(`${this.lancamentosUrl}/${lancamento.id}`, lancamento, { headers })
-      .toPromise()
-      .then(response => this.formatarDataResponse(response));
-  }
+    return this.httpClient.put<any>(`${this.lancamentosUrl}/${lancamento.id}`, lancamento, { headers })
+      .toPromise<any>()
+      .then(response => this.formatarDataResponse(response))
+      .catch(error => {
+
+        console.log('[Serviço Lançamento -> atualizar]', error);
+        this.errorHandlerService.handler(error);
+
+      });
+}
 
   private formatarDataSend(lancamento: any): any {
 
