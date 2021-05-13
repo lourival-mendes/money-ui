@@ -15,13 +15,9 @@ export class MoneyHttpInterceptor implements HttpInterceptor {
 
     if (!req.url.includes('/oauth/token') && this.auth.isAccessTokenInvalido()) {
 
-      console.log('intercepatado');
-
       return from(this.auth.obterNovoAccessToken())
         .pipe(
           mergeMap( () => {
-
-            console.log('obtendo novo access token');
 
             req = req.clone({
               setHeaders: { Authorization: `Bearer ${localStorage.getItem('token')}` }

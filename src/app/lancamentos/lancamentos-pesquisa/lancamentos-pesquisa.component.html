@@ -68,15 +68,15 @@
                         <td class="col-data"><span class="p-column-title">Pagamento:</span>{{lancamento.dataPagamento | date:'dd/MM/y'}}</td>
                         <td [ngStyle]="{ color: lancamento.tipo === 'DESPESA' ? 'red' : 'blue'}"><span class="p-column-title">Valor:</span>{{lancamento.valor | currency}}</td>
                         <td class="col-acoes">
-                            <button pButton [routerLink]="['/lancamentos',lancamento.id]" pRipple icon="pi pi-pencil" class="p-button-actions p-button-sm" pTooltip="Editar" tooltipPosition="top"></button>
-                            <button (click)="confirmarExclusao(lancamento, $event)" pButton pRipple icon="pi pi-trash" class="p-button-actions p-button-sm p-button-danger" pTooltip="Excluir" tooltipPosition="top"></button>
+                            <button [disabled]="!auth.verificarPermissao('ROLE_CADASTRAR_LANCAMENTO')" pButton [routerLink]="['/lancamentos',lancamento.id]" pRipple icon="pi pi-pencil" class="p-button-actions p-button-sm" pTooltip="Editar" tooltipPosition="top"></button>
+                            <button [disabled]="!auth.verificarPermissao('ROLE_REMOVER_LANCAMENTO')" (click)="confirmarExclusao(lancamento, $event)" pButton pRipple icon="pi pi-trash" class="p-button-actions p-button-sm p-button-danger" pTooltip="Excluir" tooltipPosition="top"></button>
                         </td>
                     </tr>
                 </ng-template>
             </p-table>
         </div>
     </div>
-    <div class="p-grid">
+    <div class="p-grid" *ngIf="auth.verificarPermissao('ROLE_CADASTRAR_LANCAMENTO')">
         <div class="p-col-12">
             <p-button routerLink="/lancamentos/novo" class="p-button-raised" label="Novo Lançamento"></p-button>
         </div>

@@ -1,3 +1,4 @@
+import { PessoasRoutingModule } from './pessoas-routing.module';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -46,13 +47,9 @@ import { SharedModule } from '../shared/shared.module';
     TableModule,
     TooltipModule,
 
-    SharedModule
+    SharedModule,
+    PessoasRoutingModule
   ],
-  exports: [
-    PessoaCadastroFormularioComponent,
-    PessoasPesquisaComponent,
-    PessoaPesquisaFormularioComponent,
-    PessoasGridComponent
-  ]
+  exports: []
 })
 export class PessoasModule { }

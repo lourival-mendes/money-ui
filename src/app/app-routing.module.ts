@@ -1,28 +1,15 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
+import { NaoAutorizadoComponent } from './core/nao-autorizado.component';
 import { PaginaNaoEncontradaComponent } from './core/pagina-nao-encontrada.component';
-import { LancamentoCadastroFormularioComponent } from './lancamentos/lancamento-cadastro-formulario/lancamento-cadastro-formulario.component';
-import { LancamentosPesquisaComponent } from './lancamentos/lancamentos-pesquisa/lancamentos-pesquisa.component';
-import { PessoaCadastroFormularioComponent } from './pessoas/pessoa-cadastro-formulario/pessoa-cadastro-formulario.component';
-import { PessoasPesquisaComponent } from './pessoas/pessoas-pesquisa/pessoas-pesquisa.component';
-import { LoginFormularioComponent } from './seguranca/login-formulario/login-formulario.component';
-
 
 const routes: Routes = [
 
   { path: '', redirectTo: 'login', pathMatch: 'full' },
-
-  { path: 'login', component: LoginFormularioComponent },
-
-  { path: 'lancamentos', component: LancamentosPesquisaComponent },
-  { path: 'lancamentos/novo', component: LancamentoCadastroFormularioComponent },
-  { path: 'lancamentos/:id', component: LancamentoCadastroFormularioComponent },
-
-  { path: 'pessoas', component: PessoasPesquisaComponent },
-  { path: 'pessoas/novo', component: PessoaCadastroFormularioComponent },
-  { path: 'pessoas/:id', component: PessoaCadastroFormularioComponent },
-  { path: '**', component: PaginaNaoEncontradaComponent }
+  { path: 'nao-autorizado', component: NaoAutorizadoComponent },
+  { path: 'pagina-nao-encontrada', component: PaginaNaoEncontradaComponent },
+  { path: '**', redirectTo: 'pagina-nao-encontrada' }
 
 ];
 

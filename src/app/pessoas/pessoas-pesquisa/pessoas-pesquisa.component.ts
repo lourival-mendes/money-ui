@@ -1,3 +1,4 @@
+import { AuthService } from './../../seguranca/auth.service';
 import { Component, ViewChild, OnInit } from '@angular/core';
 
 import { LazyLoadEvent, MessageService, ConfirmationService } from 'primeng/api';
@@ -10,7 +11,6 @@ import { PessoaPesquisa } from './../../core/models/PessoaPesquisa';
 import { Title } from '@angular/platform-browser';
 
 //TODO: Refatorar o código para componentizar o grid, se achar necessário.
-
 @Component({
   selector: 'app-pessoas-pesquisa',
   templateUrl: './pessoas-pesquisa.component.html',
@@ -29,7 +29,8 @@ export class PessoasPesquisaComponent implements OnInit {
     private messageService: MessageService,
     private confirmationService: ConfirmationService,
     private errorHandlerService: ErrorHandlerService,
-    private title: Title
+    private title: Title,
+    public auth: AuthService
 
   ) { }
 

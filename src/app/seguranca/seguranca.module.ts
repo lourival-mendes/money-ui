@@ -4,22 +4,20 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { JwtHelperService, JwtModule } from '@auth0/angular-jwt';
+
 import { ButtonModule } from 'primeng/button';
 import { DividerModule } from 'primeng/divider';
 import { InputTextModule } from 'primeng/inputtext';
 import { PasswordModule } from 'primeng/password';
 import { RippleModule } from 'primeng/ripple';
+
+import { AuthGuard } from './auth.guard';
+import { SegurancaRoutingModule } from './seguranca-routing.module';
 import { SharedModule } from '../shared/shared.module';
 import { LoginFormularioComponent } from './login-formulario/login-formulario.component';
 import { MoneyHttpInterceptor } from './money-http-interceptor';
 
-
-
-
 @NgModule({
-  declarations: [
-    LoginFormularioComponent
-  ],
   imports: [
     CommonModule,
     FormsModule,
@@ -30,7 +28,9 @@ import { MoneyHttpInterceptor } from './money-http-interceptor';
       config: {
         tokenGetter: () => {
           return '';
-        }
+        },
+        allowedDomains: ['localhost:8080'],
+        disallowedRoutes:['http://localhost:8080/oauth/token']
       }
     }),
 
@@ -40,16 +40,18 @@ import { MoneyHttpInterceptor } from './money-http-interceptor';
     DividerModule,
     PasswordModule,
 
-    SharedModule
+    SharedModule,
+    SegurancaRoutingModule
   ],
-  exports: [LoginFormularioComponent],
+  declarations: [LoginFormularioComponent],
   providers: [
     JwtHelperService,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: MoneyHttpInterceptor,
       multi: true
-    }
+    },
+    AuthGuard
   ]
 })
 export class SegurancaModule { }

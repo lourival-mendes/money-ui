@@ -1,14 +1,15 @@
+import { Title } from '@angular/platform-browser';
 import { Component, ViewChild, OnInit } from '@angular/core';
 
 import { LazyLoadEvent, MessageService, ConfirmationService } from 'primeng/api';
 
+import { AuthService } from './../../seguranca/auth.service';
 import { LancamentoService } from './../lancamento.service';
 import { LancamentoPesquisa } from './../../core/models/LancamentoPesquisa';
 import { LancamentoPesquisaInterface } from './../../core/Interfaces/LancamentoPesquisa';
 import { LancamentoInterface } from './../../core/Interfaces/Lancamento';
 import { ErrorHandlerService } from './../../core/error-handler.service';
 import { Utils } from './../../core/Utils';
-import { Title } from '@angular/platform-browser';
 
 //TODO: Refatorar o código para componentizar o grid, se achar necessário.
 @Component({
@@ -30,7 +31,8 @@ export class LancamentosPesquisaComponent implements OnInit {
     private messageService: MessageService,
     private confirmationService: ConfirmationService,
     private errorHandlerService: ErrorHandlerService,
-    private title: Title
+    private title: Title,
+    public auth: AuthService
 
   ) { }
 

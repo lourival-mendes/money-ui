@@ -21,7 +21,7 @@ export class LoginFormularioComponent {
 
   constructor(
     private auth: AuthService,
-    private roter: Router,
+    private router: Router,
     private messageService: MessageService
   ) { }
 
@@ -29,7 +29,7 @@ export class LoginFormularioComponent {
     this.auth.login(this.formulario.email, this.formulario.senha)
       .then(() => {
 
-        this.roter.navigate(['/lancamentos']);
+        this.router.navigate(['/lancamentos']);
 
       })
       .catch(erro => {

@@ -42,6 +42,16 @@ export class AuthService {
     return this.jwtPayload && this.jwtPayload.authorities.includes(permissao);
   }
 
+  verificarQualquerPermissao(roles: []) {
+
+    for (const role of roles)
+      if (this.verificarPermissao(role))
+        return true;
+
+    return false;
+
+  }
+
   obterNovoAccessToken(): Promise<any>{
 
     const headers = new HttpHeaders()
