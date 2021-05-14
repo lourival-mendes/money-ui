@@ -1,3 +1,4 @@
+import { LogoutService } from './logout.service';
 import { Router } from '@angular/router';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
@@ -19,7 +20,8 @@ export class AuthService {
     private http: HttpClient,
     private jwtHelper: JwtHelperService,
     private errorHandlerService: ErrorHandlerService,
-    private router: Router
+    private router: Router,
+    private logoutService: LogoutService
 
   ) {
     this.carregarToken();
@@ -41,6 +43,23 @@ export class AuthService {
           return (error['status'] === 400 && error['error'] === 'invalid_grant') ? Promise.reject('Usuário e/ou senha inválidos.') : Promise.reject(error);
         }
       );
+  }
+
+  logout() {
+
+    this.logoutService.logout()
+      .then(() => {
+
+        this.limparAccessToken();
+        this.router.navigate(['/login']);
+
+      });
+
+  }
+
+  limparAccessToken() {
+    localStorage.clear();
+    this.jwtPayload = null;
   }
 
   isAccessTokenInvalido() {
