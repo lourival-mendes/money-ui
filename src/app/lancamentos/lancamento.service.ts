@@ -1,9 +1,10 @@
-import { ErrorHandlerService } from './../core/error-handler.service';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
 import * as moment from 'moment';
 
+import { environment } from './../../environments/environment'
+import { ErrorHandlerService } from './../core/error-handler.service';
 import { LancamentoPesquisaInterface } from './../core/Interfaces/LancamentoPesquisa';
 import { LancamentoInterface } from '../core/Interfaces/Lancamento';
 
@@ -12,13 +13,17 @@ import { LancamentoInterface } from '../core/Interfaces/Lancamento';
 })
 export class LancamentoService {
 
-  lancamentosUrl = 'http://localhost:8080/lancamentos';
+  lancamentosUrl: string;
   constructor(
 
     private httpClient: HttpClient,
     private errorHandlerService: ErrorHandlerService
 
-  ) { }
+  ) {
+    
+    this.lancamentosUrl = `${environment.apiUrl}/lancamentos`;
+
+  }
 
   pesquisar(lancamentoPesquisa: LancamentoPesquisaInterface): Promise<any> {
 

@@ -1,7 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+
 import { MessageService } from 'primeng/api';
 
+import { environment } from './../../environments/environment'
 import { ErrorHandlerService } from './../core/error-handler.service';
 
 @Injectable({
@@ -9,7 +11,7 @@ import { ErrorHandlerService } from './../core/error-handler.service';
 })
 export class LogoutService {
 
-  lougoutUrl = 'http://localhost:8080/tokens/revoke';
+  logoutUrl: string;
 
   constructor(
 
@@ -17,12 +19,14 @@ export class LogoutService {
     private errorHandlerService: ErrorHandlerService,
     private messageService: MessageService
 
-  ) { }
+  ) { 
+    this.logoutUrl = `${environment.apiUrl}/tokens/revoke`;
+  }
 
   logout(): Promise<any> {
 
     return this.httpClient.delete(
-      this.lougoutUrl,
+      this.logoutUrl,
       { withCredentials: true }
     ).toPromise()
       .then(() => {

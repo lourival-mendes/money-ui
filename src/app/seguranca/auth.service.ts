@@ -1,10 +1,11 @@
-import { LogoutService } from './logout.service';
 import { Router } from '@angular/router';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
 import { JwtHelperService } from '@auth0/angular-jwt';
 
+import { environment } from './../../environments/environment'
+import { LogoutService } from './logout.service';
 import { ErrorHandlerService } from './../core/error-handler.service';
 
 @Injectable({
@@ -12,7 +13,7 @@ import { ErrorHandlerService } from './../core/error-handler.service';
 })
 export class AuthService {
 
-  oauthTokenUrl = 'http://localhost:8080/oauth/token';
+  oauthTokenUrl: string;
   jwtPayload: any;
 
   constructor(
@@ -24,7 +25,10 @@ export class AuthService {
     private logoutService: LogoutService
 
   ) {
+
     this.carregarToken();
+    this.oauthTokenUrl = `${environment.apiUrl}/oauth/token`;
+
   }
 
   login(usuario: string, senha: string): Promise<void> {

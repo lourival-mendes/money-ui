@@ -1,6 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
+import { environment } from './../../environments/environment'
 import { ErrorHandlerService } from './../core/error-handler.service';
 import { CategoriaInterface } from './../core/Interfaces/Categoria';
 
@@ -9,7 +10,7 @@ import { CategoriaInterface } from './../core/Interfaces/Categoria';
 })
 export class CategoriaService {
 
-  categoriaUrl = "http://localhost:8080/categorias";
+  categoriaUrl: string;
   categorias!: CategoriaInterface[];
 
   constructor(
@@ -17,7 +18,9 @@ export class CategoriaService {
     private httpClient: HttpClient,
     private errorHandlerService: ErrorHandlerService
 
-  ) { }
+  ) {
+      this.categoriaUrl = `${environment.apiUrl}/categorias`;
+}
 
   listarTodas(): Promise<CategoriaInterface[]> {
 

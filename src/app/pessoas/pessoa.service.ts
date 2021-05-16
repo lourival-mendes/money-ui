@@ -1,6 +1,7 @@
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
+import { environment } from './../../environments/environment'
 import { ErrorHandlerService } from './../core/error-handler.service';
 import { PessoaInterface } from '../core/Interfaces/Pessoa';
 import { PessoaPesquisaInterface } from './../core/Interfaces/PessoaPesquisa';
@@ -10,14 +11,17 @@ import { PessoaPesquisaInterface } from './../core/Interfaces/PessoaPesquisa';
 })
 export class PessoaService {
 
-  pessoasUrl = 'http://localhost:8080/pessoas';
+  pessoasUrl: string;
 
   constructor(
 
     private httpClient: HttpClient,
     private errorHandlerService: ErrorHandlerService
 
-  ) { }
+  ) {
+
+    this.pessoasUrl = `${environment.apiUrl}/pessoas`;
+  }
 
   alterarAtivacao(pessoa: PessoaInterface): Promise<PessoaInterface> {
 
