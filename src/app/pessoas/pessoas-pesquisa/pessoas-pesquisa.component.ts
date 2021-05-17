@@ -124,11 +124,9 @@ export class PessoasPesquisaComponent implements OnInit {
         message: 'Tem certeza que deseja EXCLUIR?',
         icon: 'pi pi-exclamation-triangle p-text-warning',
 
-        acceptLabel: 'Confirmar',
         acceptButtonStyleClass: 'p-button-icon p-button-warning',
         acceptIcon:'pi pi-check',
 
-        rejectLabel: 'Cancelar',
         rejectButtonStyleClass:'p-button-icon',
         rejectIcon:'pi pi-times',
 

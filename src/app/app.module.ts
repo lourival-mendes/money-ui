@@ -1,3 +1,4 @@
+import { TranslateModule, TranslateService, TranslateStore } from '@ngx-translate/core';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -18,12 +19,19 @@ import { PessoasModule } from './pessoas/pessoas.module';
     BrowserModule,
     HttpClientModule,
     BrowserAnimationsModule,
+    TranslateModule.forRoot(),
 
     CoreModule,
     LancamentosModule,
     PessoasModule,
     SegurancaModule,
     AppRoutingModule
+  ],
+  providers: [
+
+    TranslateService,
+    TranslateStore
+
   ],
   bootstrap: [AppComponent]
 })
