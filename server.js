@@ -9,4 +9,4 @@ app.get('/*', function(req, res) {
 
 });
 
-app.listen(4200);
+app.listen(process.env.PORT || 4200);

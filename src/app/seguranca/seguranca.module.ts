@@ -1,3 +1,4 @@
+import { environment } from './../../environments/environment.prod';
 import { CommonModule } from '@angular/common';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { NgModule } from '@angular/core';
@@ -29,8 +30,8 @@ import { MoneyHttpInterceptor } from './money-http-interceptor';
         tokenGetter: () => {
           return '';
         },
-        allowedDomains: ['localhost:8080'],
-        disallowedRoutes:['http://localhost:8080/oauth/token']
+        allowedDomains: [environment.apiUrl],
+        disallowedRoutes:[`${environment.apiUrl}/oauth/token`]
       }
     }),
 
