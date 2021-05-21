@@ -1,7 +1,7 @@
 import { LancamentosRoutingModule } from './lancamentos-routing.module';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 
 import { CalendarModule } from 'primeng/calendar';
@@ -34,6 +34,7 @@ import { SharedModule } from '../shared/shared.module';
     CommonModule,
     FormsModule,
     RouterModule,
+    ReactiveFormsModule,
 
     PaginatorModule,
     ButtonModule,

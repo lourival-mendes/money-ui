@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { NgForm } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Title } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 
@@ -8,11 +8,8 @@ import { MessageService } from 'primeng/api';
 import { CategoriaService } from './../../categorias/categoria.service';
 import { CategoriaInterface } from './../../core/Interfaces/Categoria';
 import { PessoaInterface } from './../../core/Interfaces/Pessoa';
-import { Lancamento } from './../../core/models/Lancamento';
 import { PessoaService } from './../../pessoas/pessoa.service';
 import { LancamentoService } from './../lancamento.service';
-
-
 
 @Component({
   selector: 'app-lancamento-cadastro-formulario',
@@ -28,7 +25,7 @@ export class LancamentoCadastroFormularioComponent implements OnInit {
   categorias!: CategoriaInterface[];
   pessoas!: PessoaInterface[];
 
-  lancamento = new Lancamento();
+  formulario!: FormGroup;
 
   constructor(
 
@@ -38,11 +35,14 @@ export class LancamentoCadastroFormularioComponent implements OnInit {
     private messageService: MessageService,
     private route: ActivatedRoute,
     private router: Router,
-    private title: Title
+    private title: Title,
+    private formBuilder: FormBuilder
 
   ) { }
 
   ngOnInit(): void {
+
+    this.configurarFormulario();
 
     this.title.setTitle('Cadastro de Lançamento');
 
@@ -59,28 +59,50 @@ export class LancamentoCadastroFormularioComponent implements OnInit {
 
   }
 
+  configurarFormulario() {
+
+    this.formulario = this.formBuilder.group({
+      id: [],
+      tipo: ['RECEITA', Validators.required],
+      dataVencimento: [null, Validators.required],
+      dataPagamento: [],
+      descricao: [null, [Validators.required, Validators.minLength(5)]],
+      valor: [null, Validators.required],
+      categoria: this.formBuilder.group({
+        id: [null, Validators.required],
+        nome: []
+      }),
+      pessoa: this.formBuilder.group({
+        id: [null, Validators.required],
+        nome: []
+      }),
+      observacao: []
+    });
+
+  }
+
   carregarLancamento(idLancanemto: number) {
 
     this.lancamentoService.buscarPorId(idLancanemto)
-      .then(response => this.lancamento = response);
+      .then(response => this.formulario.patchValue(response));
 
   }
 
   salvar() {
 
-    if (this.lancamento.id)
-      this.atualizar();
-    else
+    if (this.formulario.get('id')?.value === null)
       this.adicionar();
+    else
+      this.atualizar();
 
   }
 
   atualizar() {
 
-    this.lancamentoService.atualizar(this.lancamento)
+    this.lancamentoService.atualizar(this.formulario.value)
       .then(response => {
 
-        this.lancamento = response;
+        this.formulario.patchValue(response);
 
         this.messageService.add({
 
@@ -96,7 +118,7 @@ export class LancamentoCadastroFormularioComponent implements OnInit {
 
   adicionar() {
 
-    this.lancamentoService.adicionar(this.lancamento)
+    this.lancamentoService.adicionar(this.formulario.value)
       .then(response => {
 
         this.messageService.add({
@@ -112,9 +134,8 @@ export class LancamentoCadastroFormularioComponent implements OnInit {
       });
   }
 
-  novo(ngForm: NgForm) {
-    ngForm.reset();
-    this.lancamento = new Lancamento();
+  novo() {
+    this.formulario.reset();
     this.router.navigate(['/lancamentos/novo'])
   }
 
