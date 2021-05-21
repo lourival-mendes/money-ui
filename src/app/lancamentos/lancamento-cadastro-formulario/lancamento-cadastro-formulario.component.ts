@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Title } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 
@@ -63,21 +63,35 @@ export class LancamentoCadastroFormularioComponent implements OnInit {
 
     this.formulario = this.formBuilder.group({
       id: [],
-      tipo: ['RECEITA', Validators.required],
-      dataVencimento: [null, Validators.required],
+      tipo: ['RECEITA', this.validarObrigatoriedade],
+      dataVencimento: [null, this.validarObrigatoriedade],
       dataPagamento: [],
-      descricao: [null, [Validators.required, Validators.minLength(5)]],
-      valor: [null, Validators.required],
+      descricao: [null, [this.validarObrigatoriedade, this.validarTamanhoMinimo(5)]],
+      valor: [null, this.validarObrigatoriedade],
       categoria: this.formBuilder.group({
-        id: [null, Validators.required],
+        id: [null, this.validarObrigatoriedade],
         nome: []
       }),
       pessoa: this.formBuilder.group({
-        id: [null, Validators.required],
+        id: [null, this.validarObrigatoriedade],
         nome: []
       }),
       observacao: []
     });
+
+  }
+
+  validarTamanhoMinimo(tamanho: number): any {
+    return (input: FormControl) => {
+      return (!input.value || input.value.length >= tamanho) ? null : { tamanhoMinimo: { tamanho: tamanho } };
+    };
+  }
+
+  validarObrigatoriedade(input: FormControl) {
+
+    return (input.value ? null : {
+      obrigatoriedade: true
+    })
 
   }
 

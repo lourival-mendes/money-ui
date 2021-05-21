@@ -8,13 +8,16 @@ import { Component, Input } from '@angular/core';
 export class MessageComponent {
 
   @Input()
+  error!: string;
+
+  @Input()
   control!: any;
 
   @Input()
   mensagem!: string;
 
   exibirErro(): boolean {
-    return this.control.hasError('required') && (this.control.touched || this.control.dirty);
+    return this.control.hasError(this.error) && (this.control.touched || this.control.dirty);
   }
 
 }
