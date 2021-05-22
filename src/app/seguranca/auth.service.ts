@@ -97,7 +97,7 @@ export class AuthService {
     return this.http.post(this.oauthTokenUrl, body, { headers, withCredentials: true })
       .toPromise<any>()
       .then(response => {
-        this.armazenarToken(response['access_token']); return Promise.resolve(null);
+        this.armazenarToken(response['access_token']);
       })
       .catch(() => { localStorage.clear() });
 
