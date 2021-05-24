@@ -20,7 +20,7 @@ export class LancamentoService {
     private errorHandlerService: ErrorHandlerService
 
   ) {
-    
+
     this.lancamentosUrl = `${environment.apiUrl}/lancamentos`;
 
   }
@@ -52,10 +52,10 @@ export class LancamentoService {
       .then(response => response)
       .catch(error => {
 
-          console.log('[Serviço Lançamento -> pesquisar]', error);
-          this.errorHandlerService.handler(error);
+        console.log('[Serviço Lançamento -> pesquisar]', error);
+        this.errorHandlerService.handler(error);
 
-        });
+      });
   }
 
   excluir(id: number): Promise<any> {
@@ -66,10 +66,10 @@ export class LancamentoService {
       .toPromise()
       .catch(error => {
 
-          console.log('[Serviço Lançamento -> excluir]', error);
-          this.errorHandlerService.handler(error);
+        console.log('[Serviço Lançamento -> excluir]', error);
+        this.errorHandlerService.handler(error);
 
-        });
+      });
 
 
   }
@@ -88,10 +88,10 @@ export class LancamentoService {
       .then(response => response)
       .catch(error => {
 
-          console.log('[Serviço Lançamento -> adicionar]', error);
-          this.errorHandlerService.handler(error);
+        console.log('[Serviço Lançamento -> adicionar]', error);
+        this.errorHandlerService.handler(error);
 
-        });
+      });
   }
 
   buscarPorId(id: number): Promise<any> {
@@ -105,10 +105,10 @@ export class LancamentoService {
       .then(response => this.formatarDataResponse(response))
       .catch(error => {
 
-          console.log('[Serviço Lançamento -> buscarPorId]', error);
-          this.errorHandlerService.handler(error);
+        console.log('[Serviço Lançamento -> buscarPorId]', error);
+        this.errorHandlerService.handler(error);
 
-        });
+      });
   }
 
   atualizar(lancamento: LancamentoInterface): Promise<any> {
@@ -129,7 +129,7 @@ export class LancamentoService {
         this.errorHandlerService.handler(error);
 
       });
-}
+  }
 
   private formatarDataSend(lancamento: any): any {
 

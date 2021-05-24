@@ -39,8 +39,10 @@ export class AuthService {
 
     const body = `username=${usuario}&password=${senha}&grant_type=password`;
 
-    return this.http.post<any>(this.oauthTokenUrl, body, { headers, withCredentials: true }).toPromise().then(
-      response => { this.armazenarToken(response['access_token']); })
+    return this.http.post<any>(this.oauthTokenUrl, body, { headers, withCredentials: true })
+      .toPromise()
+      .then(
+        response => { this.armazenarToken(response.access_token); })
       .catch(
         error => {
           this.errorHandlerService.handler(error);
@@ -78,9 +80,9 @@ export class AuthService {
 
   verificarQualquerPermissao(roles: []) {
 
-      for (const role of roles)
-        if (this.verificarPermissao(role))
-          return true;
+    for (const role of roles)
+      if (this.verificarPermissao(role))
+        return true;
 
     return false;
 
@@ -92,14 +94,14 @@ export class AuthService {
       .append('Content-Type', 'application/x-www-form-urlencoded')
       .append('Authorization', 'Basic YW5ndWxhcjphbGdhd29ya3M=')
 
-    const body = `grant_type=refresh_token`;
+    const body = 'grant_type=refresh_token';
 
-    return this.http.post(this.oauthTokenUrl, body, { headers, withCredentials: true })
-      .toPromise<any>()
+    return this.http.post<any>(this.oauthTokenUrl, body, { headers, withCredentials: true })
+      .toPromise()
       .then(response => {
-        this.armazenarToken(response['access_token']);
+        this.armazenarToken(response.access_token);
       })
-      .catch(() => { localStorage.clear() });
+      .catch(() => { this.limparAccessToken() });
 
   }
 

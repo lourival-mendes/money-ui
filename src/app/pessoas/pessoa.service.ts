@@ -23,6 +23,22 @@ export class PessoaService {
     this.pessoasUrl = `${environment.apiUrl}/pessoas`;
   }
 
+  buscarPorId(id: number): Promise<PessoaInterface> {
+
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${localStorage.getItem('token')}`
+    });
+
+    return this.httpClient.get<PessoaInterface>(`${this.pessoasUrl}/${id}`, { headers })
+      .toPromise<any>()
+      .then(response => response)
+      .catch(error => {
+
+        console.log('[Serviço Pessoas -> buscarPorId]', error);
+        this.errorHandlerService.handler(error);
+
+      });
+  }
   alterarAtivacao(pessoa: PessoaInterface): Promise<PessoaInterface> {
 
     const options = {
@@ -33,7 +49,7 @@ export class PessoaService {
     };
 
     return this.httpClient.put(
-      `${this.pessoasUrl}/${pessoa.id}/ativo`, !pessoa.ativo , options)
+      `${this.pessoasUrl}/${pessoa.id}/ativo`, !pessoa.ativo, options)
       .toPromise<any>()
       .then(response => response)
       .catch(error => {
@@ -45,28 +61,28 @@ export class PessoaService {
 
   }
 
-  listarTodas() : Promise<PessoaInterface[]> {
+  listarTodas(): Promise<PessoaInterface[]> {
 
-      const options = { headers: new HttpHeaders({ Authorization: `Bearer ${localStorage.getItem('token')}` }) };
+    const options = { headers: new HttpHeaders({ Authorization: `Bearer ${localStorage.getItem('token')}` }) };
 
-      return this.httpClient.get<any>(
-        `${this.pessoasUrl}/listar` , options)
-        .toPromise()
-        .then(response => response)
-        .catch(error => {
+    return this.httpClient.get<any>(
+      `${this.pessoasUrl}/listar`, options)
+      .toPromise()
+      .then(response => response)
+      .catch(error => {
 
-          console.log(`[Serviço de Pessoas -> listarTodas]`, error);
-          this.errorHandlerService.handler(error);
+        console.log(`[Serviço de Pessoas -> listarTodas]`, error);
+        this.errorHandlerService.handler(error);
 
-        });
-    }
+      });
+  }
 
   pesquisar(pessoaPesquisa: PessoaPesquisaInterface): Promise<any> {
 
     let fromString = `?page=${pessoaPesquisa.number}&size=${pessoaPesquisa.size}`;
 
     if (pessoaPesquisa.nome)
-    fromString += `&nome=${pessoaPesquisa.nome.trim()}`;
+      fromString += `&nome=${pessoaPesquisa.nome.trim()}`;
 
     const options = {
       headers: new HttpHeaders({ Authorization: `Bearer ${localStorage.getItem('token')}` }),
@@ -74,7 +90,7 @@ export class PessoaService {
     };
 
     return this.httpClient.get<any>(
-      `${this.pessoasUrl}` , options)
+      `${this.pessoasUrl}`, options)
       .toPromise()
       .then(response => response)
       .catch(error => {
@@ -92,7 +108,7 @@ export class PessoaService {
     return this.httpClient.delete(`${this.pessoasUrl}/${id}`, { headers })
       .toPromise()
       .then(() => null)
-      .catch(error =>  {
+      .catch(error => {
 
         console.log(`[Serviço de Pessoas -> excluir]`, error);
         this.errorHandlerService.handler(error);
@@ -111,9 +127,27 @@ export class PessoaService {
     return this.httpClient.post<PessoaInterface>(this.pessoasUrl, pessoa, { headers })
       .toPromise<any>()
       .then(response => response)
-      .catch(error =>  {
+      .catch(error => {
 
-        console.log(`[Serviço de Pessoas -> excluir]`, error);
+        console.log(`[Serviço de Pessoas -> adicionar]`, error);
+        this.errorHandlerService.handler(error);
+
+      });
+  }
+
+  atualizar(pessoa: PessoaInterface): Promise<PessoaInterface> {
+
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${localStorage.getItem('token')}`,
+      'Content-Type': 'application/json'
+    });
+
+    return this.httpClient.put<PessoaInterface>(`${this.pessoasUrl}/${pessoa.id}`, pessoa, { headers })
+      .toPromise<any>()
+      .then(response => response)
+      .catch(error => {
+
+        console.log('[Serviço Pessoa -> atualizar]', error);
         this.errorHandlerService.handler(error);
 
       });

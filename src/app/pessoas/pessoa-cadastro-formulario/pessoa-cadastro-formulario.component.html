@@ -4,57 +4,63 @@
             <h1>Cadastro de Pessoa</h1>
         </div>
     </div>
-    <form autocomplete="off" #formularioPessoa="ngForm" (ngSubmit)="salvar(formularioPessoa)">
+    <form autocomplete="off" (ngSubmit)="salvar()" [formGroup]="formulario">
         <div class="p-formgrid p-grid">
             <div class="p-field p-fluid p-col-12 p-sm-12 p-md-8 p-lg-7 p-xl-6">
                 <label for="nome" class="p-d-block">Nome</label>
-                <input [(ngModel)]="pessoa.nome" name="nome" #nome="ngModel" id="nome" pInputText type="text" aria-describedby="nome-help" required />
-                <app-message [control]="nome" mensagem="Obrigatório"></app-message>
+                <input formControlName="nome" name="nome" id="nome" pInputText type="text" aria-describedby="nome-help" />
+                <app-message error="obrigatoriedade" [control]="formulario.get('nome')" mensagem="Obrigatório"></app-message>
+                <app-message error="tamanhoMinimo" [control]="formulario.get('nome')" mensagem="Mínimo de {{ formulario.get('nome')?.errors?.tamanhoMinimo?.tamanho }} caracteres."></app-message>
             </div>
         </div>
-        <div class="p-formgrid p-grid">
-            <div class="p-field p-fluid p-col-12 p-sm-4 p-md-3 p-lg-2 p-xl-2">
-                <label for="cep" class="p-d-block">CEP</label>
-                <p-inputMask [(ngModel)]="pessoa.endereco.cep" name="cep" #cep="ngModel" id="cep" aria-describedby="cep-help" mask="99.999-999" [autoClear]="true" [required]="true"></p-inputMask>
-                <app-message [control]="cep" mensagem="Obrigatório"></app-message>
+        <div formGroupName="endereco">
+            <div class="p-formgrid p-grid">
+                <div class="p-field p-fluid p-col-12 p-sm-4 p-md-3 p-lg-2 p-xl-2">
+                    <label for="cep" class="p-d-block">CEP</label>
+                    <p-inputMask formControlName="cep" name="cep" id="cep" aria-describedby="cep-help" mask="99.999-999"></p-inputMask>
+                    <app-message error="obrigatoriedade" [control]="formulario.get('endereco')?.get('cep')" mensagem="Obrigatório"></app-message>
+                    <app-message error="tamanhoMinimo" [control]="formulario.get('endereco')?.get('cep')" mensagem="Mínimo de {{ formulario.get('endereco')?.get('cep')?.errors?.tamanhoMinimo?.tamanho }} caracteres."></app-message>
+                </div>
+            </div>
+            <div class="p-formgrid p-grid">
+                <div class="p-field p-fluid p-col-12 p-sm-9 p-md-10 p-lg-9 p-xl-10">
+                    <label for="logradouro" class="p-d-block">Logradouro</label>
+                    <input formControlName="logradouro" name="logradouro" id="logradouro" pInputText type="text" />
+                    <app-message error="obrigatoriedade" [control]="formulario.get('endereco')?.get('logradouro')" mensagem="Obrigatório"></app-message>
+                    <app-message error="tamanhoMinimo" [control]="formulario.get('endereco')?.get('logradouro')" mensagem="Mínimo de {{ formulario.get('endereco')?.get('logradouro')?.errors?.tamanhoMinimo?.tamanho }} caracteres."></app-message>
+                </div>
+                <div class="p-field p-fluid p-col-12 p-sm-3 p-md-2 p-lg-2 p-xl-2">
+                    <label for="numero" class="p-d-block">Número</label>
+                    <input formControlName="numero" name="numero" id="numero" pInputText type="text" />
+                </div>
+                <div class="p-field p-fluid p-col-12 p-sm-12 p-md-12 p-lg-6 p-xl-7">
+                    <label for="complemento" class="p-d-block">Complemento</label>
+                    <input formControlName="complemento" name="complemento" id="complemento" pInputText type="text" aria-describedby="complemento-help" />
+                </div>
+                <div class="p-field p-fluid p-col-12 p-sm-5 p-md-5 p-lg-5 p-xl-5">
+                    <label for="bairro" class="p-d-block">Bairro</label>
+                    <input formControlName="bairro" name="bairro" id="bairro" pInputText type="text" aria-describedby="bairro-help" />
+                    <app-message error="obrigatoriedade" [control]="formulario.get('endereco')?.get('bairro')" mensagem="Obrigatório"></app-message>
+                    <app-message error="tamanhoMinimo" [control]="formulario.get('endereco')?.get('bairro')" mensagem="Mínimo de {{ formulario.get('endereco')?.get('bairro')?.errors?.tamanhoMinimo?.tamanho }} caracteres."></app-message>
+                </div>
+                <div class="p-field p-fluid p-col-12 p-sm-4 p-md-5 p-lg-5 p-xl-5">
+                    <label class="p-d-block">Cidade</label>
+                    <input formControlName="cidade" name="cidade" id="cidade" aria-describedby="cidade-help" pInputText type="text" />
+                    <app-message error="obrigatoriedade" [control]="formulario.get('endereco')?.get('cidade')" mensagem="Obrigatório"></app-message>
+                    <app-message error="tamanhoMinimo" [control]="formulario.get('endereco')?.get('cidade')" mensagem="Mínimo de {{ formulario.get('endereco')?.get('cidade')?.errors?.tamanhoMinimo?.tamanho }} caracteres."></app-message>
+                </div>
+                <div class="p-field p-fluid p-col-12 p-sm-3 p-md-2 p-lg-2 p-xl-2">
+                    <label for="estado" class="p-d-block">UF</label>
+                    <input formControlName="estado" class="p-text-uppercase" name="estado" id="estado" pInputText type="text" aria-describedby="estado-help" maxlength="2" />
+                    <app-message error="obrigatoriedade" [control]="formulario.get('endereco')?.get('estado')" mensagem="Obrigatório"></app-message>
+                    <app-message error="tamanhoMinimo" [control]="formulario.get('endereco')?.get('estado')" mensagem="Mínimo de {{ formulario.get('endereco')?.get('estado')?.errors?.tamanhoMinimo?.tamanho }} caracteres."></app-message>
+                </div>
             </div>
         </div>
-        <div class="p-formgrid p-grid">
-            <div class="p-field p-fluid p-col-12 p-sm-9 p-md-10 p-lg-9 p-xl-10">
-                <label for="logradouro" class="p-d-block">Logradouro</label>
-                <input [(ngModel)]="pessoa.endereco.logradouro" name="logradouro" #logradouro="ngModel" id="logradouro" pInputText type="text" aria-describedby="logradouro-help" required />
-                <app-message [control]="logradouro" mensagem="Obrigatório"></app-message>
-            </div>
-            <div class="p-field p-fluid p-col-12 p-sm-3 p-md-2 p-lg-2 p-xl-2">
-                <label for="numero" class="p-d-block">Número</label>
-                <input [(ngModel)]="pessoa.endereco.numero" name="numero" #numero="ngModel" id="numero" pInputText type="text" />
-                <app-message [control]="numero" mensagem="Obrigatório"></app-message>
-            </div>
-            <div class="p-field p-fluid p-col-12 p-sm-12 p-md-12 p-lg-6 p-xl-7">
-                <label for="complemento" class="p-d-block">Complemento</label>
-                <input [(ngModel)]="pessoa.endereco.complemento" name="complemento" #complemento="ngModel" id="complemento" pInputText type="text" aria-describedby="complemento-help" required />
-                <app-message [control]="complemento" mensagem="Obrigatório"></app-message>
-            </div>
-            <div class="p-field p-fluid p-col-12 p-sm-5 p-md-5 p-lg-5 p-xl-5">
-                <label for="bairro" class="p-d-block">Bairro</label>
-                <input [(ngModel)]="pessoa.endereco.bairro" name="bairro" #bairro="ngModel" id="bairro" pInputText type="text" aria-describedby="bairro-help" required />
-                <app-message [control]="bairro" mensagem="Obrigatório"></app-message>
-            </div>
-            <div class="p-field p-fluid p-col-12 p-sm-4 p-md-5 p-lg-5 p-xl-5">
-                <label class="p-d-block">Cidade</label>
-                <input [(ngModel)]="pessoa.endereco.cidade" name="cidade" id="cidade" #cidade="ngModel" aria-describedby="cidade-help" pInputText type="text" required />
-                <app-message [control]="cidade" mensagem="Obrigatório"></app-message>
-            </div>
-            <div class="p-field p-fluid p-col-12 p-sm-3 p-md-2 p-lg-2 p-xl-2">
-                <label for="estado" class="p-d-block">UF</label>
-                <input class="p-text-uppercase" [(ngModel)]="pessoa.endereco.estado" name="estado" #estado="ngModel" id="estado" pInputText type="text" aria-describedby="estado-help" minlength="2" maxlength="2" required />
-                <app-message [control]="estado" mensagem="Obrigatório"></app-message>
-            </div>
-            <div class="p-col-12">
-                <button pButton pRipple [disabled]="formularioPessoa.invalid" type="submit" class="p-button-raised p-button-actions" label="Salvar"></button>
-                <button pButton pRipple (click)="novo(formularioPessoa)" type="button" class="p-button-raised p-button-actions" label="Novo"></button>
-                <a pButton pRipple routerLink="/pessoas" label="Voltar para pesquisa" class="p-button-link p-button-actions"></a>
-            </div>
+        <div class="p-col-12">
+            <button pButton pRipple [disabled]="formulario.invalid" type="submit" class="p-button-raised p-button-actions" label="Salvar"></button>
+            <button pButton pRipple (click)="novo()" type="button" class="p-button-raised p-button-actions" label="Novo"></button>
+            <a pButton pRipple routerLink="/pessoas" label="Voltar para pesquisa" class="p-button-link p-button-actions"></a>
         </div>
     </form>
 </div>

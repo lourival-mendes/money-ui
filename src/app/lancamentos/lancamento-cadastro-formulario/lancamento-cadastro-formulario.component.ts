@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { Title } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 
@@ -46,10 +46,10 @@ export class LancamentoCadastroFormularioComponent implements OnInit {
 
     this.title.setTitle('Cadastro de Lançamento');
 
-    const idLancanemto = this.route.snapshot.params['id'];
+    const idLancamento = this.route.snapshot.params['id'];
 
-    if (idLancanemto)
-      this.carregarLancamento(idLancanemto);
+    if (idLancamento)
+      this.carregarLancamento(idLancamento);
 
     this.categoriaService.listarTodas()
       .then(response => this.categorias = response);
@@ -95,9 +95,9 @@ export class LancamentoCadastroFormularioComponent implements OnInit {
 
   }
 
-  carregarLancamento(idLancanemto: number) {
+  carregarLancamento(idLancamento: number) {
 
-    this.lancamentoService.buscarPorId(idLancanemto)
+    this.lancamentoService.buscarPorId(idLancamento)
       .then(response => this.formulario.patchValue(response));
 
   }
