@@ -35,7 +35,7 @@ export class LoginFormularioComponent implements OnInit {
     this.auth.login(this.formulario.email, this.formulario.senha)
       .then(() => {
 
-        this.router.navigate(['/lancamentos']);
+        this.router.navigate(['/dashboard']);
         this.messageService.add({ severity: 'success', summary: 'Operação realizada.', detail: 'Conectado.'});
 
       })

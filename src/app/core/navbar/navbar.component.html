@@ -8,6 +8,7 @@
     </div>
     <ul *ngIf="auth.jwtPayload != null" class="navbar-menu" [hidden]=!exibindoMenu>
         <li class="navbar-usuario">{{ auth.jwtPayload?.user_name }}</li>
+        <li *ngIf="auth.verificarPermissao('ROLE_PESQUISAR_LANCAMENTO')" class="navbar-menu-item" routerLinkActive="ativo"><a routerLink="/dashboard">Dashboard</a></li>
         <li *ngIf="auth.verificarPermissao('ROLE_PESQUISAR_PESSOA')" class="navbar-menu-item" routerLinkActive="ativo"><a routerLink="/pessoas">Pessoas</a></li>
         <li *ngIf="auth.verificarPermissao('ROLE_PESQUISAR_LANCAMENTO')" class="navbar-menu-item" routerLinkActive="ativo"><a routerLink="/lancamentos">Lancamentos</a></li>
         <li class="navbar-menu-item" routerLinkActive="ativo"><a routerLink="/usuarios">Usuarios</a></li>
