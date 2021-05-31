@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
+import { DashboardService } from './../dashboard.service';
+
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
@@ -7,35 +9,108 @@ import { Component, OnInit } from '@angular/core';
 })
 export class DashboardComponent implements OnInit {
 
-  pieChartData = {
-    labels: ['Mensal', 'Educação', 'Lazer', 'Imprevistos'],
-    datasets: [
-      {
-        data: [2500, 2700, 550, 235],
-        backgroundColor: ['#FF9900', '#109618', '#990099', '#3B3EAC']
-      }
-    ]
-  };
+  pieChartData!: any;
+  lineChartData!: any;
 
-  lineChartData = {
-    labels: ['Domingo', 'Seguda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'],
-    datasets: [
-      {
-        label: 'Receitas',
-        data: [4, 10, 18, 5, 1, 20, 3],
-        borderColor: '#3366CC'
-      },
-      {
-        label: 'Despesas',
-        data: [10, 15, 8, 5, 1, 7, 9],
-        borderColor: '#D62B00'
-      }
-    ]
-  };
-
-  constructor() { }
+  constructor(private dashboardService: DashboardService) { }
 
   ngOnInit(): void {
+
+    this.configurarGraficoPizza();
+    this.configurarGraficoLinhas();
+
   }
 
+  configurarGraficoPizza() {
+
+    this.dashboardService.listarPorCategoria()
+      .then(dados => {
+
+        this.pieChartData = {
+          labels: dados.map(dado => dado.categoria.nome),
+          datasets: [
+            {
+              data: dados.map(dado => dado.total),
+              backgroundColor: ['#FF9900', '#109618', '#990099', '#3B3EAC', '#3D3DDC']
+            }
+          ]
+        };
+
+
+      });
+
+  }
+
+  configurarGraficoLinhas() {
+
+    this.dashboardService.listarPorDia()
+      .then(dados => {
+
+        const diasDoMes = this.configurarDiasMes(new Date(2021, 5, 1));
+
+        const totaisReceitas = this.totaisPorCadaDiaMes(
+          dados.filter(dado => dado.tipo === 'RECEITA'),
+          diasDoMes
+        );
+
+        const totaisDespesas = this.totaisPorCadaDiaMes(
+          dados.filter(dado => dado.tipo === 'DESPESA'),
+          diasDoMes
+        );
+
+        this.lineChartData = {
+          labels: diasDoMes,
+          datasets: [
+            {
+              label: 'Receitas',
+              data: totaisReceitas,
+              borderColor: '#3366CC'
+            },
+            {
+              label: 'Despesas',
+              data: totaisDespesas,
+              borderColor: '#D62B00'
+            }
+          ]
+        }
+      });
+  }
+
+  private totaisPorCadaDiaMes(dados: any[], diasDoMes: number[]) {
+
+    const totais: number[] = [];
+
+    for (let dia of diasDoMes) {
+      let total = 0;
+
+      for (const dado of dados) {
+        if (dado.dia.getDate() === dia) {
+          total = dado.total;
+          break;
+        }
+      }
+
+      totais.push(total);
+
+    }
+
+    return totais;
+
+  }
+
+  private configurarDiasMes(mesReferencia: Date) {
+
+    mesReferencia.setMonth(mesReferencia.getMonth() + 1);
+    mesReferencia.setDate(0);
+
+    const quantidade = mesReferencia.getDate();
+
+    const dias: number[] = [];
+
+    for (let i = 1; i <= quantidade; i++) {
+      dias.push(i);
+    }
+
+    return dias;
+  }
 }

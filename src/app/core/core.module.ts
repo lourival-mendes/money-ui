@@ -1,23 +1,24 @@
-import { NgModule, LOCALE_ID, DEFAULT_CURRENCY_CODE } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
-import { registerLocaleData } from '@angular/common';
+import { CommonModule, registerLocaleData } from '@angular/common';
 import localePt from '@angular/common/locales/pt';
+import { DEFAULT_CURRENCY_CODE, LOCALE_ID, NgModule } from '@angular/core';
+import { Title } from '@angular/platform-browser';
+import { RouterModule } from '@angular/router';
 
-import { ToastModule } from 'primeng/toast';
+import { ConfirmationService, MessageService } from 'primeng/api';
 import { ConfirmPopupModule } from 'primeng/confirmpopup';
-import { MessageService } from 'primeng/api';
-import { ConfirmationService } from 'primeng/api';
+import { ToastModule } from 'primeng/toast';
 
-import { NavbarComponent } from './navbar/navbar.component';
-import { ErrorHandlerService } from './error-handler.service';
+import { CategoriaService } from '../categorias/categoria.service';
+import { DashboardService } from '../dashboard/dashboard.service';
 import { LancamentoService } from '../lancamentos/lancamento.service';
 import { PessoaService } from '../pessoas/pessoa.service';
-import { CategoriaService } from '../categorias/categoria.service';
 import { AuthService } from '../seguranca/auth.service';
-import { PaginaNaoEncontradaComponent } from './pagina-nao-encontrada.component';
-import { Title } from '@angular/platform-browser';
+import { ErrorHandlerService } from './error-handler.service';
 import { NaoAutorizadoComponent } from './nao-autorizado.component';
+import { NavbarComponent } from './navbar/navbar.component';
+import { PaginaNaoEncontradaComponent } from './pagina-nao-encontrada.component';
+
+
 
 registerLocaleData(localePt);
 
@@ -29,7 +30,7 @@ registerLocaleData(localePt);
 
     ConfirmPopupModule,
     ToastModule
-],
+  ],
   exports: [
     ConfirmPopupModule,
     ToastModule,
@@ -44,6 +45,7 @@ registerLocaleData(localePt);
     Title,
 
     LancamentoService,
+    DashboardService,
     PessoaService,
     CategoriaService,
     AuthService,
