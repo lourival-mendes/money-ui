@@ -1,11 +1,14 @@
-import { ActivatedRoute, Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, FormControl } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { Title } from '@angular/platform-browser';
+import { ActivatedRoute, Router } from '@angular/router';
 
-import { MessageService } from 'primeng/api';
+import { ConfirmationService, MessageService } from 'primeng/api';
 
+import { ContatoInterface } from 'src/app/core/Interfaces/Contato';
 import { PessoaService } from './../pessoa.service';
+
+
 
 @Component({
   selector: 'app-pessoa-cadastro-formulario',
@@ -15,6 +18,7 @@ import { PessoaService } from './../pessoa.service';
 export class PessoaCadastroFormularioComponent implements OnInit {
 
   formulario!: FormGroup;
+  contatos!: Array<ContatoInterface>;
 
   constructor(
 
@@ -23,7 +27,8 @@ export class PessoaCadastroFormularioComponent implements OnInit {
     private title: Title,
     private route: ActivatedRoute,
     private router: Router,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private confirmationService: ConfirmationService
 
   ) {    this.configurarFormulario();
   }
@@ -43,9 +48,13 @@ export class PessoaCadastroFormularioComponent implements OnInit {
   carregarPessoa(idPessoa: number) {
 
     this.pessoaService.buscarPorId(idPessoa)
-      .then(response => this.formulario.patchValue(response));
+      .then(response => {
+        this.contatos = response.contatos;
+        console.log(response.contatos);
+        return this.formulario.patchValue(response)
+      });
 
-  }
+    }
 
   configurarFormulario() {
 
@@ -112,7 +121,38 @@ export class PessoaCadastroFormularioComponent implements OnInit {
       });
   }
 
-  validarTamanhoMinimo(tamanho: number): any {
+  confirmarExclusaoContato(contato: ContatoInterface, event: Event) {
+
+    this.confirmationService.confirm({
+
+      target: event.target!,
+
+      message: 'Tem certeza que deseja EXCLUIR?',
+      icon: 'pi pi-exclamation-triangle p-text-warning',
+
+      acceptButtonStyleClass: 'p-button-icon p-button-warning',
+      acceptIcon:'pi pi-check',
+
+      rejectButtonStyleClass:'p-button-icon',
+      rejectIcon:'pi pi-times',
+
+      accept: () => this.excluirContato(contato),
+      reject: () => this.messageService.add({
+
+        severity: 'info',
+        summary: 'Exclusão cancelada.',
+        detail: `O contato de nome ${contato.nome} foi mantido.`
+
+      })
+
+    });
+
+}
+  excluirContato(contato: ContatoInterface) {
+    return null;
+  }
+
+validarTamanhoMinimo(tamanho: number): any {
     return (input: FormControl) => {
       return (!input.value || input.value.length >= tamanho) ? null : { tamanhoMinimo: { tamanho: tamanho } };
     };

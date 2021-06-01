@@ -1,4 +1,4 @@
-import { ContatoInterface } from './../Interfaces/Contato';
+import { ContatoInterface } from '../Interfaces/Contato';
 import { EnderecoInterface } from './../Interfaces/Endereco';
 import { PessoaInterface } from './../Interfaces/Pessoa';
 import { Endereco } from './Endereco';
@@ -13,7 +13,7 @@ export class Pessoa implements PessoaInterface {
 
   constructor() {
     this.endereco = new Endereco();
-    this.contatos = new Array<ContatoInterface>();
+    this.contatos = [];
   }
 
 }
