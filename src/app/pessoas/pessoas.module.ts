@@ -16,6 +16,7 @@ import { ButtonModule } from 'primeng/button';
 import { RippleModule } from 'primeng/ripple';
 import { InputTextModule } from 'primeng/inputtext';
 import { PanelModule } from 'primeng/panel';
+import { DialogModule } from 'primeng/dialog';
 
 import { PessoasGridComponent } from './pessoas-grid/pessoas-grid.component';
 import { PessoaPesquisaFormularioComponent } from './pessoa-pesquisa-formulario/pessoa-pesquisa-formulario.component';
@@ -42,6 +43,7 @@ import { SharedModule } from '../shared/shared.module';
     SelectButtonModule,
     PaginatorModule,
     PanelModule,
+    DialogModule,
 
     ButtonModule,
     RippleModule,

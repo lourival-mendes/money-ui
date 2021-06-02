@@ -8,7 +8,7 @@
         <div class="p-formgrid p-grid">
             <div class="p-field p-fluid p-col-12 p-sm-12 p-md-8 p-lg-7 p-xl-6">
                 <label for="nome" class="p-d-block">Nome</label>
-                <input formControlName="nome" name="nome" id="nome" pInputText type="text" aria-describedby="nome-help" />
+                <input formControlName="nome" name="nome" id="nome" pInputText type="text" />
                 <app-message error="obrigatoriedade" [control]="formulario.get('nome')" mensagem="Obrigatório"></app-message>
                 <app-message error="tamanhoMinimo" [control]="formulario.get('nome')" mensagem="Mínimo de {{ formulario.get('nome')?.errors?.tamanhoMinimo?.tamanho }} caracteres."></app-message>
             </div>
@@ -17,7 +17,7 @@
             <div class="p-formgrid p-grid">
                 <div class="p-field p-fluid p-col-12 p-sm-4 p-md-3 p-lg-2 p-xl-2">
                     <label for="cep" class="p-d-block">CEP</label>
-                    <p-inputMask formControlName="cep" name="cep" id="cep" aria-describedby="cep-help" mask="99.999-999"></p-inputMask>
+                    <p-inputMask formControlName="cep" name="cep" id="cep" mask="99.999-999"></p-inputMask>
                     <app-message error="obrigatoriedade" [control]="formulario.get('endereco')?.get('cep')" mensagem="Obrigatório"></app-message>
                     <app-message error="tamanhoMinimo" [control]="formulario.get('endereco')?.get('cep')" mensagem="Mínimo de {{ formulario.get('endereco')?.get('cep')?.errors?.tamanhoMinimo?.tamanho }} caracteres."></app-message>
                 </div>
@@ -35,29 +35,32 @@
                 </div>
                 <div class="p-field p-fluid p-col-12 p-sm-12 p-md-12 p-lg-6 p-xl-7">
                     <label for="complemento" class="p-d-block">Complemento</label>
-                    <input formControlName="complemento" name="complemento" id="complemento" pInputText type="text" aria-describedby="complemento-help" />
+                    <input formControlName="complemento" name="complemento" id="complemento" pInputText type="text" />
                 </div>
                 <div class="p-field p-fluid p-col-12 p-sm-5 p-md-5 p-lg-5 p-xl-5">
                     <label for="bairro" class="p-d-block">Bairro</label>
-                    <input formControlName="bairro" name="bairro" id="bairro" pInputText type="text" aria-describedby="bairro-help" />
+                    <input formControlName="bairro" name="bairro" id="bairro" pInputText type="text" />
                     <app-message error="obrigatoriedade" [control]="formulario.get('endereco')?.get('bairro')" mensagem="Obrigatório"></app-message>
                     <app-message error="tamanhoMinimo" [control]="formulario.get('endereco')?.get('bairro')" mensagem="Mínimo de {{ formulario.get('endereco')?.get('bairro')?.errors?.tamanhoMinimo?.tamanho }} caracteres."></app-message>
                 </div>
                 <div class="p-field p-fluid p-col-12 p-sm-4 p-md-5 p-lg-5 p-xl-5">
                     <label class="p-d-block">Cidade</label>
-                    <input formControlName="cidade" name="cidade" id="cidade" aria-describedby="cidade-help" pInputText type="text" />
+                    <input formControlName="cidade" name="cidade" id="cidade" pInputText type="text" />
                     <app-message error="obrigatoriedade" [control]="formulario.get('endereco')?.get('cidade')" mensagem="Obrigatório"></app-message>
                     <app-message error="tamanhoMinimo" [control]="formulario.get('endereco')?.get('cidade')" mensagem="Mínimo de {{ formulario.get('endereco')?.get('cidade')?.errors?.tamanhoMinimo?.tamanho }} caracteres."></app-message>
                 </div>
                 <div class="p-field p-fluid p-col-12 p-sm-3 p-md-2 p-lg-2 p-xl-2">
                     <label for="estado" class="p-d-block">UF</label>
-                    <input formControlName="estado" class="p-text-uppercase" name="estado" id="estado" pInputText type="text" aria-describedby="estado-help" maxlength="2" />
+                    <input formControlName="estado" class="p-text-uppercase" name="estado" id="estado" pInputText type="text" maxlength="2" />
                     <app-message error="obrigatoriedade" [control]="formulario.get('endereco')?.get('estado')" mensagem="Obrigatório"></app-message>
                     <app-message error="tamanhoMinimo" [control]="formulario.get('endereco')?.get('estado')" mensagem="Mínimo de {{ formulario.get('endereco')?.get('estado')?.errors?.tamanhoMinimo?.tamanho }} caracteres."></app-message>
                 </div>
-                <div class="p-fluid p-col-12 p-sm-12 p-md-12 p-lg-12 p-xl-12">
+                <div class="p-col-12">
                     <p-panel header="Contatos">
                         <div class="p-grid">
+                            <div class="p-col-12">
+                                <button pButton label="Novo" icon="pi pi-plus" type="button" class="p-m-3 p-button-secondary" (click)="prepararNovoContato()"></button>
+                            </div>
 
                             <div class="p-fluid p-col-12 p-sm-12 p-md-12 p-lg-12 p-xl-12">
                                 <p-table [value]="contatos" [responsive]="true">
@@ -108,3 +111,30 @@
         </div>
     </form>
 </div>
+
+<p-dialog header="Novo contato" [(visible)]="exibirFormularioContato" [modal]=true>
+
+    <form [formGroup]="formularioContato" (ngSubmit)="adicionarContato()">
+        <div class="p-formgrid p-grid">
+            <div class="p-field p-fluid p-col-12 p-sm-12 p-md-12 p-lg-12 p-xl-12">
+                <label for="nome" class="p-d-block">Nome</label>
+                <input formControlName="nome" name="nome" id="nome" pInputText type="text" />
+                <app-message error="obrigatoriedade" [control]="formularioContato.get('nome')" mensagem="Obrigatório"></app-message>
+                <app-message error="tamanhoMinimo" [control]="formularioContato.get('nome')" mensagem="Mínimo de {{ formularioContato.get('nome')?.errors?.tamanhoMinimo?.tamanho }} caracteres."></app-message>
+            </div>
+            <div class="p-field p-fluid p-col-12 p-sm-12 p-md-12 p-lg-12 p-xl-12">
+                <label for="email" class="p-d-block">E-mail</label>
+                <input formControlName="email" name="email" id="email" pInputText type="email" />
+                <app-message error="email" [control]="formularioContato.get('email')" mensagem="Informe um e-mail válido."></app-message>
+            </div>
+            <div class="p-field p-fluid p-col-12 p-sm-12 p-md-12 p-lg-12 p-xl-12">
+                <label for="telefone" class="p-d-block">Telefone</label>
+                <p-inputMask formControlName="telefone" name="telefone" id="telefone" mask="99 99999-9999"></p-inputMask>
+            </div>
+        </div>
+        <div class="p-col-12">
+            <button pButton pRipple [disabled]="formularioContato.invalid" type="submit" class="p-button-raised p-button-actions" label="Salvar"></button>
+        </div>
+    </form>
+
+</p-dialog>

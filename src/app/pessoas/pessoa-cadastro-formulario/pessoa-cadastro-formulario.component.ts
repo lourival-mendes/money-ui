@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Title } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 
@@ -7,8 +7,6 @@ import { ConfirmationService, MessageService } from 'primeng/api';
 
 import { ContatoInterface } from 'src/app/core/Interfaces/Contato';
 import { PessoaService } from './../pessoa.service';
-
-
 
 @Component({
   selector: 'app-pessoa-cadastro-formulario',
@@ -18,7 +16,9 @@ import { PessoaService } from './../pessoa.service';
 export class PessoaCadastroFormularioComponent implements OnInit {
 
   formulario!: FormGroup;
+  formularioContato!: FormGroup;
   contatos!: Array<ContatoInterface>;
+  exibirFormularioContato = false;
 
   constructor(
 
@@ -30,7 +30,9 @@ export class PessoaCadastroFormularioComponent implements OnInit {
     private formBuilder: FormBuilder,
     private confirmationService: ConfirmationService
 
-  ) {    this.configurarFormulario();
+  ) {
+    this.configurarFormulario();
+    this.configurarFormularioContato();
   }
 
   ngOnInit(): void {
@@ -45,16 +47,24 @@ export class PessoaCadastroFormularioComponent implements OnInit {
 
   }
 
+  prepararNovoContato() {
+    this.exibirFormularioContato = true;
+  }
+
   carregarPessoa(idPessoa: number) {
 
     this.pessoaService.buscarPorId(idPessoa)
       .then(response => {
+        this.formulario.patchValue(response)
         this.contatos = response.contatos;
-        console.log(response.contatos);
-        return this.formulario.patchValue(response)
       });
 
-    }
+  }
+
+  adicionarContato() {
+    this.contatos.push(this.formularioContato.value);
+    this.formulario.value.contatos = this.contatos;
+  }
 
   configurarFormulario() {
 
@@ -70,7 +80,19 @@ export class PessoaCadastroFormularioComponent implements OnInit {
         cep: [null, [this.validarObrigatoriedade, this.validarTamanhoMinimo(10)]],
         cidade: [null, [this.validarObrigatoriedade, this.validarTamanhoMinimo(3)]],
         estado: [null, [this.validarObrigatoriedade, this.validarTamanhoMinimo(2)]]
-      })
+      }),
+      contatos:[]
+    });
+
+  }
+
+  configurarFormularioContato() {
+
+    this.formularioContato = this.formBuilder.group({
+      id: [],
+      nome: [null, [this.validarObrigatoriedade, this.validarTamanhoMinimo(5)]],
+      email: [null, Validators.email],
+      telefone: [null]
     });
 
   }
@@ -131,10 +153,10 @@ export class PessoaCadastroFormularioComponent implements OnInit {
       icon: 'pi pi-exclamation-triangle p-text-warning',
 
       acceptButtonStyleClass: 'p-button-icon p-button-warning',
-      acceptIcon:'pi pi-check',
+      acceptIcon: 'pi pi-check',
 
-      rejectButtonStyleClass:'p-button-icon',
-      rejectIcon:'pi pi-times',
+      rejectButtonStyleClass: 'p-button-icon',
+      rejectIcon: 'pi pi-times',
 
       accept: () => this.excluirContato(contato),
       reject: () => this.messageService.add({
@@ -147,16 +169,18 @@ export class PessoaCadastroFormularioComponent implements OnInit {
 
     });
 
-}
+  }
+
   excluirContato(contato: ContatoInterface) {
     return null;
   }
 
-validarTamanhoMinimo(tamanho: number): any {
+  validarTamanhoMinimo(tamanho: number): any {
     return (input: FormControl) => {
       return (!input.value || input.value.length >= tamanho) ? null : { tamanhoMinimo: { tamanho: tamanho } };
     };
   }
+
 
   validarObrigatoriedade(input: FormControl) {
 
