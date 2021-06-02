@@ -19,6 +19,7 @@ export class PessoaCadastroFormularioComponent implements OnInit {
   formularioContato!: FormGroup;
   contatos!: Array<ContatoInterface>;
   exibirFormularioContato = false;
+  index?: number;
 
   constructor(
 
@@ -55,15 +56,10 @@ export class PessoaCadastroFormularioComponent implements OnInit {
 
     this.pessoaService.buscarPorId(idPessoa)
       .then(response => {
-        this.formulario.patchValue(response)
+        this.formulario.patchValue(response);
         this.contatos = response.contatos;
       });
 
-  }
-
-  adicionarContato() {
-    this.contatos.push(this.formularioContato.value);
-    this.formulario.value.contatos = this.contatos;
   }
 
   configurarFormulario() {
@@ -81,7 +77,7 @@ export class PessoaCadastroFormularioComponent implements OnInit {
         cidade: [null, [this.validarObrigatoriedade, this.validarTamanhoMinimo(3)]],
         estado: [null, [this.validarObrigatoriedade, this.validarTamanhoMinimo(2)]]
       }),
-      contatos:[]
+      contatos: []
     });
 
   }
@@ -94,6 +90,50 @@ export class PessoaCadastroFormularioComponent implements OnInit {
       email: [null, Validators.email],
       telefone: [null]
     });
+
+  }
+
+  adicionarContato() {
+
+    this.contatos.push(this.formularioContato.value);
+    this.formulario.value.contatos = this.contatos;
+
+    this.formularioContato.reset;
+    this.exibirFormularioContato = false;
+    this.configurarFormularioContato();
+
+  }
+
+  editarContato(contato: ContatoInterface, index: number) {
+
+    this.formularioContato.setValue(contato);
+    this.index = index;
+    this.exibirFormularioContato = true;
+
+  }
+
+  limparContato() {
+
+    this.formularioContato.reset();
+    this.index = undefined;
+    this.exibirFormularioContato = false;
+
+  }
+
+  excluirContato(index: number) {
+
+    this.contatos.splice(index,1);
+    this.formulario.value.contatos = this.contatos;
+    this.limparContato();
+
+  }
+
+  salvarContato() {
+
+    let posicao = (this.index === undefined) ? 0 : this.index;
+    this.contatos[posicao] = this.formularioContato.value;
+    this.formulario.value.contatos = this.contatos;
+    this.limparContato();
 
   }
 
@@ -143,7 +183,7 @@ export class PessoaCadastroFormularioComponent implements OnInit {
       });
   }
 
-  confirmarExclusaoContato(contato: ContatoInterface, event: Event) {
+  confirmarExclusaoContato(contato: ContatoInterface, index: number, event: Event) {
 
     this.confirmationService.confirm({
 
@@ -158,27 +198,18 @@ export class PessoaCadastroFormularioComponent implements OnInit {
       rejectButtonStyleClass: 'p-button-icon',
       rejectIcon: 'pi pi-times',
 
-      accept: () => this.excluirContato(contato),
-      reject: () => this.messageService.add({
-
-        severity: 'info',
-        summary: 'Exclusão cancelada.',
-        detail: `O contato de nome ${contato.nome} foi mantido.`
-
-      })
+      accept: () => this.excluirContato(index)
 
     });
 
   }
 
-  excluirContato(contato: ContatoInterface) {
-    return null;
-  }
-
   validarTamanhoMinimo(tamanho: number): any {
+
     return (input: FormControl) => {
       return (!input.value || input.value.length >= tamanho) ? null : { tamanhoMinimo: { tamanho: tamanho } };
     };
+
   }
 
 
@@ -191,8 +222,10 @@ export class PessoaCadastroFormularioComponent implements OnInit {
   }
 
   novo() {
+
     this.formulario.reset();
     this.router.navigate(['/pessoas/novo'])
+
   }
 
 }
