@@ -23,13 +23,15 @@ import { PessoaPesquisaFormularioComponent } from './pessoa-pesquisa-formulario/
 import { PessoasPesquisaComponent } from './pessoas-pesquisa/pessoas-pesquisa.component';
 import { PessoaCadastroFormularioComponent } from './pessoa-cadastro-formulario/pessoa-cadastro-formulario.component';
 import { SharedModule } from '../shared/shared.module';
+import { PessoaCadastroContatoComponent } from './pessoa-cadastro-contato/pessoa-cadastro-contato.component';
 
 @NgModule({
   declarations: [
     PessoaCadastroFormularioComponent,
     PessoasPesquisaComponent,
     PessoaPesquisaFormularioComponent,
-    PessoasGridComponent
+    PessoasGridComponent,
+    PessoaCadastroContatoComponent
   ],
   imports: [
     CommonModule,

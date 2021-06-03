@@ -1,0 +1,62 @@
+<p-panel header="Contatos">
+    <div class="p-grid">
+        <div class="p-col-12">
+            <button pButton label="Novo" icon="pi pi-plus" type="button" class="p-m-3 p-button-secondary" (click)="exibirFormularioContato=true"></button>
+        </div>
+        <div class="p-fluid p-col-12 p-sm-12 p-md-12 p-lg-12 p-xl-12">
+            <p-table [value]="contatos" [responsive]="true">
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th>Nome</th>
+                        <th>E-mail</th>
+                        <th>Telefone</th>
+                        <th class="col-acoes-header"></th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-contato let-rowIndex="rowIndex">
+                    <tr>
+                        <td>{{ contato.nome }}</td>
+                        <td>{{ contato.email }}</td>
+                        <td>{{ contato.telefone }}</td>
+                        <td class="col-acoes">
+                            <button pButton pRipple type="button" (click)="editarContato(contato, rowIndex)" icon="pi pi-pencil" class="p-button-actions p-button-sm" pTooltip="Editar" tooltipPosition="top"></button>
+                            <button pButton pRipple type="button" (click)="confirmarExclusaoContato(contato, rowIndex, $event)" icon="pi pi-trash" class="p-button-actions p-button-sm p-button-danger" pTooltip="Excluir" tooltipPosition="top"></button>
+                        </td>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="emptymessage">
+                    <tr>
+                        <td colspan="4">Nenhum contato cadastrado.</td>
+                    </tr>
+                </ng-template>
+            </p-table>
+        </div>
+    </div>
+</p-panel>
+
+<p-dialog header="Novo contato" [(visible)]="exibirFormularioContato" [modal]=true>
+    <form [formGroup]="formularioContato">
+        <div class="p-formgrid p-grid">
+            <div class="p-field p-fluid p-col-12 p-sm-12 p-md-12 p-lg-12 p-xl-12">
+                <label for="nomeContato" class="p-d-block">Nome</label>
+                <input formControlName="nome" name="nomeContato" id="nomeContato" pInputText type="text" />
+                <app-message error="obrigatoriedade" [control]="formularioContato.get('nome')" mensagem="Obrigatório"></app-message>
+                <app-message error="tamanhoMinimo" [control]="formularioContato.get('nome')" mensagem="Mínimo de {{ formularioContato.get('nome')?.errors?.tamanhoMinimo?.tamanho }} caracteres."></app-message>
+            </div>
+            <div class="p-field p-fluid p-col-12 p-sm-12 p-md-12 p-lg-12 p-xl-12">
+                <label for="email" class="p-d-block">E-mail</label>
+                <input formControlName="email" name="email" id="email" pInputText type="email" />
+                <app-message error="email" [control]="formularioContato.get('email')" mensagem="Informe um e-mail válido."></app-message>
+            </div>
+            <div class="p-field p-fluid p-col-12 p-sm-12 p-md-12 p-lg-12 p-xl-12">
+                <label for="telefone" class="p-d-block">Telefone</label>
+                <p-inputMask formControlName="telefone" name="telefone" id="telefone" mask="99 99999-9999"></p-inputMask>
+            </div>
+        </div>
+        <div class="p-col-12">
+            <button pButton pRipple type="button" (click)="limparContato()" class="p-button-secondary p-button-raised p-button-actions" label="Cancelar"></button>
+            <button *ngIf="formularioContato.get('id')?.value != null" pButton pRipple [disabled]="formularioContato.invalid" type="button" (click)="salvarContato()" class="p-button-raised p-button-actions" label="Salvar"></button>
+            <button *ngIf="formularioContato.get('id')?.value == null" pButton pRipple [disabled]="formularioContato.invalid" type="button" (click)="adicionarContato()" class="p-button-raised p-button-actions" label="Adicionar"></button>
+        </div>
+    </form>
+</p-dialog>
