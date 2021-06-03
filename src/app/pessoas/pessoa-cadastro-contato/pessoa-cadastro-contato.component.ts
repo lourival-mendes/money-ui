@@ -47,7 +47,6 @@ export class PessoaCadastroContatoComponent implements OnInit {
   adicionarContato() {
 
     this.contatos.push(this.formularioContato.value);
-    //this.formulario.value.contatos = this.contatos;
 
     this.formularioContato.reset;
     this.exibirFormularioContato = false;
@@ -74,7 +73,6 @@ export class PessoaCadastroContatoComponent implements OnInit {
   excluirContato(index: number) {
 
     this.contatos.splice(index, 1);
-    //this.formulario.value.contatos = this.contatos;
     this.limparContato();
 
   }
@@ -83,7 +81,6 @@ export class PessoaCadastroContatoComponent implements OnInit {
 
     let posicao = (this.index === undefined) ? 0 : this.index;
     this.contatos[posicao] = this.formularioContato.value;
-    //this.formulario.value.contatos = this.contatos;
     this.limparContato();
 
   }
