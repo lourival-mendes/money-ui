@@ -117,8 +117,8 @@
     <form [formGroup]="formularioContato">
         <div class="p-formgrid p-grid">
             <div class="p-field p-fluid p-col-12 p-sm-12 p-md-12 p-lg-12 p-xl-12">
-                <label for="nome" class="p-d-block">Nome</label>
-                <input formControlName="nome" name="nome" id="nome" pInputText type="text" />
+                <label for="nomeContato" class="p-d-block">Nome</label>
+                <input formControlName="nome" name="nomeContato" id="nomeContato" pInputText type="text" />
                 <app-message error="obrigatoriedade" [control]="formularioContato.get('nome')" mensagem="Obrigatório"></app-message>
                 <app-message error="tamanhoMinimo" [control]="formularioContato.get('nome')" mensagem="Mínimo de {{ formularioContato.get('nome')?.errors?.tamanhoMinimo?.tamanho }} caracteres."></app-message>
             </div>

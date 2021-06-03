@@ -77,7 +77,7 @@ export class PessoaCadastroFormularioComponent implements OnInit {
         cidade: [null, [this.validarObrigatoriedade, this.validarTamanhoMinimo(3)]],
         estado: [null, [this.validarObrigatoriedade, this.validarTamanhoMinimo(2)]]
       }),
-      contatos: []
+      contatos: [new Array<ContatoInterface>()]
     });
 
   }
@@ -148,6 +148,8 @@ export class PessoaCadastroFormularioComponent implements OnInit {
 
   atualizar() {
 
+    console.log(this.formulario.value);
+
     this.pessoaService.atualizar(this.formulario.value)
       .then(response => {
 
@@ -166,6 +168,8 @@ export class PessoaCadastroFormularioComponent implements OnInit {
   }
 
   adicionar() {
+
+    console.log(this.formulario.value);
 
     this.pessoaService.adicionar(this.formulario.value)
       .then(response => {
