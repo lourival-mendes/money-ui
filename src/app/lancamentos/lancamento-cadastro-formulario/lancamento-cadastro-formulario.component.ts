@@ -25,6 +25,8 @@ export class LancamentoCadastroFormularioComponent implements OnInit {
   categorias!: CategoriaInterface[];
   pessoas!: PessoaInterface[];
 
+  anexo!: any;
+
   formulario!: FormGroup;
 
   constructor(
@@ -68,7 +70,7 @@ export class LancamentoCadastroFormularioComponent implements OnInit {
   nomeAnexo() {
 
     const nome = this.formulario.get('anexo')?.value;
-    return nome ? nome.substring(nome.indexOf('_')+1, nome.length) : '';
+    return nome ? nome.substring(nome.indexOf('_') + 1, nome.length) : '';
 
   }
 
@@ -86,6 +88,20 @@ export class LancamentoCadastroFormularioComponent implements OnInit {
     this.formulario.patchValue({
       anexo: anexo.nome,
       urlAnexo: anexo.url
+    });
+
+  }
+
+  exibirErroUpoad() {
+
+    console.log(this.anexo);
+
+    this.messageService.add({
+
+      severity: `error`,
+      summary: 'Ocorreu um erro!',
+      detail: `O anexo não foi enviado.`
+
     });
 
   }
@@ -159,7 +175,10 @@ export class LancamentoCadastroFormularioComponent implements OnInit {
 
         })
 
+        this.router.navigate([`/lancamentos/${response.id}`]);
+
       });
+
 
   }
 

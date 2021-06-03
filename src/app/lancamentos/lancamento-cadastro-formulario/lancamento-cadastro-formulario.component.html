@@ -4,7 +4,7 @@
             <h1>Cadastro de Lançamento</h1>
         </div>
     </div>
-    <form autocomplete="off" (ngSubmit)="salvar()" [formGroup]="formulario">
+    <form autocomplete="off" [formGroup]="formulario">
         <div class="p-formgrid p-grid">
             <div class="p-field p-col-12">
                 <label for="tipo">Tipo</label>
@@ -47,17 +47,19 @@
                 <textarea formControlName="observacao" name="observacao" id="observacao" rows="4" pInputTextarea></textarea>
                 <app-message error="obrigatoriedade" [control]="formulario.get('observacao')" mensagem="Obrigatório"></app-message>
             </div>
-            <div class="p-field p-col-12">
-                <label for="anexo" class="p-d-block">Anexo</label>
-                <p-fileUpload styleClass="p-button-secondary" *ngIf="!formulario.get('anexo')?.value" name="anexo" id="anexo" pFileUpload mode="basic" chooseLabel="Anexar uma imagem" [auto]="true" [maxFileSize]="2000000" accept="image/*,application/*" [url]="urlUploadAnexo()"
-                    (onUpload)="salvarRetornoUploadAnexo($event)"></p-fileUpload>
-                <a *ngIf="formulario.get('anexo')?.value" [href]="urlAnexo()" target="_blank" pTooltip="Baixar anexo" tooltipPosition="top">{{nomeAnexo()}}</a>
-            </div>
-            <div class="p-field p-col-12">
-                <button pButton pRipple [disabled]="formulario.invalid" type="submit" class="p-button-raised p-button-actions" label="Salvar"></button>
-                <button pButton pRipple (click)="novo()" type="button" class="p-button-raised p-button-actions" label="Novo"></button>
-                <a pButton pRipple routerLink="/lancamentos" label="Voltar para pesquisa" class="p-button-link p-button-actions"></a>
-            </div>
         </div>
     </form>
+    <div class="p-grid">
+        <div class="p-col-12">
+            <label for="anexo" class="p-d-block">Anexo</label>
+            <p-fileUpload mode="basic" name="anexo" #anexo styleClass="p-button-secondary" *ngIf="!formulario.get('anexo')?.value" name="anexo" id="anexo" pFileUpload chooseLabel="Anexar uma imagem" [auto]="true" [maxFileSize]="2000000" accept="image/*,application/*"
+                [url]="urlUploadAnexo()" (onUpload)="salvarRetornoUploadAnexo($event)" (onError)="exibirErroUpoad(); anexo.clear();"></p-fileUpload>
+            <a *ngIf="formulario.get('anexo')?.value" [href]="urlAnexo()" target="_blank" pTooltip="Baixar anexo" tooltipPosition="top">{{nomeAnexo()}}</a>
+        </div>
+        <div class="p-col-12">
+            <button pButton pRipple [disabled]="formulario.invalid" (click)="salvar()" type="button" class="p-button-raised p-button-actions" label="Salvar"></button>
+            <button pButton pRipple (click)="novo()" type="button" class="p-button-raised p-button-actions" label="Novo"></button>
+            <a pButton pRipple routerLink="/lancamentos" label="Voltar para pesquisa" class="p-button-link p-button-actions"></a>
+        </div>
+    </div>
 </div>
