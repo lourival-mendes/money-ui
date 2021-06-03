@@ -16,6 +16,8 @@ export class Lancamento implements LancamentoInterface{
   observacao!: string;
   pessoa!: PessoaInterface;
   categoria!: CategoriaInterface;
+  anexo!: string;
+  urlAnexo!: string;
 
   constructor() {
     this.pessoa = new Pessoa();

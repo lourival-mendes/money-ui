@@ -13,5 +13,7 @@ export interface LancamentoInterface{
   observacao: string;
   pessoa: PessoaInterface;
   categoria: CategoriaInterface;
+  anexo: string;
+  urlAnexo: string;
 
 }

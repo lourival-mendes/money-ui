@@ -8,44 +8,50 @@
         <div class="p-formgrid p-grid">
             <div class="p-field p-col-12">
                 <label for="tipo">Tipo</label>
-                <p-selectButton formControlName="tipo" pRipple id="tipo" name="tipo" [options]="tipos" aria-describedby="tipo-help"></p-selectButton>
+                <p-selectButton formControlName="tipo" pRipple id="tipo" name="tipo" [options]="tipos"></p-selectButton>
                 <app-message error="obrigatoriedade" [control]="formulario.get('tipo')" mensagem="Obrigatório"></app-message>
             </div>
             <div class="p-field p-fluid p-col-12 p-sm-4 p-md-3 p-lg-2 p-xl-2">
                 <label for="dataVencimento" class="p-d-block">Vencimento</label>
-                <p-calendar formControlName="dataVencimento" name="dataVencimento" id="dataVencimento" [showIcon]="true" [disabledDays]="[0,6]" dateFormat="dd/mm/yy" aria-describedby="dataVencimento-help"></p-calendar>
+                <p-calendar formControlName="dataVencimento" name="dataVencimento" id="dataVencimento" [showIcon]="true" [disabledDays]="[0,6]" dateFormat="dd/mm/yy"></p-calendar>
                 <app-message error="obrigatoriedade" [control]="formulario.get('dataVencimento')" mensagem="Obrigatório"></app-message>
             </div>
             <div class="p-field p-fluid p-col-12 p-sm-4 p-md-3 p-lg-2 p-xl-2">
                 <label for="dataPagamento" class="p-d-block">{{ formulario.get('tipo')?.value === 'DESPESA' ? 'Pagamento' : 'Recebimeto' }}</label>
-                <p-calendar formControlName="dataPagamento" name="dataPagamento" id="dataPagamento" [showIcon]="true" dateFormat="dd/mm/yy" aria-describedby="dataPagamento-help"></p-calendar>
+                <p-calendar formControlName="dataPagamento" name="dataPagamento" id="dataPagamento" [showIcon]="true" dateFormat="dd/mm/yy"></p-calendar>
                 <app-message error="obrigatoriedade" [control]="formulario.get('dataPagamento')" mensagem="Obrigatório"></app-message>
             </div>
             <div class="p-field p-fluid p-col-12 p-sm-9 p-md-9 p-lg-10 p-xl-10">
                 <label for="descricao" class="p-d-block">Descrição</label>
-                <input formControlName="descricao" name="descricao" id="descricao" pInputText type="text" aria-describedby="descricao-help" />
+                <input formControlName="descricao" name="descricao" id="descricao" pInputText type="text" />
                 <app-message error="obrigatoriedade" [control]="formulario.get('descricao')" mensagem="Obrigatório"></app-message>
                 <app-message error="tamanhoMinimo" [control]="formulario.get('descricao')" mensagem="Mínimo de {{ formulario.get('descricao')?.errors?.tamanhoMinimo?.tamanho }} caracteres."></app-message>
             </div>
             <div class="p-field p-fluid p-col-12 p-sm-3 p-md-3 p-lg-2 p-xl-2">
                 <label for="valor" class="p-d-block">Valor</label>
-                <p-inputNumber formControlName="valor" mode="currency" currency="BRL" locale="pt-BR" placeholder="0,00" name="valor" id="valor" aria-describedby="valor-help"></p-inputNumber>
+                <p-inputNumber formControlName="valor" mode="currency" currency="BRL" locale="pt-BR" placeholder="0,00" name="valor" id="valor"></p-inputNumber>
                 <app-message error="obrigatoriedade" [control]="formulario.get('valor')" mensagem="Obrigatório"></app-message>
             </div>
             <div class="p-field p-fluid p-col-12 p-sm-6 p-md-6 p-lg-6 p-xl-6" formGroupName="categoria">
                 <label for="categoria" class="p-d-block">Categoria</label>
-                <p-dropdown formControlName="id" id="categoria" name="categoria" [options]="categorias" optionLabel="nome" optionValue="id" placeholder="Selecione" aria-describedby="categoria-help"></p-dropdown>
+                <p-dropdown formControlName="id" id="categoria" name="categoria" [options]="categorias" optionLabel="nome" optionValue="id" placeholder="Selecione"></p-dropdown>
                 <app-message error="obrigatoriedade" [control]="formulario.get('categoria')?.get('id')" mensagem="Obrigatório"></app-message>
             </div>
             <div class="p-field p-fluid p-col-12 p-sm-6 p-md-6 p-lg-6 p-xl-6" formGroupName="pessoa">
                 <label for="pessoa" class="p-d-block">Pessoa</label>
-                <p-dropdown formControlName="id" id="pessoa" name="pessoa" [filter]="true" [options]="pessoas" optionLabel="nome" optionValue="id" placeholder="Selecione" aria-describedby="pessoa-help"></p-dropdown>
+                <p-dropdown formControlName="id" id="pessoa" name="pessoa" [filter]="true" [options]="pessoas" optionLabel="nome" optionValue="id" placeholder="Selecione"></p-dropdown>
                 <app-message error="obrigatoriedade" [control]="formulario.get('pessoa')?.get('id')" mensagem="Obrigatório"></app-message>
             </div>
             <div class="p-field p-col-12 p-fluid">
                 <label for="observacao" class="p-d-block">Observação</label>
-                <textarea formControlName="observacao" name="observacao" id="observacao" rows="4" pInputTextarea aria-describedby="observacao-help"></textarea>
+                <textarea formControlName="observacao" name="observacao" id="observacao" rows="4" pInputTextarea></textarea>
                 <app-message error="obrigatoriedade" [control]="formulario.get('observacao')" mensagem="Obrigatório"></app-message>
+            </div>
+            <div class="p-field p-col-12">
+                <label for="anexo" class="p-d-block">Anexo</label>
+                <p-fileUpload styleClass="p-button-secondary" *ngIf="!formulario.get('anexo')?.value" name="anexo" id="anexo" pFileUpload mode="basic" chooseLabel="Anexar uma imagem" [auto]="true" [maxFileSize]="2000000" accept="image/*,application/*" [url]="urlUploadAnexo()"
+                    (onUpload)="salvarRetornoUploadAnexo($event)"></p-fileUpload>
+                <a *ngIf="formulario.get('anexo')?.value" [href]="urlAnexo()" target="_blank" pTooltip="Baixar anexo" tooltipPosition="top">{{nomeAnexo()}}</a>
             </div>
             <div class="p-field p-col-12">
                 <button pButton pRipple [disabled]="formulario.invalid" type="submit" class="p-button-raised p-button-actions" label="Salvar"></button>

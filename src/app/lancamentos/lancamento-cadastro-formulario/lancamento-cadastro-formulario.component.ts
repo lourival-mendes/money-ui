@@ -59,6 +59,37 @@ export class LancamentoCadastroFormularioComponent implements OnInit {
 
   }
 
+  urlUploadAnexo() {
+
+    return this.lancamentoService.urlUploadAnexo();
+
+  }
+
+  nomeAnexo() {
+
+    const nome = this.formulario.get('anexo')?.value;
+    return nome ? nome.substring(nome.indexOf('_')+1, nome.length) : '';
+
+  }
+
+  urlAnexo() {
+
+    const url: string = this.formulario.get('urlAnexo')?.value;
+    return url ? url.replace('\\', "https:") : null;
+
+  }
+
+  salvarRetornoUploadAnexo(event: any) {
+
+    const anexo = event.originalEvent.body;
+
+    this.formulario.patchValue({
+      anexo: anexo.nome,
+      urlAnexo: anexo.url
+    });
+
+  }
+
   configurarFormulario() {
 
     this.formulario = this.formBuilder.group({
@@ -76,7 +107,9 @@ export class LancamentoCadastroFormularioComponent implements OnInit {
         id: [null, this.validarObrigatoriedade],
         nome: []
       }),
-      observacao: []
+      observacao: [],
+      anexo: [],
+      urlAnexo: []
     });
 
   }

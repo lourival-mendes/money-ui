@@ -15,6 +15,7 @@ import { SelectButtonModule } from 'primeng/selectbutton';
 import { TableModule } from 'primeng/table';
 import { TooltipModule } from 'primeng/tooltip';
 import { PaginatorModule } from 'primeng/paginator';
+import { FileUploadModule } from 'primeng/FileUpload';
 
 import { LancamentosGridComponent } from './lancamentos-grid/lancamentos-grid.component';
 import { LancamentoCadastroFormularioComponent } from './lancamento-cadastro-formulario/lancamento-cadastro-formulario.component';
@@ -48,6 +49,7 @@ import { SharedModule } from '../shared/shared.module';
     SelectButtonModule,
     TableModule,
     TooltipModule,
+    FileUploadModule,
 
     SharedModule,
     LancamentosRoutingModule

@@ -25,6 +25,10 @@ export class LancamentoService {
 
   }
 
+  urlUploadAnexo(): string {
+    return `${this.lancamentosUrl}/anexo`;
+  };
+
   pesquisar(lancamentoPesquisa: LancamentoPesquisaInterface): Promise<any> {
 
     let stringParams = `page=${lancamentoPesquisa.number}&size=${lancamentoPesquisa.size}`;
