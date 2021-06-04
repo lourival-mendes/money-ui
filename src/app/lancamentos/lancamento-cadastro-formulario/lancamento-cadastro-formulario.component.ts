@@ -3,7 +3,7 @@ import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { Title } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 
-import { MessageService } from 'primeng/api';
+import { MessageService, ConfirmationService } from 'primeng/api';
 
 import { CategoriaService } from './../../categorias/categoria.service';
 import { CategoriaInterface } from './../../core/Interfaces/Categoria';
@@ -38,7 +38,8 @@ export class LancamentoCadastroFormularioComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private title: Title,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private confirmationService: ConfirmationService
 
   ) { }
 
@@ -91,15 +92,54 @@ export class LancamentoCadastroFormularioComponent implements OnInit {
 
   }
 
+  removerAnexo() {
+
+    this.formulario.patchValue({
+      anexo: null,
+      urlAnexo: null
+    });
+
+    return true;
+
+  }
+
+  confirmarExclusaoAnexo(event: Event) {
+
+    this.confirmationService.confirm({
+
+      target: event.target!,
+
+      message: 'Tem certeza que deseja EXCLUIR o anexo?',
+      icon: 'pi pi-exclamation-triangle p-text-warning',
+
+      acceptButtonStyleClass: 'p-button-icon p-button-warning',
+      acceptIcon: 'pi pi-check',
+
+      rejectButtonStyleClass: 'p-button-icon',
+      rejectIcon: 'pi pi-times',
+
+      accept: () => this.removerAnexo(),
+      reject: () => this.messageService.add({
+
+        severity: 'info',
+        summary: 'Exclusão cancelada.',
+        detail: `O anexo foi mantido.`
+
+      })
+
+    });
+
+  }
+
   salvarRetornoUploadAnexo(event: any) {
 
     setInterval(() => {
       const anexo = event.originalEvent.body;
 
-    this.formulario.patchValue({
-      anexo: anexo.nome,
-      urlAnexo: anexo.url
-    });
+      this.formulario.patchValue({
+        anexo: anexo.nome,
+        urlAnexo: anexo.url
+      });
 
 
       this.uploadFinalizado();

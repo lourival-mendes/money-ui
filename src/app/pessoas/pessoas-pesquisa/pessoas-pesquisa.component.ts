@@ -1,4 +1,4 @@
-import { AuthService } from './../../seguranca/auth.service';
+import { Title } from '@angular/platform-browser';
 import { Component, ViewChild, OnInit } from '@angular/core';
 
 import { LazyLoadEvent, MessageService, ConfirmationService } from 'primeng/api';
@@ -8,7 +8,7 @@ import { PessoaService } from './../pessoa.service';
 import { PessoaInterface } from 'src/app/core/Interfaces/Pessoa';
 import { PessoaPesquisaInterface } from './../../core/Interfaces/PessoaPesquisa';
 import { PessoaPesquisa } from './../../core/models/PessoaPesquisa';
-import { Title } from '@angular/platform-browser';
+import { AuthService } from './../../seguranca/auth.service';
 
 //TODO: Refatorar o código para componentizar o grid, se achar necessário.
 @Component({
@@ -67,14 +67,16 @@ export class PessoasPesquisaComponent implements OnInit {
 
   }
 
-  alterarAtivacao(pessoa:PessoaInterface) {
+  alterarAtivacao(pessoa: PessoaInterface) {
+
+    const statusAlterado = !pessoa.ativo;
 
     this.loading = true;
 
     this.pessoaService.alterarAtivacao(pessoa)
       .then(() => {
 
-        this.pesquisar(this.pessoaPesquisa.number);
+        pessoa.ativo = statusAlterado;
 
         const severity = pessoa.ativo ? 'warn' : 'success';
         const ativo = pessoa.ativo ? 'Desativada' : 'Ativada';
