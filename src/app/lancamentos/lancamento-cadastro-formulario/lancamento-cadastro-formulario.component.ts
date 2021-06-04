@@ -25,7 +25,7 @@ export class LancamentoCadastroFormularioComponent implements OnInit {
   categorias!: CategoriaInterface[];
   pessoas!: PessoaInterface[];
 
-  anexo!: any;
+  ocultarSpinner!: boolean;
 
   formulario!: FormGroup;
 
@@ -44,6 +44,8 @@ export class LancamentoCadastroFormularioComponent implements OnInit {
 
   ngOnInit(): void {
 
+    this.ocultarSpinner = true;
+
     this.configurarFormulario();
 
     this.title.setTitle('Cadastro de Lançamento');
@@ -59,6 +61,14 @@ export class LancamentoCadastroFormularioComponent implements OnInit {
     this.pessoaService.listarTodas()
       .then(response => this.pessoas = response);
 
+  }
+
+  uploadIniciado() {
+    this.ocultarSpinner = false;
+  }
+
+  uploadFinalizado() {
+    this.ocultarSpinner = true;
   }
 
   urlUploadAnexo() {
@@ -83,18 +93,21 @@ export class LancamentoCadastroFormularioComponent implements OnInit {
 
   salvarRetornoUploadAnexo(event: any) {
 
-    const anexo = event.originalEvent.body;
+    setInterval(() => {
+      const anexo = event.originalEvent.body;
 
     this.formulario.patchValue({
       anexo: anexo.nome,
       urlAnexo: anexo.url
     });
 
+
+      this.uploadFinalizado();
+
+    }, 1000);
   }
 
   exibirErroUpoad() {
-
-    console.log(this.anexo);
 
     this.messageService.add({
 
@@ -103,6 +116,8 @@ export class LancamentoCadastroFormularioComponent implements OnInit {
       detail: `O anexo não foi enviado.`
 
     });
+
+    this.uploadFinalizado();
 
   }
 

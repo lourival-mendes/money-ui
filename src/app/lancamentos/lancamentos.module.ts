@@ -16,6 +16,7 @@ import { TableModule } from 'primeng/table';
 import { TooltipModule } from 'primeng/tooltip';
 import { PaginatorModule } from 'primeng/paginator';
 import { FileUploadModule } from 'primeng/FileUpload';
+import { ProgressSpinnerModule } from 'primeng/progressSpinner';
 
 import { LancamentosGridComponent } from './lancamentos-grid/lancamentos-grid.component';
 import { LancamentoCadastroFormularioComponent } from './lancamento-cadastro-formulario/lancamento-cadastro-formulario.component';
@@ -50,6 +51,7 @@ import { SharedModule } from '../shared/shared.module';
     TableModule,
     TooltipModule,
     FileUploadModule,
+    ProgressSpinnerModule,
 
     SharedModule,
     LancamentosRoutingModule

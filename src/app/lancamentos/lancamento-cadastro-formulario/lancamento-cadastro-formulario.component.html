@@ -52,13 +52,15 @@
     <div class="p-grid">
         <div class="p-col-12">
             <label for="anexo" class="p-d-block">Anexo</label>
-            <p-fileUpload mode="basic" name="anexo" #anexo styleClass="p-button-secondary" *ngIf="!formulario.get('anexo')?.value" name="anexo" id="anexo" pFileUpload chooseLabel="Anexar uma imagem" [auto]="true" [maxFileSize]="2000000" accept="image/*,application/*"
-                [url]="urlUploadAnexo()" (onUpload)="salvarRetornoUploadAnexo($event)" (onError)="exibirErroUpoad(); anexo.clear();"></p-fileUpload>
-            <a *ngIf="formulario.get('anexo')?.value" [href]="urlAnexo()" target="_blank" pTooltip="Baixar anexo" tooltipPosition="top">{{nomeAnexo()}}</a>
+            <p-progressSpinner [hidden]="ocultarSpinner" strokeWidth="5"></p-progressSpinner>
+            <p-fileUpload chooseIcon="pi pi-cloud-upload" [hidden]="!ocultarSpinner" mode="basic" name="anexo" #anexo styleClass="p-button-secondary p-mb-5 p-mt-5" *ngIf="!formulario.get('anexo')?.value" name="anexo" id="anexo" pFileUpload chooseLabel="Anexar uma imagem"
+                [auto]="true" [maxFileSize]="2000000" accept="image/*,application/*" [url]="urlUploadAnexo()" (onSend)="uploadIniciado()" (onUpload)="salvarRetornoUploadAnexo($event)" (onError)="exibirErroUpoad(); anexo.clear();"></p-fileUpload>
+            <a pButton pRipple icon="pi pi-cloud-download" style="text-decoration: none;" class="p-button p-button-icon-left p-button-secondary p-mb-5 p-mt-5" *ngIf="formulario.get('anexo')?.value" [href]="urlAnexo()" target="_blank" pTooltip="Baixar anexo" [label]="nomeAnexo()"
+                tooltipPosition="top"></a>
         </div>
         <div class="p-col-12">
-            <button pButton pRipple [disabled]="formulario.invalid" (click)="salvar()" type="button" class="p-button-raised p-button-actions" label="Salvar"></button>
-            <button pButton pRipple (click)="novo()" type="button" class="p-button-raised p-button-actions" label="Novo"></button>
+            <button pButton pRipple [disabled]="formulario.invalid || !ocultarSpinner" (click)="salvar()" type="button" class="p-button-raised p-button-actions" label="Salvar"></button>
+            <button pButton pRipple [disabled]="!ocultarSpinner" (click)="novo()" type="button" class="p-button-raised p-button-actions" label="Novo"></button>
             <a pButton pRipple routerLink="/lancamentos" label="Voltar para pesquisa" class="p-button-link p-button-actions"></a>
         </div>
     </div>
