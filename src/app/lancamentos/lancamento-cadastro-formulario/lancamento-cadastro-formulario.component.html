@@ -55,14 +55,15 @@
 
             <p-progressSpinner [hidden]="ocultarSpinner" strokeWidth="5"></p-progressSpinner>
 
-            <p-fileUpload chooseIcon="pi pi-cloud-upload" [hidden]="!ocultarSpinner" mode="basic" #anexo styleClass="p-button-secondary p-mb-5 p-mt-5" *ngIf="formulario.get('anexo')?.value == null" name="anexo" id="anexo" pFileUpload chooseLabel="Anexar uma imagem"
-                [auto]="true" [maxFileSize]="2000000" accept="image/*,application/*" [url]="urlUploadAnexo()" (onSend)="uploadIniciado()" (onUpload)="salvarRetornoUploadAnexo($event); anexo.clear();" (onError)="exibirErroUpoad(); anexo.clear();">
+            <p-fileUpload *ngIf="ocultarSpinner" [hidden]="!ocultarAnexo" chooseIcon="pi pi-cloud-upload" mode="basic" #anexo styleClass="p-button-secondary p-mb-5 p-mt-5" name="anexo" id="anexo" pFileUpload chooseLabel="Selecionar imagem" [auto]="true" [maxFileSize]="2000000"
+                accept="image/*,application/*" [url]="urlUploadAnexo()" (onUpload)="salvarDadosUpload($event);" (onError)="exibirErro();">
             </p-fileUpload>
 
-            <a pButton pRipple icon="pi pi-external-link" style="text-decoration: none;" class="p-button p-button-icon-left p-button-secondary p-mb-5 p-mt-5 p-mr-1" *ngIf="formulario.get('anexo')?.value" [href]="urlAnexo()" target="_blank" [label]="nomeAnexo()" pTooltip="Visualizar anexo"
+
+            <a pButton pRipple *ngIf="!ocultarAnexo" icon="pi pi-external-link" style="text-decoration: none;" class="p-button p-button-icon-left p-button-secondary p-mb-5 p-mt-5 p-mr-1" [href]="urlAnexo()" target="_blank" [label]="nomeAnexo()" pTooltip="Visualizar anexo"
                 tooltipPosition="top"></a>
 
-            <a pButton pRipple icon="pi pi-trash" *ngIf="formulario.get('anexo')?.value" (click)="confirmarExclusaoAnexo($event)" class="p-button-raised p-button-danger p-button-actions p-mb-5 p-mt-5" pTooltip="Remover anexo" tooltipPosition="top"></a>
+            <a pButton pRipple *ngIf="!ocultarAnexo" icon="pi pi-trash" (click)="confirmarExclusaoAnexo($event)" class="p-button-raised p-button-danger p-button-actions p-mb-5 p-mt-5" pTooltip="Remover anexo" tooltipPosition="top"></a>
 
         </div>
         <div class="p-col-12">

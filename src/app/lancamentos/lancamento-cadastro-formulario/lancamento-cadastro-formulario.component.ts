@@ -25,7 +25,9 @@ export class LancamentoCadastroFormularioComponent implements OnInit {
   categorias!: CategoriaInterface[];
   pessoas!: PessoaInterface[];
 
-  ocultarSpinner!: boolean;
+  ocultarSpinner: boolean = true;
+
+  ocultarAnexo: boolean = true;
 
   formulario!: FormGroup;
 
@@ -41,11 +43,13 @@ export class LancamentoCadastroFormularioComponent implements OnInit {
     private formBuilder: FormBuilder,
     private confirmationService: ConfirmationService
 
-  ) { }
-
-  ngOnInit(): void {
+  ) {
 
     this.ocultarSpinner = true;
+
+  }
+
+  ngOnInit(): void {
 
     this.configurarFormulario();
 
@@ -53,8 +57,11 @@ export class LancamentoCadastroFormularioComponent implements OnInit {
 
     const idLancamento = this.route.snapshot.params['id'];
 
-    if (idLancamento)
+    if (idLancamento) {
+
       this.carregarLancamento(idLancamento);
+
+    }
 
     this.categoriaService.listarTodas()
       .then(response => this.categorias = response);
@@ -64,12 +71,11 @@ export class LancamentoCadastroFormularioComponent implements OnInit {
 
   }
 
-  uploadIniciado() {
-    this.ocultarSpinner = false;
-  }
-
   uploadFinalizado() {
+
     this.ocultarSpinner = true;
+    this.ocultarAnexo = false;
+
   }
 
   urlUploadAnexo() {
@@ -94,12 +100,9 @@ export class LancamentoCadastroFormularioComponent implements OnInit {
 
   removerAnexo() {
 
-    this.formulario.patchValue({
-      anexo: null,
-      urlAnexo: null
-    });
-
-    return true;
+    this.formulario.value.anexo = null;
+    this.formulario.value.urlAnexo = null;
+    this.ocultarAnexo = true;
 
   }
 
@@ -131,23 +134,21 @@ export class LancamentoCadastroFormularioComponent implements OnInit {
 
   }
 
-  salvarRetornoUploadAnexo(event: any) {
+  salvarDadosUpload(event: any) {
 
-    setInterval(() => {
-      const anexo = event.originalEvent.body;
+    const anexo = event.originalEvent.body;
 
-      this.formulario.patchValue({
-        anexo: anexo.nome,
-        urlAnexo: anexo.url
-      });
+    this.formulario.patchValue({
+      anexo: anexo.nome,
+      urlAnexo: anexo.url
+    });
 
 
-      this.uploadFinalizado();
+    this.uploadFinalizado();
 
-    }, 1000);
   }
 
-  exibirErroUpoad() {
+  exibirErro() {
 
     this.messageService.add({
 
@@ -179,8 +180,8 @@ export class LancamentoCadastroFormularioComponent implements OnInit {
         nome: []
       }),
       observacao: [],
-      anexo: [],
-      urlAnexo: []
+      anexo: [null],
+      urlAnexo: [null]
     });
 
   }
@@ -202,7 +203,17 @@ export class LancamentoCadastroFormularioComponent implements OnInit {
   carregarLancamento(idLancamento: number) {
 
     this.lancamentoService.buscarPorId(idLancamento)
-      .then(response => this.formulario.patchValue(response));
+      .then(response => {
+        this.formulario.patchValue(response);
+
+        console.log(response.anexo);
+
+        if (response.anexo == null)
+          this.ocultarAnexo = true;
+        else
+          this.ocultarAnexo = false;
+
+      });
 
   }
 
@@ -250,9 +261,11 @@ export class LancamentoCadastroFormularioComponent implements OnInit {
 
         });
 
-        this.router.navigate(['/lancamentos', response.id])
+        this.router.navigate([`/lancamentos/${response.id}`]);
 
       });
+
+
   }
 
   novo() {
