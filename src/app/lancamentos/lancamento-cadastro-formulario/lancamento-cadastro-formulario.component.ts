@@ -93,8 +93,7 @@ export class LancamentoCadastroFormularioComponent implements OnInit {
 
   urlAnexo() {
 
-    const url: string = this.formulario.get('urlAnexo')?.value?.replace('\\\\', "https://");
-    return url;
+    return this.formulario.get('urlAnexo')?.value;
 
   }
 
