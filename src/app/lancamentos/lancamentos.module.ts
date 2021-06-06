@@ -15,8 +15,8 @@ import { SelectButtonModule } from 'primeng/selectbutton';
 import { TableModule } from 'primeng/table';
 import { TooltipModule } from 'primeng/tooltip';
 import { PaginatorModule } from 'primeng/paginator';
-import { FileUploadModule } from 'primeng/FileUpload';
-import { ProgressSpinnerModule } from 'primeng/progressSpinner';
+import { FileUploadModule } from 'primeng/fileupload';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
 
 import { LancamentosGridComponent } from './lancamentos-grid/lancamentos-grid.component';
 import { LancamentoCadastroFormularioComponent } from './lancamento-cadastro-formulario/lancamento-cadastro-formulario.component';
