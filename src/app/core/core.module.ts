@@ -23,7 +23,11 @@ import { PaginaNaoEncontradaComponent } from './pagina-nao-encontrada.component'
 registerLocaleData(localePt);
 
 @NgModule({
-  declarations: [NavbarComponent, PaginaNaoEncontradaComponent, NaoAutorizadoComponent],
+  declarations: [
+    NavbarComponent,
+    PaginaNaoEncontradaComponent,
+    NaoAutorizadoComponent
+  ],
   imports: [
     CommonModule,
     RouterModule,
