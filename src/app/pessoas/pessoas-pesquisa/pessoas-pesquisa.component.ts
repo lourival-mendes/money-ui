@@ -78,8 +78,8 @@ export class PessoasPesquisaComponent implements OnInit {
 
         pessoa.ativo = statusAlterado;
 
-        const severity = pessoa.ativo ? 'warn' : 'success';
-        const ativo = pessoa.ativo ? 'Desativada' : 'Ativada';
+        const severity = pessoa.ativo ? 'success' : 'warn';
+        const ativo = pessoa.ativo ? 'Ativada' : 'Desativada';
 
         this.messageService.add({
 
