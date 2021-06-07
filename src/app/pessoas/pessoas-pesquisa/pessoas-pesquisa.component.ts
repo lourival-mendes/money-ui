@@ -145,31 +145,11 @@ export class PessoasPesquisaComponent implements OnInit {
 
   }
 
-  isError(response: any) {
-    return response != null && !(undefined === response['status']) && (response['status'] > 300);
-  }
-
-  lancarErros(pessoa: PessoaInterface, response: any) {
-    response['error'].forEach((mensagem: any) => {
-
-      this.errorHandlerService.handler(`A pessoa de nome ${pessoa.nome} não pode ser excluída! [${mensagem['mensagemUsuario']}]`);
-      console.log(mensagem['mensagemDesenvolvedor']);
-
-    });
-  }
-
   excluir(pessoa: PessoaInterface) {
 
     this.pessoaService.excluir(pessoa.id).then( response => {
 
-      if (this.isError(response)) {
-
-        if (typeof response === 'string')
-          this.errorHandlerService.handler(response);
-        else
-          this.lancarErros(pessoa, response);
-
-      } else {
+      if (response === null) {
 
         if (this.grid.first === 0)
           this.pesquisar();
@@ -186,15 +166,7 @@ export class PessoasPesquisaComponent implements OnInit {
 
       }
 
-    })
-      .catch(error => {
-
-        if (typeof error === 'string')
-          this.errorHandlerService.handler(error);
-        else
-          this.errorHandlerService.handler(`A pessoa de nome ${pessoa.nome} não pode ser excluída!`);
-
-      });
+    });
   }
 
 }

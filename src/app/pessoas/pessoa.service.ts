@@ -101,13 +101,13 @@ export class PessoaService {
       });
   }
 
-  excluir(id: number): Promise<any> {
+  excluir(id: number): Promise<void> {
 
     const headers = new HttpHeaders({ Authorization: `Bearer ${localStorage.getItem('token')}` });
 
-    return this.httpClient.delete(`${this.pessoasUrl}/${id}`, { headers })
+    return this.httpClient.delete<void>(`${this.pessoasUrl}/${id}`, { headers })
       .toPromise()
-      .then(() => null)
+      .then()
       .catch(error => {
 
         console.log(`[Serviço de Pessoas -> excluir]`, error);
