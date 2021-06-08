@@ -1,17 +1,16 @@
-<nav *ngIf="auth.jwtPayload != null" class="navbar">
-    <div class="container">
-        <div class="p-grid">
-            <div class="p-col-12">
-                <a href="javascript:;" class="navbar-toogle" (click)="exibindoMenu = !exibindoMenu"><i class="pi pi-bars"></i></a>
-            </div>
-        </div>
-    </div>
-    <ul *ngIf="auth.jwtPayload != null" class="navbar-menu" [hidden]=!exibindoMenu>
-        <li class="navbar-usuario">{{ auth.jwtPayload?.user_name }}</li>
-        <li *ngIf="auth.verificarPermissao('ROLE_PESQUISAR_LANCAMENTO')" class="navbar-menu-item" routerLinkActive="ativo"><a routerLink="/dashboard">Dashboard</a></li>
-        <li *ngIf="auth.verificarPermissao('ROLE_PESQUISAR_PESSOA')" class="navbar-menu-item" routerLinkActive="ativo"><a routerLink="/pessoas">Pessoas</a></li>
-        <li *ngIf="auth.verificarPermissao('ROLE_PESQUISAR_LANCAMENTO')" class="navbar-menu-item" routerLinkActive="ativo"><a routerLink="/lancamentos">Lancamentos</a></li>
-        <li class="navbar-menu-item" routerLinkActive="ativo"><a routerLink="/usuarios">Usuarios</a></li>
-        <li class="navbar-menu-item" routerLinkActive="ativo"><a (click)="logout()" href="javascript:;">Sair</a></li>
-    </ul>
-</nav>
+<head id="header">
+    <a id="logo" href="">Algamoney</a>
+    <nav id="nav" #nav name="nav" *ngIf="auth.jwtPayload != null">
+        <button #mobile (click)="toggleMenu(nav, mobile)" id="btn-mobile" name="mobile" aria-label="Abrir Menu" aria-expanded="false" aria-controls="menu" aria-haspopup="true">Menu
+          <span id="hamburguer"></span>
+        </button>
+        <ul id="menu" role="menu" (click)="toggleMenu(nav, mobile)">
+            <li *ngIf="auth.verificarPermissao('ROLE_PESQUISAR_LANCAMENTO')" routerLinkActive="ativo"><a routerLink="/dashboard">Dashboard</a></li>
+            <li *ngIf="auth.verificarPermissao('ROLE_PESQUISAR_PESSOA')" routerLinkActive="ativo"><a routerLink="/pessoas">Pessoas</a></li>
+            <li *ngIf="auth.verificarPermissao('ROLE_PESQUISAR_LANCAMENTO')" routerLinkActive="ativo"><a routerLink="/lancamentos">Lancamentos</a></li>
+            <li routerLinkActive="ativo">
+                <a href="javascript:;" (click)="logout();">Sair</a>
+            </li>
+        </ul>
+    </nav>
+</head>

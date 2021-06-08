@@ -8,12 +8,23 @@ import { AuthService } from './../../seguranca/auth.service';
 })
 export class NavbarComponent {
 
-  exibindoMenu = false;
-
   constructor( public auth: AuthService ) { }
 
   logout() {
     this.auth.logout();
+  }
+
+  toggleMenu(elementNav: Element, elementMobile: Element) {
+
+    elementNav.classList.toggle('active');
+
+    const ariaExpanded = elementNav.classList.contains('active') ? 'true': 'false';
+    elementMobile.setAttribute('aria-expanded', ariaExpanded);
+
+    const ariaLabel = elementNav.classList.contains('active') ? 'Fechar Menu' : 'Abrir Menu';
+
+    elementMobile.setAttribute('aria-label', ariaLabel);
+
   }
 
 }
