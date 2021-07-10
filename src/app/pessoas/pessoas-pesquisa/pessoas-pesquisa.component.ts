@@ -60,7 +60,7 @@ export class PessoasPesquisaComponent implements OnInit {
           if (typeof error === 'string')
             this.errorHandlerService.handler(error);
           else
-            this.errorHandlerService.handler(`Ocorreu um erro ao acessar servidor remoto [pessoas-pesquisa-componente: linha 74.]!`);
+            this.errorHandlerService.handler(`Ocorreu um erro ao acessar servidor remoto [pessoas-pesquisa-componente]!`);
 
         })
         .finally(()=>this.loading = false);
